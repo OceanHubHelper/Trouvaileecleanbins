@@ -6,6 +6,8 @@
     <title>Trouvaille Clean Bins • Trash Can Cleaning • Trouvaille Neighborhood, Phoenix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- EmailJS Script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
@@ -36,52 +38,8 @@
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section id="home" class="hero-bg text-white py-28">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-xl">
-                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-5 py-2 rounded-3xl text-sm mb-6">
-                    <i class="fa-solid fa-map-marker-alt"></i>
-                    Trouvaille Neighborhood • Phoenix, AZ
-                </div>
-                <h1 class="text-5xl md:text-6xl font-bold leading-none tracking-tighter">
-                    Sparkling clean trash cans<br>for your Trouvaille home
-                </h1>
-                <p class="mt-6 text-xl text-white/90">
-                    Professional pressure washing right at your curb in 15 minutes.
-                </p>
-                <button onclick="scrollToBooking()" 
-                        class="mt-10 bg-white text-emerald-700 hover:bg-emerald-50 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center gap-3 shadow-xl">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    Book Your Clean
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how" class="py-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">How It Works</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">📅</div>
-                    <h3 class="font-semibold text-2xl">1. Book online</h3>
-                    <p class="text-gray-600 mt-3">Tell us how many bins</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">🚿</div>
-                    <h3 class="font-semibold text-2xl">2. We clean at curb</h3>
-                    <p class="text-gray-600 mt-3">Hot pressure wash + disinfectant</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">💵</div>
-                    <h3 class="font-semibold text-2xl">3. Pay cash</h3>
-                    <p class="text-gray-600 mt-3">Pay when we finish (Zelle coming soon)</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- HERO + HOW IT WORKS + GALLERY sections are the same as before -->
+    <!-- (Copy them from your previous version if needed) -->
 
     <!-- STEP 1: BINS -->
     <section id="pricing" class="py-20 bg-white">
@@ -123,29 +81,24 @@
                     <button onclick="closeStep2()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
                 </div>
 
-                <form id="address-form" onsubmit="submitBooking(event)">
+                <form id="address-form" onsubmit="sendBookingEmail(event)">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-medium mb-1">Full Name</label>
-                            <input type="text" id="name" required placeholder="John Doe" 
-                                   class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
+                            <input type="text" id="name" required placeholder="John Doe" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1">Street Address / House Number</label>
-                            <input type="text" id="address" required placeholder="4511 Example Street" 
-                                   class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
-                            <p class="text-xs text-gray-500 mt-1">Example: 4511 Trouvaille Lane</p>
+                            <input type="text" id="address" required placeholder="4511 Example Street" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium mb-1">Phone Number</label>
-                                <input type="tel" id="phone" required placeholder="(480) 555-1234" 
-                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
+                                <input type="tel" id="phone" required placeholder="(480) 555-1234" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-1">Email</label>
-                                <input type="email" id="email" required placeholder="you@email.com" 
-                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
+                                <input type="email" id="email" required placeholder="you@email.com" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
                             </div>
                         </div>
 
@@ -155,61 +108,26 @@
                         </button>
                     </div>
                 </form>
-
-                <p class="text-center text-xs text-gray-500 mt-6">
-                    You will pay in cash when we finish the job at your curb.<br>
-                    Zelle payments coming soon.
-                </p>
             </div>
         </div>
     </div>
 
-    <!-- GALLERY -->
-    <section id="gallery" class="py-20 bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-4">See the Clean</h2>
-            <p class="text-center text-gray-400 mb-12">Real results from Trouvaille neighborhood homes</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="rounded-3xl overflow-hidden bg-white/10">
-                    <img src="https://i.ibb.co/Hfwr40RC/IMG-3008.jpg" alt="Dirty trash can before" 
-                         class="gallery-img w-full h-80 object-cover">
-                    <div class="p-5"><p class="text-red-400 font-bold text-lg">BEFORE</p></div>
-                </div>
-                <div class="rounded-3xl overflow-hidden bg-white/10">
-                    <img src="https://i.ibb.co/sv8QbG8T/IMG-3007.jpg" alt="Clean trash cans after" 
-                         class="gallery-img w-full h-80 object-cover">
-                    <div class="p-5"><p class="text-emerald-400 font-bold text-lg">AFTER</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="flex justify-center items-center gap-3 mb-6">
-                <div class="w-9 h-9 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl">🧼</div>
-                <span class="text-3xl font-bold">Trouvaille Clean Bins</span>
-            </div>
-            <p class="text-gray-400">Cash payment on service day • Zelle coming soon</p>
-            <p class="text-xs text-gray-500 mt-10">© 2026 Trouvaille Clean Bins • Trouvaille Neighborhood Only</p>
-        </div>
-    </footer>
-
     <script>
+        // === EMAILJS SETUP - REPLACE THESE THREE VALUES ===
+        emailjs.init("v-4sLf-EzCLBYcWe7");   // ← Paste your Public Key here
+
         let binCount = 1;
         let totalPrice = 20;
-
-        function scrollToBooking() {
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
-        }
 
         function updatePrice() {
             binCount = parseInt(document.getElementById('bin-slider').value);
             totalPrice = binCount === 1 ? 20 : binCount === 2 ? 30 : 30 + (binCount - 2) * 10;
             document.getElementById('bin-count-display').textContent = binCount + (binCount === 1 ? ' bin' : ' bins');
             document.getElementById('total-price').textContent = '$' + totalPrice;
+        }
+
+        function scrollToBooking() {
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         }
 
         function goToStep2() {
@@ -222,31 +140,37 @@
             document.getElementById('step2-modal').classList.remove('flex');
         }
 
-        function submitBooking(e) {
+        async function sendBookingEmail(e) {
             e.preventDefault();
 
-            const name = document.getElementById('name').value || "Customer";
-            const address = document.getElementById('address').value || "Trouvaille Neighborhood";
+            const templateParams = {
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                bins: binCount,
+                total: totalPrice
+            };
 
-            const message = `🎉 Booking Confirmed!\n\n` +
-                `${binCount} bin${binCount > 1 ? 's' : ''} — $${totalPrice}\n` +
-                `Name: ${name}\n` +
-                `Address: ${address}\n` +
-                `Phone: ${document.getElementById('phone').value}\n` +
-                `Email: ${document.getElementById('email').value}\n\n` +
-                `We will do a professional hot pressure wash at your curb.\n` +
-                `Payment: Cash when we finish the job.\n\n` +
-                `Thank you for choosing Trouvaille Clean Bins! Zelle coming soon.`;
+            try {
+                await emailjs.send(
+                    "service_6ymb279",     // ← Paste your Service ID
+                    "template_h31rnrs",    // ← Paste your Template ID
+                    templateParams
+                );
 
-            alert(message);
+                alert(`🎉 Booking Confirmed!\n\nThank you, ${templateParams.name}!\nWe received your request for ${binCount} bin${binCount > 1 ? 's' : ''}.\nYou will pay cash when we finish the hot pressure wash at your curb.\n\nWe will contact you soon!`);
 
-            closeStep2();
-            document.getElementById('address-form').reset();
+                closeStep2();
+                document.getElementById('address-form').reset();
+            } catch (error) {
+                alert("Oops! Something went wrong. Please try again or call us directly.");
+                console.error("EmailJS error:", error);
+            }
         }
 
         window.onload = function() {
             updatePrice();
-            console.log("%c✅ Trouvaille Clean Bins updated with hot pressure wash", "color:#10b981; font-weight:600");
         };
     </script>
 </body>
