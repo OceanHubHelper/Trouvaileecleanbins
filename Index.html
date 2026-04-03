@@ -3,558 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CleanBin Pro - Professional trash can cleaning service in Phoenix, AZ. 1 bin $20, 2 bins $30, each additional $10. Book online today!">
-    <title>CleanBin Pro • Trash Can Cleaning • Phoenix, AZ</title>
+    <title>Trouvaille Clean Bins • Trash Can Cleaning • Trouvaille Neighborhood, Phoenix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
-        :root {
-            --tw-color-primary: #10b981;
-        }
-        .tail-container * {
-            font-family: 'Inter', system_ui, sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
         .hero-bg {
-            background: linear-gradient(rgba(16, 185, 129, 0.85), rgba(16, 185, 129, 0.85)), url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
+            background: linear-gradient(rgba(16, 185, 129, 0.9), rgba(16, 185, 129, 0.9)), 
+                        url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
         }
-        .gallery-img {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .gallery-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-        }
-        .modal {
-            animation: modalPop 0.3s ease forwards;
-        }
-        @keyframes modalPop {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        .gallery-img { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gallery-img:hover { transform: scale(1.05); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+        .payment-option { transition: all 0.2s; }
+        .payment-option.active { border-color: #10b981; background-color: #f0fdf4; }
+        .section { scroll-margin-top: 80px; }
     </style>
 </head>
-<body class="tail-container">
+<body class="tail-container bg-gray-50">
+
     <!-- NAVBAR -->
     <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center gap-x-3">
-                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-inner">
-                    🧼
-                </div>
-                <div>
-                    <h1 class="text-3xl font-bold tracking-tighter text-gray-900">CleanBin</h1>
-                    <p class="text-[10px] text-emerald-600 -mt-1 font-medium">PRO</p>
-                </div>
-                <span class="ml-2 px-3 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Phoenix, AZ</span>
+                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-3xl shadow">🧼</div>
+                <h1 class="text-3xl font-bold tracking-tighter text-gray-900">Trouvaille Clean Bins</h1>
+                <span class="ml-3 px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Trouvaille Neighborhood Only</span>
             </div>
 
-            <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-                <a href="#home" class="hover:text-emerald-600 transition-colors">Home</a>
-                <a href="#how" class="hover:text-emerald-600 transition-colors">How It Works</a>
-                <a href="#pricing" class="hover:text-emerald-600 transition-colors">Pricing</a>
-                <a href="#gallery" class="hover:text-emerald-600 transition-colors">See the Clean</a>
-                <a href="#book" onclick="checkLoginBeforeBook()" class="hover:text-emerald-600 transition-colors">Book Now</a>
+                <a href="#home" class="hover:text-emerald-600">Home</a>
+                <a href="#how" class="hover:text-emerald-600">How It Works</a>
+                <a href="#pricing" onclick="scrollToBooking()" class="hover:text-emerald-600">Pricing</a>
+                <a href="#gallery" class="hover:text-emerald-600">See the Clean</a>
             </div>
 
-            <!-- Auth -->
-            <div class="flex items-center gap-x-4">
-                <div id="auth-section" class="flex items-center gap-x-2">
-                    <!-- Filled by JS -->
-                </div>
-                
-                <!-- Mobile menu button -->
-                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-gray-700">
-                    <i class="fa-solid fa-bars" id="menu-icon"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-6 py-4">
-            <div class="flex flex-col gap-y-4 text-sm font-medium">
-                <a href="#home" onclick="toggleMobileMenu()" class="py-2">Home</a>
-                <a href="#how" onclick="toggleMobileMenu()" class="py-2">How It Works</a>
-                <a href="#pricing" onclick="toggleMobileMenu()" class="py-2">Pricing</a>
-                <a href="#gallery" onclick="toggleMobileMenu()" class="py-2">See the Clean</a>
-                <a href="#book" onclick="checkLoginBeforeBook();toggleMobileMenu()" class="py-2">Book Now</a>
-            </div>
+            <button onclick="scrollToBooking()" 
+                    class="bg-emerald-600 text-white px-6 py-2.5 rounded-3xl text-sm font-semibold flex items-center gap-2 hover:bg-emerald-700">
+                <i class="fa-solid fa-calendar-check"></i>
+                Book Your Clean
+            </button>
         </div>
     </nav>
 
-    <!-- HERO / HOME -->
-    <section id="home" class="hero-bg text-white py-24">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <div class="inline-flex items-center gap-x-2 bg-white/20 backdrop-blur-md text-white text-sm font-medium px-4 py-2 rounded-3xl mb-6">
-                    <i class="fa-solid fa-star"></i>
-                    4.9/5 from 287 happy neighbors in Phoenix
+    <!-- HERO -->
+    <section id="home" class="hero-bg text-white py-28">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-xl">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-5 py-2 rounded-3xl text-sm mb-6">
+                    <i class="fa-solid fa-map-marker-alt"></i>
+                    Trouvaille Neighborhood • Phoenix, AZ
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold leading-tight tracking-tighter">
-                    Your trash cans deserve to be <span class="text-white">sparkling clean</span>
+                <h1 class="text-5xl md:text-6xl font-bold leading-none tracking-tighter">
+                    Sparkling clean trash cans<br>for your Trouvaille home
                 </h1>
-                <p class="mt-6 text-xl text-white/90 max-w-md">
-                    Professional pressure-washing service. No more smells, no more grime.<br>
-                    1 bin = $20 • 2 bins = $30 • +$10 each additional
+                <p class="mt-6 text-xl text-white/90">
+                    Professional curb-side cleaning in 15 minutes.
                 </p>
-                
-                <div class="mt-10 flex flex-wrap gap-4">
-                    <button onclick="checkLoginBeforeBook()" 
-                            class="flex-1 md:flex-none bg-white text-emerald-600 hover:bg-emerald-50 px-8 py-4 rounded-3xl font-semibold text-lg flex items-center justify-center gap-x-3 shadow-xl">
-                        <i class="fa-solid fa-calendar-check"></i>
-                        Book Your Clean
-                    </button>
-                    <a href="#pricing" 
-                       class="flex-1 md:flex-none border-2 border-white hover:bg-white/10 px-8 py-4 rounded-3xl font-semibold text-lg flex items-center justify-center gap-x-3">
-                        See Pricing
-                    </a>
-                </div>
-
-                <div class="mt-8 flex items-center gap-x-8 text-sm">
-                    <div class="flex -space-x-4">
-                        <div class="w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-emerald-500 text-xs font-bold ring-2 ring-emerald-600">AZ</div>
-                        <div class="w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-emerald-500 text-xs font-bold ring-2 ring-emerald-600">✅</div>
-                    </div>
-                    <p class="text-white/80">Same-day booking available • 100% satisfaction guarantee • Eco-friendly</p>
-                </div>
-            </div>
-
-            <!-- Hero visual -->
-            <div class="hidden md:block">
-                <div class="bg-white rounded-3xl shadow-2xl p-4 max-w-xs mx-auto">
-                    <img src="https://picsum.photos/id/1015/800/600" alt="Clean trash cans after service" 
-                         class="rounded-2xl w-full shadow-inner">
-                    <div class="flex justify-between mt-4 text-emerald-600 text-sm font-semibold">
-                        <div>BEFORE</div>
-                        <div class="text-emerald-500">→ AFTER 15 MINUTES</div>
-                    </div>
-                </div>
+                <button onclick="scrollToBooking()" 
+                        class="mt-10 bg-white text-emerald-700 hover:bg-emerald-50 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center gap-3 shadow-xl">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Book Your Clean
+                </button>
             </div>
         </div>
     </section>
 
     <!-- HOW IT WORKS -->
-    <section id="how" class="py-20 bg-gray-50">
+    <section id="how" class="py-20 section">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <span class="px-4 py-1 bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-3xl">3 STEPS • 15 MINUTES</span>
-                <h2 class="text-4xl font-bold text-gray-900 mt-4">How CleanBin works</h2>
-            </div>
-            
+            <h2 class="text-4xl font-bold text-center mb-12">How It Works</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-4xl mb-6">📅</div>
-                    <h3 class="font-semibold text-2xl mb-2">1. Schedule online</h3>
-                    <p class="text-gray-600">Pick your date &amp; time in 30 seconds. No phone calls needed.</p>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">📅</div>
+                    <h3 class="font-semibold text-2xl">1. Book online</h3>
+                    <p class="text-gray-600 mt-3">Choose bins and payment</p>
                 </div>
-                <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-4xl mb-6">🚿</div>
-                    <h3 class="font-semibold text-2xl mb-2">2. We show up &amp; clean</h3>
-                    <p class="text-gray-600">Hot pressure wash + disinfectant. We handle everything.</p>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">🚿</div>
+                    <h3 class="font-semibold text-2xl">2. We clean at curb</h3>
+                    <p class="text-gray-600 mt-3">Hot pressure wash</p>
                 </div>
-                <div class="bg-white p-8 rounded-3xl shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-4xl mb-6">✨</div>
-                    <h3 class="font-semibold text-2xl mb-2">3. Sparkling bins</h3>
-                    <p class="text-gray-600">Your trash cans look brand new. Smell gone. Guaranteed.</p>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center text-5xl mb-6">✨</div>
+                    <h3 class="font-semibold text-2xl">3. Fresh bins</h3>
+                    <p class="text-gray-600 mt-3">Guaranteed clean</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="py-20">
+    <!-- PRICING / BOOKING SECTION -->
+    <section id="pricing" class="py-20 bg-white section">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900">Simple, transparent pricing</h2>
-                <p class="text-gray-600 mt-3">No hidden fees. No subscriptions required.</p>
+                <h2 class="text-4xl font-bold">Simple Pricing</h2>
+                <p class="text-gray-600 mt-2">Trouvaille Neighborhood only</p>
             </div>
 
-            <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-8">
-                <!-- Price calculator -->
-                <div class="flex justify-between items-baseline mb-6">
-                    <div class="text-gray-500">Number of bins</div>
-                    <div id="bin-count-display" class="text-5xl font-bold text-emerald-600">1</div>
-                </div>
-                
-                <input type="range" id="bin-slider" min="1" max="10" value="1" 
-                       oninput="updatePrice()" class="w-full accent-emerald-500 mb-8">
-
-                <div class="flex justify-between text-sm font-medium mb-4">
-                    <div>1 bin</div>
-                    <div>10 bins</div>
-                </div>
-
-                <div class="bg-gray-50 rounded-2xl p-6 mb-8">
-                    <div class="flex justify-between text-lg">
-                        <span class="text-gray-600">Total today:</span>
+            <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl p-10">
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">How many trash bins?</label>
+                    <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full accent-emerald-500">
+                    <div class="flex justify-between text-lg font-semibold mt-4">
+                        <span id="bin-count-display" class="text-emerald-600">1 bin</span>
                         <span id="total-price" class="text-4xl font-bold text-emerald-600">$20</span>
                     </div>
-                    <div id="price-breakdown" class="text-xs text-emerald-600 mt-1 font-medium">
-                        1 bin × $20
-                    </div>
                 </div>
 
-                <button onclick="checkLoginBeforeBook()" 
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-3xl text-xl font-semibold flex items-center justify-center gap-x-3">
-                    <i class="fa-solid fa-credit-card"></i>
-                    Pay securely &amp; book now
-                </button>
-                <p class="text-center text-xs text-gray-500 mt-4">💳 We accept all major cards via Stripe</p>
-            </div>
-
-            <div class="text-center mt-6 text-sm text-gray-500">
-                1 bin = <span class="font-semibold">$20</span> • 
-                2 bins = <span class="font-semibold">$30</span> • 
-                Each additional = <span class="font-semibold">+$10</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- GALLERY / SEE THE CLEAN -->
-    <section id="gallery" class="py-20 bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <span class="uppercase tracking-widest text-emerald-400 text-sm font-bold">Before &amp; After</span>
-                <h2 class="text-4xl font-bold mt-2">See the Clean™</h2>
-                <p class="text-gray-400 mt-2">Real results from Phoenix neighbors just like you</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                <!-- Image 1 - Before -->
-                <div class="bg-white/10 rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/1005/600/600" alt="Dirty trash can before cleaning" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4">
-                        <div class="uppercase text-xs text-red-400 font-bold">BEFORE</div>
-                        <p class="text-sm text-white/80">Smelly, caked with grime after 3 months</p>
-                    </div>
-                </div>
-                
-                <!-- Image 2 - After -->
-                <div class="bg-white/10 rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/1015/600/600" alt="Clean shiny trash can after" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4">
-                        <div class="uppercase text-xs text-emerald-400 font-bold">AFTER</div>
-                        <p class="text-sm text-white/80">15 minutes later — looks brand new!</p>
-                    </div>
-                </div>
-
-                <!-- Image 3 - Real before/after split (example) -->
-                <div class="bg-white/10 rounded-3xl overflow-hidden md:col-span-2 lg:col-span-1">
-                    <img src="https://picsum.photos/id/870/800/400" alt="Before and after trash bin cleaning" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4 flex justify-between text-xs">
-                        <span class="text-red-400 font-bold">DIRTY →</span>
-                        <span class="text-emerald-400 font-bold">→ SPARKLING</span>
-                    </div>
-                </div>
-
-                <!-- More images -->
-                <div class="bg-white/10 rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/201/600/600" alt="Worker cleaning trash can" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4">
-                        <div class="uppercase text-xs text-emerald-400 font-bold">IN ACTION</div>
-                        <p class="text-sm text-white/80">Our truck &amp; team at your curb</p>
-                    </div>
-                </div>
-
-                <div class="bg-white/10 rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/1009/600/600" alt="Clean blue trash bin" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4">
-                        <div class="uppercase text-xs text-emerald-400 font-bold">AFTER</div>
-                        <p class="text-sm text-white/80">Even the wheels are spotless</p>
-                    </div>
-                </div>
-
-                <div class="bg-white/10 rounded-3xl overflow-hidden">
-                    <img src="https://picsum.photos/id/133/600/600" alt="Green clean bin" 
-                         class="gallery-img w-full h-64 object-cover">
-                    <div class="p-4">
-                        <div class="uppercase text-xs text-emerald-400 font-bold">AFTER</div>
-                        <p class="text-sm text-white/80">Your neighbors will be jealous</p>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="text-center text-xs text-gray-400 mt-10">All photos are real customer results (you can swap these with your own shots anytime)</p>
-        </div>
-    </section>
-
-    <!-- BOOKING / CTA -->
-    <section id="book" class="py-20 bg-emerald-50">
-        <div class="max-w-2xl mx-auto px-6">
-            <div class="bg-white rounded-3xl shadow-xl p-10">
-                <h2 class="text-3xl font-bold text-center">Ready for clean bins?</h2>
-                <p class="text-center text-gray-600 mt-2">Sign in with Google and book in 60 seconds</p>
-
-                <div id="booking-form" class="mt-10">
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">How many bins?</label>
-                            <div class="flex gap-3">
-                                <button onclick="selectBins(1)" class="bin-btn flex-1 py-4 text-lg font-semibold border-2 border-emerald-200 hover:border-emerald-500 rounded-2xl transition">1 bin — $20</button>
-                                <button onclick="selectBins(2)" class="bin-btn flex-1 py-4 text-lg font-semibold border-2 border-emerald-200 hover:border-emerald-500 rounded-2xl transition">2 bins — $30</button>
-                                <button onclick="selectBins(3)" class="bin-btn flex-1 py-4 text-lg font-semibold border-2 border-emerald-200 hover:border-emerald-500 rounded-2xl transition">3+ bins</button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Preferred date</label>
-                            <input type="date" id="booking-date" class="w-full border border-gray-200 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-emerald-500">
-                        </div>
-
-                        <button onclick="submitBooking()" 
-                                class="w-full py-6 bg-emerald-600 text-white text-xl font-semibold rounded-3xl flex items-center justify-center gap-3">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            CONFIRM BOOKING • PAY $20
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">How would you like to pay?</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="selectPayment(1)" id="pay-apple" class="payment-option active border-2 border-emerald-500 rounded-2xl py-6 flex flex-col items-center justify-center gap-2 text-sm font-medium">
+                            <i class="fa-brands fa-apple text-3xl"></i><span>Apple Pay</span>
+                        </button>
+                        <button onclick="selectPayment(2)" id="pay-card" class="payment-option border-2 border-gray-200 hover:border-gray-300 rounded-2xl py-6 flex flex-col items-center justify-center gap-2 text-sm font-medium">
+                            <i class="fa-solid fa-credit-card text-3xl"></i><span>Credit/Debit</span>
+                        </button>
+                        <button onclick="selectPayment(3)" id="pay-cash" class="payment-option border-2 border-gray-200 hover:border-gray-300 rounded-2xl py-6 flex flex-col items-center justify-center gap-2 text-sm font-medium">
+                            <i class="fa-solid fa-dollar-sign text-3xl"></i><span>Cash</span>
                         </button>
                     </div>
                 </div>
 
-                <div id="login-prompt" class="hidden text-center py-8">
-                    <p class="text-gray-500">You need to sign in to book</p>
-                    <button onclick="googleSignIn()" 
-                            class="mt-4 flex items-center justify-center gap-x-4 mx-auto bg-white border border-gray-300 hover:border-gray-400 shadow-sm px-8 py-4 rounded-3xl text-lg font-medium">
-                        <i class="fa-brands fa-google text-red-500"></i>
-                        Continue with Google
-                    </button>
+                <button onclick="goToCheckout()" 
+                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-lock"></i>
+                    SECURE BOOKING
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="py-20 bg-gray-900 text-white section">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4">See the Clean</h2>
+            <p class="text-center text-gray-400 mb-12">Real results from Trouvaille neighborhood</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="rounded-3xl overflow-hidden bg-white/10">
+                    <img src="https://i.ibb.co/Hfwr40RC/IMG-3008.jpg" alt="Dirty trash can before" class="gallery-img w-full h-80 object-cover">
+                    <div class="p-5"><p class="text-red-400 font-bold text-lg">BEFORE</p></div>
+                </div>
+                <div class="rounded-3xl overflow-hidden bg-white/10">
+                    <img src="https://i.ibb.co/sv8QbG8T/IMG-3007.jpg" alt="Clean trash cans after" class="gallery-img w-full h-80 object-cover">
+                    <div class="p-5"><p class="text-emerald-400 font-bold text-lg">AFTER</p></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-y-8">
-            <div>
-                <div class="flex items-center gap-x-3 text-white">
-                    <div class="w-8 h-8 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl">🧼</div>
-                    <span class="text-2xl font-bold">CleanBin Pro</span>
+    <!-- CHECKOUT MODAL (Buyer Information Page) -->
+    <div id="checkout-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] overflow-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full mx-4 my-8 max-h-[90vh] overflow-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold" id="checkout-title">Checkout</h2>
+                    <button onclick="closeCheckout()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
                 </div>
-                <p class="text-sm text-gray-400 mt-4">Phoenix's favorite trash can cleaning service.<br>Est. 2026</p>
-            </div>
-            <div>
-                <div class="font-semibold mb-4">Company</div>
-                <a href="#" class="block text-gray-400 hover:text-white text-sm py-1">About us</a>
-                <a href="#" class="block text-gray-400 hover:text-white text-sm py-1">Careers</a>
-                <a href="#" class="block text-gray-400 hover:text-white text-sm py-1">Contact</a>
-            </div>
-            <div>
-                <div class="font-semibold mb-4">Service area</div>
-                <p class="text-sm text-gray-400">Phoenix • Scottsdale • Tempe • Mesa • Glendale • Chandler</p>
-                <p class="text-xs text-emerald-400 mt-6">+ more cities coming soon!</p>
-            </div>
-            <div>
-                <div class="font-semibold mb-4">Connect with us</div>
-                <div class="flex gap-4 text-2xl">
-                    <i class="fa-brands fa-facebook hover:text-emerald-400 cursor-pointer"></i>
-                    <i class="fa-brands fa-instagram hover:text-emerald-400 cursor-pointer"></i>
-                </div>
-                <p class="text-xs text-gray-500 mt-8">© 2026 CleanBin Pro. All rights reserved.<br>Made with ❤️ in Phoenix for Adrien</p>
-            </div>
-        </div>
-    </footer>
 
-    <!-- GOOGLE SIGN-IN MODAL -->
-    <div id="signin-modal" onclick="if(event.target===this)hideModal()" 
-         class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-        <div onclick="event.stopImmediatePropagation()" 
-             class="modal bg-white rounded-3xl max-w-sm w-full mx-4 overflow-hidden">
-            <div class="px-8 pt-8 pb-6 text-center">
-                <div class="text-6xl mb-4">🔑</div>
-                <h3 class="text-2xl font-semibold">Sign in to book your clean</h3>
-                <p class="text-gray-500 mt-2">It only takes 2 seconds with Google</p>
-                
-                <button onclick="googleSignIn()" 
-                        class="mt-8 w-full flex items-center justify-center gap-x-4 py-5 border-2 border-gray-200 hover:border-gray-300 rounded-3xl text-lg font-medium">
-                    <i class="fa-brands fa-google text-red-500"></i>
-                    <span>Continue with Google</span>
-                </button>
-                
-                <p class="text-xs text-gray-400 mt-6">We respect your privacy • No spam ever</p>
-            </div>
-            
-            <div onclick="hideModal()" class="text-center py-6 border-t text-sm text-gray-400 cursor-pointer hover:text-gray-600">
-                Cancel
+                <!-- Form -->
+                <form id="checkout-form" onsubmit="handleBookingSubmit(event)">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Full Name</label>
+                            <input type="text" id="name" required class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Street Address (Trouvaille Neighborhood)</label>
+                            <input type="text" id="address" required class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Phone</label>
+                                <input type="tel" id="phone" required class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email</label>
+                                <input type="email" id="email" required class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                            </div>
+                        </div>
+
+                        <!-- Credit Card fields (shown only for card payments) -->
+                        <div id="card-fields" class="hidden space-y-6 pt-6 border-t">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Card Number</label>
+                                <input type="text" id="card-number" placeholder="4242 4242 4242 4242" class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Expiry Date</label>
+                                    <input type="text" id="expiry" placeholder="MM/YY" class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">CVC</label>
+                                    <input type="text" id="cvc" placeholder="123" class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submit-btn"
+                                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">
+                            Complete Booking
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="w-9 h-9 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl">🧼</div>
+                <span class="text-3xl font-bold">Trouvaille Clean Bins</span>
+            </div>
+            <p class="text-gray-400">Service only in Trouvaille Neighborhood, Phoenix, AZ</p>
+            <p class="text-xs text-gray-500 mt-10">© 2026 Trouvaille Clean Bins</p>
+        </div>
+    </footer>
+
     <script>
-        // Tailwind script initialization
-        function initializeTailwind() {
-            tailwind.config = {
-                content: [],
-                theme: {
-                    extend: {}
-                }
-            }
+        let isLoggedIn = false;
+        let selectedPayment = 1; // 1=Apple Pay, 2=Card, 3=Cash
+        let totalPrice = 20;
+        let binCount = 1;
+
+        function scrollToBooking() {
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Global state
-        let isLoggedIn = false
-        let currentUser = null
-
-        // Update price calculator
         function updatePrice() {
-            const bins = parseInt(document.getElementById('bin-slider').value)
-            document.getElementById('bin-count-display').textContent = bins
-            
-            let total = 20
-            if (bins === 2) total = 30
-            else if (bins > 2) total = 30 + (bins - 2) * 10
-            
-            document.getElementById('total-price').textContent = '$' + total
-            document.getElementById('price-breakdown').innerHTML = `${bins} bin${bins > 1 ? 's' : ''} × $${bins === 1 ? '20' : bins === 2 ? '30' : 'base 30 + ' + (bins-2)*10}`
+            binCount = parseInt(document.getElementById('bin-slider').value);
+            totalPrice = binCount === 1 ? 20 : binCount === 2 ? 30 : 30 + (binCount - 2) * 10;
+            document.getElementById('bin-count-display').textContent = binCount + (binCount === 1 ? ' bin' : ' bins');
+            document.getElementById('total-price').textContent = '$' + totalPrice;
         }
 
-        // Quick bin buttons
-        function selectBins(n) {
-            document.getElementById('bin-slider').value = n > 10 ? 10 : n
-            updatePrice()
-            // Scroll to top of form
-            document.getElementById('book').scrollIntoView({ behavior: 'smooth' })
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active', 'border-emerald-500'));
+            if (method === 1) document.getElementById('pay-apple').classList.add('active', 'border-emerald-500');
+            else if (method === 2) document.getElementById('pay-card').classList.add('active', 'border-emerald-500');
+            else if (method === 3) document.getElementById('pay-cash').classList.add('active', 'border-emerald-500');
         }
 
-        // Google Sign-In simulation (demo)
-        function googleSignIn() {
-            // Simulate Google OAuth flow
-            hideModal()
-            
-            // Fake a short loading animation
-            setTimeout(() => {
-                isLoggedIn = true
-                currentUser = {
-                    name: "Adrien",
-                    email: "adrien@gmail.com",
-                    picture: "https://picsum.photos/id/64/128/128"
-                }
-                renderAuthUI()
-                
-                // Show success toast
-                const toast = document.createElement('div')
-                toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:#10b981; color:white; padding:16px 24px; border-radius:9999px; box-shadow: 0 10px 15px -3px rgb(16 185 129); display:flex; align-items:center; gap:12px; z-index:99999;'
-                toast.innerHTML = `✅ Signed in as ${currentUser.name}! You can now book.`
-                document.body.appendChild(toast)
-                
-                setTimeout(() => toast.remove(), 3500)
-                
-                // Auto-open booking form if on book section
-                if (window.location.hash === '#book') {
-                    document.getElementById('login-prompt').classList.add('hidden')
-                    document.getElementById('booking-form').classList.remove('hidden')
-                }
-            }, 800)
-        }
-
-        // Render the navbar auth section
-        function renderAuthUI() {
-            const container = document.getElementById('auth-section')
-            container.innerHTML = ''
-            
-            if (isLoggedIn && currentUser) {
-                container.innerHTML = `
-                    <div class="flex items-center gap-x-2 bg-gray-100 rounded-3xl pl-2 pr-5 py-1 cursor-pointer" onclick="logout()">
-                        <img src="${currentUser.picture}" alt="profile" class="w-8 h-8 rounded-2xl">
-                        <div>
-                            <div class="text-sm font-medium text-gray-900">Hi, ${currentUser.name} 👋</div>
-                        </div>
-                        <i onclick="event.stopImmediatePropagation();logout()" class="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
-                    </div>
-                `
-            } else {
-                container.innerHTML = `
-                    <button onclick="showSignInModal()" 
-                            class="flex items-center gap-x-2 bg-white text-gray-700 hover:text-emerald-600 border border-gray-200 hover:border-emerald-200 px-5 py-2 rounded-3xl text-sm font-medium transition-all">
-                        <i class="fa-brands fa-google"></i>
-                        <span>Sign in with Google</span>
-                    </button>
-                `
-            }
-        }
-
-        function showSignInModal() {
-            document.getElementById('signin-modal').classList.remove('hidden')
-            document.getElementById('signin-modal').classList.add('flex')
-        }
-
-        function hideModal() {
-            const modal = document.getElementById('signin-modal')
-            modal.classList.add('hidden')
-            modal.classList.remove('flex')
-        }
-
-        function logout() {
-            isLoggedIn = false
-            currentUser = null
-            renderAuthUI()
-        }
-
-        // Check login before booking
-        function checkLoginBeforeBook() {
+        function goToCheckout() {
             if (!isLoggedIn) {
-                // If not logged in, show modal
-                showSignInModal()
-                return
+                if (confirm("Sign in with Google to continue (demo).")) isLoggedIn = true;
+                else return;
             }
-            
-            // Scroll to book section
-            document.getElementById('book').scrollIntoView({ behavior: 'smooth' })
-            
-            // Show real form
-            document.getElementById('login-prompt').classList.add('hidden')
-            document.getElementById('booking-form').classList.remove('hidden')
-        }
 
-        // Submit booking (demo)
-        function submitBooking() {
-            if (!isLoggedIn) return
-            
-            const bins = document.getElementById('bin-slider').value
-            const date = document.getElementById('booking-date').value || 'this weekend'
-            
-            alert(`🎉 Booking confirmed!\n\n${bins} bin${bins > 1 ? 's' : ''} on ${date}\nTotal: $${parseInt(bins) === 1 ? 20 : parseInt(bins) === 2 ? 30 : 30 + (parseInt(bins)-2)*10}\n\nThank you, Adrien! Your bins will be sparkling clean soon.`)
-            
-            // Reset form for next time
-            document.getElementById('bin-slider').value = 1
-            updatePrice()
-        }
+            // Show correct title
+            document.getElementById('checkout-title').textContent = 
+                (selectedPayment === 3 ? "Cash Booking" : "Secure Checkout");
 
-        // Mobile menu
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu')
-            const icon = document.getElementById('menu-icon')
-            
-            if (menu.classList.contains('hidden')) {
-                menu.style.display = 'block'
-                icon.classList.replace('fa-bars', 'fa-xmark')
+            // Show/hide card fields
+            const cardFields = document.getElementById('card-fields');
+            if (selectedPayment === 2) {
+                cardFields.classList.remove('hidden');
             } else {
-                menu.style.display = 'none'
-                icon.classList.replace('fa-xmark', 'fa-bars')
+                cardFields.classList.add('hidden');
             }
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('checkout-modal').classList.add('flex');
         }
 
-        // Initialize everything
-        window.onload = function() {
-            initializeTailwind()
-            renderAuthUI()
-            updatePrice() // initial price
-            
-            // Pre-select today's date for booking
-            const today = new Date()
-            const dateInput = document.getElementById('booking-date')
-            if (dateInput) {
-                dateInput.value = today.toISOString().split('T')[0]
-            }
-            
-            console.log('%c✅ CleanBin Pro website ready! (Built for Adrien)', 'color:#10b981; font-size:13px')
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-modal').classList.remove('flex');
         }
+
+        function handleBookingSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value || "Customer";
+            const address = document.getElementById('address').value || "Trouvaille Neighborhood";
+
+            let message = `🎉 Booking Confirmed!\n\n`;
+            message += `${binCount} bin${binCount > 1 ? 's' : ''} — $${totalPrice}\n`;
+            message += `Name: ${name}\nAddress: ${address}\n`;
+
+            if (selectedPayment === 3) {
+                message += `\nPayment: Cash on service day\nYou will receive $${totalPrice} when the cleaning is finished.`;
+            } else {
+                message += `\nPayment: ${selectedPayment === 1 ? 'Apple Pay' : 'Credit/Debit Card'} (processed securely)`;
+            }
+
+            alert(message + `\n\nThank you! We will contact you soon to confirm the date.`);
+
+            closeCheckout();
+            // Reset form for next use
+            document.getElementById('checkout-form').reset();
+        }
+
+        window.onload = function() {
+            updatePrice();
+            selectPayment(1);
+            console.log("%c✅ Trouvaille Clean Bins ready with checkout flow!", "color:#10b981; font-weight:600");
+        };
     </script>
 </body>
 </html>
-```input type
