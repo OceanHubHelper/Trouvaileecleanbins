@@ -43,7 +43,7 @@
                     <i class="fa-solid fa-user"></i>
                 </button>
                 <div id="profileDropdown" class="dropdown-content absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-xl py-2 z-50">
-                    <div id="user-name-tag" class="px-4 py-2 text-xs text-gray-400 font-bold uppercase">Guest</div>
+                    <div id="user-name-tag" class="px-4 py-2 text-xs text-gray-400 font-bold uppercase border-b mb-1">Guest</div>
                     <button onclick="alert('Profile page coming soon!')" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">👤 Profile</button>
                     <button onclick="alert('Settings coming soon!')" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">⚙️ Settings</button>
                     <button onclick="showTerms()" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">📜 Rules (Terms)</button>
@@ -58,9 +58,9 @@
 
 <section class="hero-bg py-24 text-center text-white">
     <div class="max-w-4xl mx-auto px-6">
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-6">Make Your Bins Happy!</h1>
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">Make Your Bins Happy!</h1>
         <p class="text-xl opacity-90 mb-8">We clean and sanitize your smelly trash cans so you don't have to!</p>
-        <button onclick="scrollToBooking()" class="bg-white text-emerald-700 px-10 py-4 rounded-full font-bold shadow-xl">Get Started</button>
+        <button onclick="scrollToBooking()" class="bg-white text-emerald-700 px-10 py-4 rounded-full font-bold shadow-xl hover:scale-105 transition">Get Started</button>
     </div>
 </section>
 
@@ -70,7 +70,7 @@
         <div class="grid md:grid-cols-2 gap-10">
             <div class="bg-gray-50 p-4 rounded-[2rem] shadow-md">
                 <img src="https://i.imgur.com/8yJoZSh.jpeg" class="w-full h-80 object-cover rounded-2xl mb-4">
-                <p class="text-red-500 font-bold uppercase">Smelly & Dirty</p>
+                <p class="text-red-500 font-bold uppercase tracking-widest">Smelly & Dirty</p>
             </div>
             <div class="bg-emerald-50 p-4 rounded-[2rem] shadow-md border-4 border-emerald-400">
                 <img src="https://i.imgur.com/ac5xFyr.jpeg" class="w-full h-80 object-cover rounded-2xl mb-4">
@@ -87,7 +87,10 @@
                 <h2 class="text-3xl font-bold">What People Say</h2>
                 <p class="text-gray-500">Kind words from our friends</p>
             </div>
-            <button onclick="checkReviewAuth()" class="bg-emerald-600 text-white px-6 py-2 rounded-xl font-bold hover:scale-105 transition">Leave Review</button>
+            <div class="flex gap-2">
+                <button onclick="checkReviewAuth()" class="bg-emerald-600 text-white px-6 py-2 rounded-xl font-bold hover:scale-105 transition">Leave Review</button>
+                <button onclick="alert('More reviews loading...')" class="bg-white text-gray-400 px-4 py-2 border rounded-xl text-sm font-bold">View All</button>
+            </div>
         </div>
         <div id="reviews-list" class="grid md:grid-cols-2 gap-6">
             </div>
@@ -99,11 +102,11 @@
         <h2 class="text-4xl font-bold mb-10">Choose Your Bins</h2>
         <div class="bg-emerald-900 text-white p-10 rounded-[3rem] shadow-2xl">
             <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full h-2 bg-emerald-700 rounded-lg appearance-none cursor-pointer mb-8">
-            <div class="flex justify-between items-center mb-10">
-                <span id="bin-count-text" class="text-2xl font-bold">1 bin</span>
+            <div class="flex justify-between items-center mb-10 px-4">
+                <span id="bin-count-text" class="text-2xl font-bold italic">1 bin</span>
                 <span id="total-price-text" class="text-5xl font-black text-emerald-400">$15</span>
             </div>
-            <button onclick="openBookingForm()" class="w-full bg-white text-emerald-900 py-5 rounded-2xl font-black text-lg hover:bg-gray-100 transition">CONTINUE →</button>
+            <button onclick="openBookingForm()" class="w-full bg-white text-emerald-900 py-5 rounded-2xl font-black text-lg hover:bg-gray-100 transition shadow-lg">CONTINUE →</button>
         </div>
     </div>
 </section>
@@ -111,52 +114,57 @@
 <div id="terms-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
     <div class="bg-white rounded-3xl max-w-2xl w-full p-8 max-h-[80vh] overflow-y-auto">
         <h2 class="text-3xl font-bold mb-6">📜 The Friendly Rules</h2>
-        <div class="space-y-4 text-gray-600 leading-relaxed">
-            <p><strong>1. Be Kind:</strong> This is a happy place! No mean words or bad talk in the reviews.</p>
-            <p><strong>2. Ask Parents:</strong> If you are a kid, please make sure your mom or dad says it's okay to book a cleaning!</p>
-            <p><strong>3. Clean Prep:</strong> Please have your bins empty on the curb. We can't clean them if they're full of trash!</p>
-            <p><strong>4. Payment:</strong> We collect cash on the day we finish making your bins sparkle.</p>
-            <p><strong>5. Robot Guards:</strong> Our robot checks usernames and reviews. If it sees bad words, it won't let you post them!</p>
+        <div class="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
+            <p><strong>1. Be Kind:</strong> This is a happy business! No mean words or bullying in the reviews. We want everyone to feel good when they visit our site.</p>
+            <p><strong>2. Parent Permission:</strong> If you are a kid, please ask your mom, dad, or guardian before you book a cleaning. Safety is our #1 rule!</p>
+            <p><strong>3. Clean Bins Only:</strong> Please make sure your trash cans are empty and sitting at the curb. If they have trash inside, we can't make them sparkle!</p>
+            <p><strong>4. Paying the Boss:</strong> We collect cash on the day we finish the job. No need to put a credit card on the internet!</p>
+            <p><strong>5. Robot Guards:</strong> Our computer robot checks every username and review. If it sees "bad words," it won't let you post them. Let's keep it clean!</p>
+            <p><strong>6. Neighborhood Love:</strong> We are here to help our neighbors. If you have a problem, just tell us and we will try to fix it!</p>
         </div>
-        <button onclick="closeTerms()" class="mt-8 w-full bg-emerald-600 text-white py-4 rounded-xl font-bold">Got it!</button>
+        <button onclick="closeTerms()" class="mt-8 w-full bg-emerald-600 text-white py-4 rounded-xl font-bold">I Agree to the Rules!</button>
     </div>
 </div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-    <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full shadow-2xl">
+    <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full shadow-2xl text-center">
         <h2 id="auth-title" class="text-2xl font-black mb-6">Sign In</h2>
-        <p id="auth-error" class="text-red-500 text-xs mb-4 hidden"></p>
-        <input id="auth-user" placeholder="Username" class="w-full border p-4 rounded-2xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500">
-        <input id="auth-email" type="email" placeholder="Email (For Sign Up)" class="w-full border p-4 rounded-2xl mb-3 outline-none hidden">
-        <input id="auth-pass" type="password" placeholder="Password" class="w-full border p-4 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500">
-        <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-lg">GO!</button>
-        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-emerald-600 mt-4 text-sm font-bold tracking-tight text-center">New here? Sign Up</button>
-        <button onclick="closeAuthModal()" class="w-full text-gray-400 mt-2 text-xs">Close</button>
+        <p id="auth-error" class="text-red-500 text-xs mb-4 hidden font-bold"></p>
+        <input id="auth-user" placeholder="Choose a Username" class="w-full border p-4 rounded-2xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500">
+        <input id="auth-email" type="email" placeholder="Your Email (For Sign Up)" class="w-full border p-4 rounded-2xl mb-3 outline-none hidden focus:ring-2 focus:ring-emerald-500">
+        <input id="auth-pass" type="password" placeholder="Create a Password" class="w-full border p-4 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500">
+        <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-lg hover:bg-emerald-700 transition">GO!</button>
+        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-emerald-600 mt-4 text-sm font-bold">New here? Sign Up</button>
+        <button onclick="closeAuthModal()" class="w-full text-gray-400 mt-4 text-xs hover:underline">Close</button>
     </div>
 </div>
 
 <div id="booking-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
-    <div class="bg-white p-10 rounded-[2.5rem] max-w-md w-full">
-        <h2 class="text-2xl font-black mb-6">Final Details</h2>
+    <div class="bg-white p-10 rounded-[2.5rem] max-w-md w-full shadow-2xl">
+        <h2 class="text-2xl font-black mb-6">Ready to Clean!</h2>
         <form onsubmit="sendBooking(event)" class="space-y-4">
-            <input id="form-name" required placeholder="Your Name" class="w-full p-4 border rounded-2xl outline-none">
-            <input id="form-address" required placeholder="Service Address" class="w-full p-4 border rounded-2xl outline-none">
-            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 border rounded-2xl outline-none">
-            <div class="bg-emerald-50 p-4 rounded-2xl text-center">
-                <p class="text-emerald-800 text-xs font-bold uppercase">Total Due at Curb:</p>
-                <p id="modal-total" class="text-3xl font-black text-emerald-600">$15</p>
+            <input id="form-name" required placeholder="Full Name" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <input id="form-email" type="email" required placeholder="Email Address" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <input id="form-address" required placeholder="Service Address" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <div class="bg-emerald-50 p-6 rounded-2xl text-center border border-emerald-100">
+                <p class="text-emerald-800 text-xs font-bold uppercase mb-1">Total Due at the Curb:</p>
+                <p id="modal-total" class="text-4xl font-black text-emerald-600">$15</p>
             </div>
-            <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-lg">Confirm My Booking!</button>
+            <button class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-emerald-700 transition">Confirm My Booking! 🧼</button>
         </form>
-        <button onclick="closeBookingModal()" class="w-full mt-4 text-gray-400 text-sm">Cancel</button>
+        <button onclick="closeBookingModal()" class="w-full mt-4 text-gray-400 text-sm hover:underline">Actually, I'll wait</button>
     </div>
 </div>
 
 <script>
-    // --- DATABASE & AUTH LOGIC ---
+    // --- DATABASE & AUTH ---
+    // Note: YOUR_PUBLIC_KEY goes here
+    emailjs.init("YOUR_PUBLIC_KEY"); 
+
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isSignUp = false;
-    const badWords = ["bad", "mean", "hate", "stupid"]; // You can add more here!
+    const badWords = ["bad", "mean", "hate", "stupid", "dumb"]; // Robot Filter
 
     function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
     function showTerms() { document.getElementById('terms-modal').classList.remove('hidden'); }
@@ -173,6 +181,7 @@
 
     function handleAuth() {
         const user = document.getElementById('auth-user').value.toLowerCase();
+        const email = document.getElementById('auth-email').value;
         const errorDiv = document.getElementById('auth-error');
 
         if (badWords.some(word => user.includes(word))) {
@@ -181,13 +190,7 @@
             return;
         }
 
-        if (user.length < 3) {
-            errorDiv.innerText = "Username too short!";
-            errorDiv.classList.remove('hidden');
-            return;
-        }
-
-        currentUser = { username: user };
+        currentUser = { username: user, email: email };
         localStorage.setItem('loggedUser', JSON.stringify(currentUser));
         closeAuthModal();
         updateUI();
@@ -211,9 +214,10 @@
             authBtn.onclick = openAuthModal;
             nameTag.innerText = "Guest";
         }
+        renderReviews();
     }
 
-    // --- REVIEWS LOGIC ---
+    // --- REVIEWS ---
     function checkReviewAuth() {
         if (!currentUser) {
             alert("Oops! You need to Sign In first to leave a review.");
@@ -239,7 +243,7 @@
         container.innerHTML = `
             <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
                 <p class="italic text-gray-600">"My trash cans smelled so bad before, now they actually smell like lemons! Thank you!"</p>
-                <p class="font-bold mt-4 text-emerald-600">— Happy Neighbor</p>
+                <p class="font-bold mt-4 text-emerald-600">— Neighbor Tim</p>
             </div>
         `;
         custom.forEach(r => {
@@ -252,7 +256,7 @@
         });
     }
 
-    // --- PRICING & BOOKING ---
+    // --- PRICING ---
     let binCount = 1;
     let totalPrice = 15;
 
@@ -264,20 +268,47 @@
         document.getElementById('modal-total').innerText = '$' + totalPrice;
     }
 
-    function openBookingForm() { document.getElementById('booking-modal').classList.remove('hidden'); }
+    // --- BOOKING EMAIL SYSTEM ---
+    function openBookingForm() { 
+        if (currentUser) document.getElementById('form-email').value = currentUser.email;
+        document.getElementById('booking-modal').classList.remove('hidden'); 
+    }
     function closeBookingModal() { document.getElementById('booking-modal').classList.add('hidden'); }
     function scrollToBooking() { document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' }); }
 
-    function sendBooking(e) {
+    async function sendBooking(e) {
         e.preventDefault();
-        alert("Awesome! Booking request sent. We will see you on service day!");
-        closeBookingModal();
+        const btn = e.target.querySelector('button');
+        btn.innerText = "SENDING...";
+        
+        const params = {
+            name: document.getElementById('form-name').value,
+            address: document.getElementById('form-address').value,
+            phone: document.getElementById('form-phone').value,
+            email: document.getElementById('form-email').value,
+            bins: binCount,
+            total: totalPrice
+        };
+
+        try {
+            // Sends to YOU (Boss Template)
+            await emailjs.send("service_6ymb279", "template_pruo22c", params);
+            // Sends to CUSTOMER (Confirm Template)
+            await emailjs.send("service_6ymb279", "template_4hi1opb", params);
+            
+            alert("Awesome! Booking request sent. We'll see you on service day!");
+            closeBookingModal();
+            e.target.reset();
+        } catch (err) {
+            console.error(err);
+            alert("Oops! Something went wrong with the email.");
+        }
+        btn.innerText = "Confirm My Booking! 🧼";
     }
 
-    // --- INITIALIZE ---
+    // Initialize UI
     window.onclick = (e) => { if (!e.target.closest('.relative')) document.getElementById("profileDropdown").classList.remove("show"); }
     updateUI();
-    renderReviews();
 </script>
 
 </body>
