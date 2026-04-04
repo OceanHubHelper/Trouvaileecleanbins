@@ -1,177 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Clean Bins • Trash Can Cleaning • Trouvaille Neighborhood, Phoenix</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- EmailJS Script -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
-        .hero-bg {
-            background: linear-gradient(rgba(16, 185, 129, 0.9), rgba(16, 185, 129, 0.9)), 
-                        url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
-        }
-        .gallery-img { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gallery-img:hover { transform: scale(1.05); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
-    </style>
-</head>
-<body class="tail-container bg-gray-50">
+<!-- HERO -->
+<section class="hero-bg py-32 text-center text-white">
+    <h1 class="text-5xl font-bold mb-4">Trash Bin Cleaning</h1>
+    <p class="text-xl opacity-90">Make your bins look brand new again</p>
+</section>
 
-    <!-- NAVBAR -->
-    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-x-3">
-                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-3xl shadow">🧼</div>
-                <h1 class="text-3xl font-bold tracking-tighter text-gray-900">Trouvaille Clean Bins</h1>
-                <span class="ml-3 px-4 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">Trouvaille Neighborhood Only</span>
+<!-- SCROLL IMAGE TRANSITION -->
+<section class="py-24 bg-gray-100">
+    <div class="max-w-5xl mx-auto text-center px-6">
+        <h2 class="text-4xl font-bold mb-10">Before → After</h2>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="overflow-hidden rounded-3xl shadow-lg">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952"
+                     class="w-full h-[300px] object-cover hover:scale-110 transition duration-500">
+                <p class="mt-3 font-semibold text-red-500">Dirty Bin</p>
             </div>
 
-            <button onclick="scrollToBooking()" 
-                    class="bg-emerald-600 text-white px-6 py-2.5 rounded-3xl text-sm font-semibold flex items-center gap-2 hover:bg-emerald-700">
-                <i class="fa-solid fa-calendar-check"></i>
-                Book Your Clean
-            </button>
-        </div>
-    </nav>
-
-    <!-- HERO + HOW IT WORKS + GALLERY sections are the same as before -->
-    <!-- (Copy them from your previous version if needed) -->
-
-    <!-- STEP 1: BINS -->
-    <section id="pricing" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold">Step 1: How many bins?</h2>
-                <p class="text-gray-600 mt-2">Payment is cash on service day • Zelle coming soon</p>
-            </div>
-
-            <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl p-10">
-                <div class="mb-10">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Number of trash bins</label>
-                    <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full accent-emerald-500">
-                    <div class="flex justify-between text-lg font-semibold mt-4">
-                        <span id="bin-count-display" class="text-emerald-600">1 bin</span>
-                        <span id="total-price" class="text-4xl font-bold text-emerald-600">$20</span>
-                    </div>
-                </div>
-
-                <button onclick="goToStep2()" 
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold flex items-center justify-center gap-3">
-                    Step 2: Enter Your Address →
-                </button>
-
-                <p class="text-center text-xs text-gray-500 mt-8">
-                    1 bin = $20 • 2 bins = $30 • Each additional bin = +$10<br>
-                    You pay cash when we finish the job at your curb.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- STEP 2: ADDRESS FORM -->
-    <div id="step2-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-        <div class="bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Step 2: Your Info</h2>
-                    <button onclick="closeStep2()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
-                </div>
-
-                <form id="address-form" onsubmit="sendBookingEmail(event)">
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Full Name</label>
-                            <input type="text" id="name" required placeholder="John Doe" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Street Address / House Number</label>
-                            <input type="text" id="address" required placeholder="4511 Example Street" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Phone Number</label>
-                                <input type="tel" id="phone" required placeholder="(480) 555-1234" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Email</label>
-                                <input type="email" id="email" required placeholder="you@email.com" class="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg">
-                            </div>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold mt-6">
-                            Confirm Booking • Pay Cash Later
-                        </button>
-                    </div>
-                </form>
+            <div class="overflow-hidden rounded-3xl shadow-lg">
+                <img src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807"
+                     class="w-full h-[300px] object-cover hover:scale-110 transition duration-500">
+                <p class="mt-3 font-semibold text-emerald-600">Clean Bin</p>
             </div>
         </div>
     </div>
+</section>
 
-    <script>
-        // === EMAILJS SETUP - REPLACE THESE THREE VALUES ===
-        emailjs.init("v-4sLf-EzCLBYcWe7");   // ← Paste your Public Key here
+<!-- HOW IT WORKS -->
+<section class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-12">How It Works</h2>
 
-        let binCount = 1;
-        let totalPrice = 20;
+        <div class="grid md:grid-cols-3 gap-10">
+            <div>
+                <div class="text-5xl mb-4">🧼</div>
+                <h3 class="font-bold text-xl mb-2">We Clean</h3>
+                <p class="text-gray-600">Hot pressure wash removes dirt & bacteria</p>
+            </div>
 
-        function updatePrice() {
-            binCount = parseInt(document.getElementById('bin-slider').value);
-            totalPrice = binCount === 1 ? 20 : binCount === 2 ? 30 : 30 + (binCount - 2) * 10;
-            document.getElementById('bin-count-display').textContent = binCount + (binCount === 1 ? ' bin' : ' bins');
-            document.getElementById('total-price').textContent = '$' + totalPrice;
-        }
+            <div>
+                <div class="text-5xl mb-4">💦</div>
+                <h3 class="font-bold text-xl mb-2">We Sanitize</h3>
+                <p class="text-gray-600">Eliminates odors and germs</p>
+            </div>
 
-        function scrollToBooking() {
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
-        }
+            <div>
+                <div class="text-5xl mb-4">✨</div>
+                <h3 class="font-bold text-xl mb-2">Looks New</h3>
+                <p class="text-gray-600">Your bins look fresh again</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-        function goToStep2() {
-            document.getElementById('step2-modal').classList.remove('hidden');
-            document.getElementById('step2-modal').classList.add('flex');
-        }
+<!-- PRICING (BOTTOM) -->
+<section id="pricing" class="py-24 bg-emerald-50">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-4">Book Your Cleaning</h2>
+        <p class="text-gray-600 mb-10">Cash on service day</p>
 
-        function closeStep2() {
-            document.getElementById('step2-modal').classList.add('hidden');
-            document.getElementById('step2-modal').classList.remove('flex');
-        }
+        <div class="bg-white p-10 rounded-3xl shadow-xl">
+            <label class="block text-lg font-medium mb-4">Select number of bins</label>
 
-        async function sendBookingEmail(e) {
-            e.preventDefault();
+            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full">
 
-            const templateParams = {
-                name: document.getElementById('name').value,
-                address: document.getElementById('address').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                bins: binCount,
-                total: totalPrice
-            };
+            <div class="flex justify-between mt-6 text-xl font-bold">
+                <span id="bin-count-display">1 bin</span>
+                <span id="total-price">$15</span>
+            </div>
 
-            try {
-                await emailjs.send(
-                    "service_6ymb279",     // ← Paste your Service ID
-                    "template_h31rnrs",    // ← Paste your Template ID
-                    templateParams
-                );
+            <button onclick="goToStep2()" 
+                class="mt-8 w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-2xl text-lg font-semibold">
+                Continue →
+            </button>
 
-                alert(`🎉 Booking Confirmed!\n\nThank you, ${templateParams.name}!\nWe received your request for ${binCount} bin${binCount > 1 ? 's' : ''}.\nYou will pay cash when we finish the hot pressure wash at your curb.\n\nWe will contact you soon!`);
-
-                closeStep2();
-                document.getElementById('address-form').reset();
-            } catch (error) {
-                alert("Oops! Something went wrong. Please try again or call us directly.");
-                console.error("EmailJS error:", error);
-            }
-        }
-
-        window.onload = function() {
-            updatePrice();
-        };
-    </script>
-</body>
-</html>
+            <p class="text-sm text-gray-500 mt-6">
+                1 bin = $15 • Each additional bin = +$10
+            </p>
+        </div>
+    </div>
+</section>
