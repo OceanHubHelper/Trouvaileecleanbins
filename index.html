@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Clean Bins | Eco-Friendly Trash Can Cleaning</title>
+    <title>Trouvaille Clean Bins | Premium Bin Sanitization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
         .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(16,185,129,0.8)),
-            /* REPLACE 'hero-image.jpg' WITH YOUR HERO IMAGE FILENAME */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(16, 185, 129, 0.8)),
+            /* REPLACE WITH YOUR HERO IMAGE */
             url('hero-image.jpg') center/cover no-repeat;
         }
         .smooth-scroll { scroll-behavior: smooth; }
+        
+        /* Custom styling for your slider */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #10b981;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 
@@ -28,60 +40,74 @@
             <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain rounded-lg">
             <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Trouvaille Clean Bins</h1>
         </div>
-
-        <button onclick="scrollToBooking()" 
-            class="bg-emerald-600 text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-emerald-700 transition shadow-lg shadow-emerald-200">
+        <button onclick="scrollToBooking()" class="bg-emerald-600 text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-emerald-700 transition shadow-lg shadow-emerald-100">
             Book Now
         </button>
     </div>
 </nav>
 
-<section class="hero-bg py-40 text-center text-white">
-    <div class="max-w-3xl mx-auto px-6">
-        <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium mb-4 inline-block">Serving Your Local Area</span>
-        <h1 class="text-5xl md:text-6xl font-bold mb-6">Stop Smelling Your Trash Bins.</h1>
-        <p class="text-xl opacity-90 mb-8">We clean, sanitize, and deodorize your bins so you don't have to.</p>
-        <button onclick="scrollToBooking()" class="bg-white text-emerald-700 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">Get Started Today</button>
+<section class="hero-bg py-32 md:py-48 text-center text-white">
+    <div class="max-w-4xl mx-auto px-6">
+        <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium mb-6 inline-block uppercase tracking-widest">Sparkling Clean & Sanitized</span>
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">Stop Smelling Your Trash Bins.</h1>
+        <p class="text-xl md:text-2xl opacity-90 mb-10 max-w-2xl mx-auto">We use high-pressure eco-friendly sanitization to make your bins look and smell brand new.</p>
+        <button onclick="scrollToBooking()" class="bg-white text-emerald-700 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-2xl scale-110">Get Your Free Quote</button>
     </div>
 </section>
 
-<section class="py-20 bg-white">
+<section class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold mb-16">How It Works</h2>
-        <div class="grid md:grid-cols-3 gap-12">
-            <div>
-                <div class="text-emerald-500 text-4xl mb-4"><i class="fa-solid fa-calendar-check"></i></div>
-                <h3 class="text-xl font-bold mb-2">1. Book Online</h3>
-                <p class="text-gray-600">Select how many bins you need cleaned and pick a service date.</p>
+        <h2 class="text-4xl font-bold mb-16 text-gray-900">Our 3-Step Freshness Process</h2>
+        <div class="grid md:grid-cols-3 gap-16">
+            <div class="relative">
+                <div class="text-emerald-500 text-5xl mb-6"><i class="fa-solid fa-calendar-check"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-gray-800">1. Book Online</h3>
+                <p class="text-gray-600">Select your bins and schedule a date that works for you.</p>
             </div>
-            <div>
-                <div class="text-emerald-500 text-4xl mb-4"><i class="fa-solid fa-truck-pickup"></i></div>
-                <h3 class="text-xl font-bold mb-2">2. We Show Up</h3>
-                <p class="text-gray-600">We arrive after your trash is collected to clean and sanitize.</p>
+            <div class="relative">
+                <div class="text-emerald-500 text-5xl mb-6"><i class="fa-solid fa-truck-pickup"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-gray-800">2. We Clean At Curb</h3>
+                <p class="text-gray-600">Our mobile unit arrives on your service day to blast away grime.</p>
             </div>
-            <div>
-                <div class="text-emerald-500 text-4xl mb-4"><i class="fa-solid fa-sparkles"></i></div>
-                <h3 class="text-xl font-bold mb-2">3. Fresh Bins</h3>
-                <p class="text-gray-600">Your bins are left smelling fresh and looking brand new.</p>
+            <div class="relative">
+                <div class="text-emerald-500 text-5xl mb-6"><i class="fa-solid fa-sparkles"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-gray-800">3. Fresh & Sanitized</h3>
+                <p class="text-gray-600">We deodorize and hand-dry your bins for a perfect finish.</p>
             </div>
         </div>
     </div>
 </section>
 
 <section class="py-24 bg-emerald-50">
-    <div class="max-w-5xl mx-auto text-center px-6">
-        <h2 class="text-4xl font-bold mb-4 text-emerald-900">Real Results</h2>
-        <p class="text-emerald-700 mb-12">See the Trouvaille difference for yourself.</p>
+    <div class="max-w-6xl mx-auto text-center px-6">
+        <h2 class="text-4xl font-extrabold mb-4 text-emerald-900">The Trouvaille Difference</h2>
+        <p class="text-emerald-700 mb-12 text-lg">Don't take our word for it—see the results.</p>
 
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white p-4 rounded-3xl shadow-xl">
-                <img src="dirty-bin.jpg" alt="Dirty Bin" class="w-full h-[400px] object-cover rounded-2xl">
-                <p class="mt-4 font-bold text-gray-500 uppercase tracking-widest text-sm">Before</p>
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="bg-white p-4 rounded-[2.5rem] shadow-2xl transform -rotate-1">
+                <img src="dirty-bin.jpg" alt="Dirty Bin" class="w-full h-[350px] object-cover rounded-[2rem]">
+                <p class="mt-6 font-black text-red-500 uppercase tracking-tighter text-2xl">Dirty & Grimy</p>
             </div>
 
-            <div class="bg-white p-4 rounded-3xl shadow-xl">
-                <img src="clean-bin.jpg" alt="Clean Bin" class="w-full h-[400px] object-cover rounded-2xl border-4 border-emerald-500">
-                <p class="mt-4 font-bold text-emerald-600 uppercase tracking-widest text-sm">After Trouvaille</p>
+            <div class="bg-white p-4 rounded-[2.5rem] shadow-2xl transform rotate-1 border-4 border-emerald-500">
+                <img src="clean-bin.jpg" alt="Clean Bin" class="w-full h-[350px] object-cover rounded-[2rem]">
+                <p class="mt-6 font-black text-emerald-600 uppercase tracking-tighter text-2xl">Trouvaille Clean</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 bg-gray-900 text-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-16 italic">"The best service in town!"</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-gray-800 p-10 rounded-3xl text-left border-l-8 border-emerald-500">
+                <p class="text-lg mb-6 text-gray-300 italic">"I never realized how much of a difference professional cleaning makes. My garage doesn't smell like trash anymore!"</p>
+                <p class="font-bold text-emerald-400">— Sarah Henderson</p>
+            </div>
+            <div class="bg-gray-800 p-10 rounded-3xl text-left border-l-8 border-emerald-500">
+                <p class="text-lg mb-6 text-gray-300 italic">"Prompt, professional, and eco-friendly. It's so worth the price to keep the flies and germs away."</p>
+                <p class="font-bold text-emerald-400">— Mark Richardson</p>
             </div>
         </div>
     </div>
@@ -90,74 +116,74 @@
 <section id="pricing" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold">Simple Pricing</h2>
-            <p class="text-gray-600 mt-2">No hidden fees. No subscriptions required.</p>
+            <h2 class="text-4xl font-bold text-gray-900">Book Your Cleaning</h2>
+            <p class="text-gray-600 mt-3 text-lg">Cash on service day. No upfront payment required!</p>
         </div>
 
-        <div class="max-w-lg mx-auto bg-white border border-emerald-100 rounded-[2.5rem] shadow-2xl p-10">
-            <div class="mb-10">
-                <label class="block text-sm font-bold text-gray-700 mb-5">How many bins are we cleaning?</label>
+        <div class="max-w-xl mx-auto bg-white border border-emerald-100 rounded-[3rem] shadow-[0_20px_50px_rgba(16,185,129,0.1)] p-12">
+            <div class="mb-12">
+                <label class="block text-sm font-extrabold text-gray-500 uppercase tracking-widest mb-6">Select Number of Bins</label>
 
                 <input type="range" id="bin-slider" min="1" max="10" value="1"
-                    oninput="updatePrice()" class="w-full h-2 bg-emerald-100 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                    oninput="updatePrice()" class="w-full h-3 bg-emerald-100 rounded-lg appearance-none cursor-pointer">
 
-                <div class="flex justify-between items-center mt-6">
-                    <span id="bin-count-display" class="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full font-bold">1 bin</span>
-                    <span id="total-price" class="text-4xl font-black text-gray-900">$15</span>
+                <div class="flex justify-between items-center mt-8">
+                    <div class="flex flex-col">
+                        <span id="bin-count-display" class="text-3xl font-black text-gray-900 tracking-tight">1 bin</span>
+                        <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">Service selection</span>
+                    </div>
+                    <div class="text-right">
+                        <span id="total-price" class="text-5xl font-black text-emerald-600 tracking-tighter">$15</span>
+                    </div>
                 </div>
             </div>
 
             <button onclick="goToStep2()" 
-                class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-bold text-lg hover:bg-emerald-700 shadow-lg shadow-emerald-200 transition">
-                Continue to Booking →
+                class="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black text-xl hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200 hover:-translate-y-1">
+                CONTINUE TO BOOKING →
             </button>
 
-            <div class="mt-8 flex items-center justify-center gap-4 text-xs text-gray-400">
-                <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i> Eco-Friendly</span>
-                <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i> Sanitized</span>
-                <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i> Deodorized</span>
+            <div class="mt-8 flex items-center justify-center gap-6 text-xs text-gray-400 font-bold uppercase tracking-widest">
+                <span><i class="fa-solid fa-droplet text-emerald-500 mr-2"></i>200° Hot Water</span>
+                <span><i class="fa-solid fa-leaf text-emerald-500 mr-2"></i>Eco-Friendly</span>
             </div>
         </div>
     </div>
 </section>
 
-<footer class="bg-gray-900 text-white py-12">
+<footer class="bg-gray-50 py-16 border-t">
     <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="font-bold text-xl mb-4">Trouvaille Clean Bins</p>
-        <p class="text-gray-400 text-sm mb-6">The cleanest bins in town, guaranteed.</p>
-        <div class="flex justify-center gap-6 text-2xl mb-8">
-            <a href="#" class="hover:text-emerald-400 transition"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="hover:text-emerald-400 transition"><i class="fa-brands fa-facebook"></i></a>
+        <p class="text-2xl font-black text-gray-900 mb-2 tracking-tight">Trouvaille Clean Bins</p>
+        <p class="text-gray-500 mb-8">Serving your local community with pride.</p>
+        <div class="flex justify-center gap-8 text-2xl mb-12">
+            <a href="#" class="text-gray-400 hover:text-emerald-500 transition"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-emerald-500 transition"><i class="fa-brands fa-facebook"></i></a>
         </div>
-        <p class="text-gray-600 text-xs">© 2024 Trouvaille Clean Bins. All Rights Reserved.</p>
+        <p class="text-gray-400 text-xs uppercase tracking-widest">© 2024 Trouvaille Clean Bins. All Rights Reserved.</p>
     </div>
 </footer>
 
-<div id="step2-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] backdrop-blur-sm">
-    <div class="bg-white rounded-[2rem] max-w-lg w-full mx-4 shadow-2xl overflow-hidden">
+<div id="step2-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
+    <div class="bg-white rounded-[2.5rem] max-w-lg w-full shadow-2xl overflow-hidden">
         <div class="p-10">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900">Finish Booking</h2>
-                <button onclick="closeStep2()" class="text-gray-400 hover:text-black text-2xl">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <h2 class="text-3xl font-black text-gray-900">Your Info</h2>
+                <button onclick="closeStep2()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition text-2xl">×</button>
             </div>
 
             <form id="address-form" onsubmit="sendBookingEmail(event)" class="space-y-4">
-                <div class="grid grid-cols-1 gap-4">
-                    <input id="name" required placeholder="Full Name" class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
-                    <input id="address" required placeholder="Service Address" class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
-                    <input id="phone" type="tel" required placeholder="Phone Number" class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
-                    <input id="email" type="email" required placeholder="Email Address" class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
+                <input id="name" required placeholder="Full Name" class="w-full p-4 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 outline-none transition">
+                <input id="address" required placeholder="Street Address" class="w-full p-4 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 outline-none transition">
+                <input id="phone" type="tel" required placeholder="Phone Number" class="w-full p-4 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 outline-none transition">
+                <input id="email" type="email" required placeholder="Email Address" class="w-full p-4 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 outline-none transition">
+
+                <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100 mt-4">
+                    <p class="text-emerald-800 text-sm font-bold uppercase tracking-widest mb-1">Total to pay on service day:</p>
+                    <p id="modal-total" class="text-3xl font-black text-emerald-600">$15</p>
                 </div>
 
-                <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                    <p class="text-sm text-gray-600">Total Due on Service Day:</p>
-                    <p id="modal-total" class="text-2xl font-bold text-emerald-600">$15</p>
-                </div>
-
-                <button class="w-full bg-emerald-600 text-white py-5 rounded-xl font-bold hover:bg-emerald-700 transition">
-                    Confirm & Send Booking
+                <button id="submit-btn" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition shadow-lg mt-4">
+                    CONFIRM BOOKING
                 </button>
             </form>
         </div>
@@ -165,6 +191,7 @@
 </div>
 
 <script>
+// YOUR ORIGINAL EMAILJS CONFIG
 emailjs.init("YOUR_PUBLIC_KEY_HERE");
 
 let binCount = 1;
@@ -196,8 +223,8 @@ function closeStep2() {
 
 async function sendBookingEmail(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.innerText = "Sending...";
+    const btn = document.getElementById('submit-btn');
+    btn.innerText = "SENDING...";
     btn.disabled = true;
 
     const templateParams = {
@@ -210,18 +237,20 @@ async function sendBookingEmail(e) {
     };
 
     try {
-        await emailjs.send("YOUR_SERVICE_ID_HERE","YOUR_TEMPLATE_ID_HERE",templateParams);
-        alert("Booking request received! We will contact you soon.");
+        // YOUR ORIGINAL SERVICE AND TEMPLATE ID LOGIC
+        await emailjs.send("YOUR_SERVICE_ID_HERE","YOUR_TEMPLATE_ID_HERE", templateParams);
+        alert("Booking received! We'll reach out shortly to confirm your service window.");
         closeStep2();
         document.getElementById('address-form').reset();
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
+    } catch (err) {
+        alert("Something went wrong. Please check your connection and try again.");
     } finally {
-        btn.innerText = "Confirm & Send Booking";
+        btn.innerText = "CONFIRM BOOKING";
         btn.disabled = false;
     }
 }
 
+// Set initial price on load
 updatePrice();
 </script>
 
