@@ -1,10 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouvaille Clean Bins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
+        .hero-bg {
+            background: linear-gradient(rgba(16,185,129,0.9), rgba(16,185,129,0.9)),
+            url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat;
+        }
+    </style>
+</head>
+
+<body class="tail-container bg-gray-50">
+
+<!-- NAVBAR -->
+<nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-x-3">
+            <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-3xl shadow">🧼</div>
+            <h1 class="text-3xl font-bold text-gray-900">Trouvaille Clean Bins</h1>
+        </div>
+
+        <button onclick="scrollToBooking()" 
+            class="bg-emerald-600 text-white px-6 py-2.5 rounded-3xl text-sm font-semibold hover:bg-emerald-700">
+            Book
+        </button>
+    </div>
+</nav>
+
 <!-- HERO -->
 <section class="hero-bg py-32 text-center text-white">
     <h1 class="text-5xl font-bold mb-4">Trash Bin Cleaning</h1>
     <p class="text-xl opacity-90">Make your bins look brand new again</p>
 </section>
 
-<!-- SCROLL IMAGE TRANSITION -->
+<!-- SCROLL IMAGE SECTION -->
 <section class="py-24 bg-gray-100">
     <div class="max-w-5xl mx-auto text-center px-6">
         <h2 class="text-4xl font-bold mb-10">Before → After</h2>
@@ -25,57 +62,112 @@
     </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="py-24 bg-white">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold mb-12">How It Works</h2>
-
-        <div class="grid md:grid-cols-3 gap-10">
-            <div>
-                <div class="text-5xl mb-4">🧼</div>
-                <h3 class="font-bold text-xl mb-2">We Clean</h3>
-                <p class="text-gray-600">Hot pressure wash removes dirt & bacteria</p>
-            </div>
-
-            <div>
-                <div class="text-5xl mb-4">💦</div>
-                <h3 class="font-bold text-xl mb-2">We Sanitize</h3>
-                <p class="text-gray-600">Eliminates odors and germs</p>
-            </div>
-
-            <div>
-                <div class="text-5xl mb-4">✨</div>
-                <h3 class="font-bold text-xl mb-2">Looks New</h3>
-                <p class="text-gray-600">Your bins look fresh again</p>
-            </div>
+<!-- PRICING (NOW AT BOTTOM) -->
+<section id="pricing" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold">Book Your Cleaning</h2>
+            <p class="text-gray-600 mt-2">Cash on service day</p>
         </div>
-    </div>
-</section>
 
-<!-- PRICING (BOTTOM) -->
-<section id="pricing" class="py-24 bg-emerald-50">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold mb-4">Book Your Cleaning</h2>
-        <p class="text-gray-600 mb-10">Cash on service day</p>
+        <div class="max-w-lg mx-auto bg-white border rounded-3xl shadow-xl p-10">
+            <div class="mb-10">
+                <label class="block text-sm font-medium mb-3">Number of bins</label>
 
-        <div class="bg-white p-10 rounded-3xl shadow-xl">
-            <label class="block text-lg font-medium mb-4">Select number of bins</label>
+                <input type="range" id="bin-slider" min="1" max="10" value="1"
+                    oninput="updatePrice()" class="w-full">
 
-            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full">
-
-            <div class="flex justify-between mt-6 text-xl font-bold">
-                <span id="bin-count-display">1 bin</span>
-                <span id="total-price">$15</span>
+                <div class="flex justify-between mt-4">
+                    <span id="bin-count-display">1 bin</span>
+                    <span id="total-price" class="text-3xl font-bold text-emerald-600">$15</span>
+                </div>
             </div>
 
             <button onclick="goToStep2()" 
-                class="mt-8 w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-2xl text-lg font-semibold">
+                class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-semibold hover:bg-emerald-700">
                 Continue →
             </button>
 
-            <p class="text-sm text-gray-500 mt-6">
+            <p class="text-xs text-gray-500 mt-6 text-center">
                 1 bin = $15 • Each additional bin = +$10
             </p>
         </div>
     </div>
 </section>
+
+<!-- FORM MODAL (UNCHANGED) -->
+<div id="step2-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+    <div class="bg-white rounded-3xl max-w-lg w-full mx-4">
+        <div class="p-8">
+            <div class="flex justify-between mb-6">
+                <h2 class="text-2xl font-bold">Your Info</h2>
+                <button onclick="closeStep2()">×</button>
+            </div>
+
+            <form id="address-form" onsubmit="sendBookingEmail(event)">
+                <input id="name" required placeholder="Name" class="w-full mb-3 p-3 border rounded">
+                <input id="address" required placeholder="Address" class="w-full mb-3 p-3 border rounded">
+                <input id="phone" required placeholder="Phone" class="w-full mb-3 p-3 border rounded">
+                <input id="email" required placeholder="Email" class="w-full mb-3 p-3 border rounded">
+
+                <button class="w-full bg-emerald-600 text-white py-4 rounded-xl">
+                    Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+emailjs.init("YOUR_PUBLIC_KEY_HERE");
+
+let binCount = 1;
+let totalPrice = 15;
+
+function updatePrice() {
+    binCount = parseInt(document.getElementById('bin-slider').value);
+    totalPrice = 15 + (binCount - 1) * 10;
+
+    document.getElementById('bin-count-display').textContent =
+        binCount === 1 ? "1 bin" : binCount + " bins";
+
+    document.getElementById('total-price').textContent = '$' + totalPrice;
+}
+
+function scrollToBooking() {
+    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+}
+
+function goToStep2() {
+    document.getElementById('step2-modal').classList.remove('hidden');
+    document.getElementById('step2-modal').classList.add('flex');
+}
+
+function closeStep2() {
+    document.getElementById('step2-modal').classList.add('hidden');
+}
+
+async function sendBookingEmail(e) {
+    e.preventDefault();
+
+    const templateParams = {
+        name: name.value,
+        address: address.value,
+        phone: phone.value,
+        email: email.value,
+        bins: binCount,
+        total: totalPrice
+    };
+
+    await emailjs.send("YOUR_SERVICE_ID_HERE","YOUR_TEMPLATE_ID_HERE",templateParams);
+
+    alert("Booking sent!");
+    closeStep2();
+    document.getElementById('address-form').reset();
+}
+
+updatePrice();
+</script>
+
+</body>
+</html>
