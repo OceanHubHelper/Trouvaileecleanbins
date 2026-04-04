@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Clean Bins | Premium Sanitization</title>
+    <title>Trouvaille Clean Bins | Elite Sanitization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -11,110 +11,128 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         .tail-container * { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); }
+        /* The Green and Dark Blue Theme */
+        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .dropdown-content { display: none; }
         .show { display: block !important; animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        input[type=range] { -webkit-appearance: none; background: #ecfdf5; border-radius: 99px; }
+        input[type=range] { -webkit-appearance: none; background: #1e293b; border-radius: 99px; }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none; height: 28px; width: 28px; border-radius: 50%;
-            background: #10b981; cursor: pointer; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #10b981; cursor: pointer; border: 4px solid white;
         }
     </style>
 </head>
 
-<body class="tail-container bg-[#F9FAFB] text-slate-900 scroll-smooth">
+<body class="tail-container bg-[#F8FAFC] text-slate-900 scroll-smooth">
 
-<nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
+<nav class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
-            <img src="https://i.imgur.com/syOOmTK.png" alt="Logo" class="w-12 h-12">
-            <div class="hidden md:block">
-                <p class="text-xl font-bold tracking-tight text-slate-900">Trouvaille</p>
-                <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em] mt-[-4px]">Clean Bins</p>
-            </div>
+            <img src="https://i.imgur.com/syOOmTK.png" alt="Logo" class="w-10 h-10">
+            <h1 class="text-xl font-black text-slate-900">TROUVAILLE</h1>
         </div>
 
-        <div class="flex items-center gap-6">
-            <div class="relative">
-                <button onclick="toggleDropdown()" class="flex items-center gap-2 p-1 pr-3 rounded-full border border-slate-200 hover:border-emerald-500 transition-all bg-white group">
-                    <div id="nav-avatar" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">G</div>
-                    <span id="nav-user-name" class="text-sm font-semibold text-slate-600 group-hover:text-emerald-600">Guest</span>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-                </button>
-                <div id="profileDropdown" class="dropdown-content absolute right-0 mt-3 w-64 bg-white border border-slate-100 rounded-2xl shadow-2xl py-3 z-[110]">
-                    <button onclick="openModal('profile-modal')" class="w-full text-left px-4 py-2.5 hover:bg-emerald-50 text-slate-600 text-sm flex items-center gap-3">👤 My Profile</button>
-                    <button onclick="openModal('settings-modal')" class="w-full text-left px-4 py-2.5 hover:bg-emerald-50 text-slate-600 text-sm flex items-center gap-3">⚙️ Settings</button>
-                    <hr class="my-2 border-slate-50">
-                    <button id="auth-action-btn" onclick="openAuthModal()" class="w-full text-left px-4 py-2.5 text-red-500 font-bold text-sm">Sign In</button>
-                </div>
+        <div class="relative">
+            <button onclick="toggleDropdown()" class="flex items-center gap-2 p-1 pr-3 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
+                <div id="nav-avatar" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">G</div>
+                <span id="nav-user-name" class="text-sm font-bold text-slate-600">Guest</span>
+            </button>
+            <div id="profileDropdown" class="dropdown-content absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-2xl py-2 z-[110]">
+                <button onclick="openModal('profile-modal')" class="w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm">👤 Profile</button>
+                <button onclick="openModal('settings-modal')" class="w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm">⚙️ Settings</button>
+                <hr class="my-1">
+                <button id="auth-action-btn" onclick="openAuthModal()" class="w-full text-left px-4 py-2 text-red-500 font-bold text-sm">Sign In</button>
             </div>
         </div>
     </div>
 </nav>
 
-<section class="hero-gradient pt-32 pb-40 text-center text-white px-6">
-    <h1 class="text-5xl md:text-7xl font-extrabold mb-8">Elite Cleanliness.</h1>
-    <button onclick="scrollToBooking()" class="bg-white text-emerald-900 px-10 py-4 rounded-2xl font-black shadow-2xl">Schedule Service</button>
+<section class="hero-gradient pt-24 pb-32 text-center text-white px-6">
+    <h1 class="text-5xl md:text-7xl font-extrabold mb-6">Pristine Bins. <span class="text-emerald-400">Pure Results.</span></h1>
+    <p class="text-lg opacity-80 mb-10 max-w-xl mx-auto">High-temperature sanitization that eliminates 99.9% of bacteria and odors.</p>
+    <button onclick="scrollToBooking()" class="bg-emerald-500 hover:bg-emerald-400 text-white px-12 py-4 rounded-2xl font-black shadow-xl transition-all">Book Now</button>
 </section>
 
-<section id="pricing" class="py-24 bg-slate-900">
-    <div class="max-w-xl mx-auto px-6">
-        <div class="bg-white p-10 rounded-[3rem] shadow-2xl">
-            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full h-2 mb-10 appearance-none">
-            <div class="flex justify-between items-center mb-12">
-                <span id="bin-count-text" class="text-4xl font-black italic">1 Bin</span>
-                <span id="total-price-text" class="text-5xl font-black text-emerald-600">$15</span>
-            </div>
-            <button onclick="openBookingForm()" class="w-full bg-slate-900 text-white py-6 rounded-2xl font-black text-xl hover:bg-emerald-600 transition-all">CONTINUE</button>
+<section class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-black text-slate-900">Proven Excellence</h2>
+        <p class="text-slate-500">Real results from our latest sanitization missions.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+        <div class="rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white">
+            <img src="https://i.imgur.com/8yJoZSh.jpeg" class="w-full h-80 object-cover">
+            <div class="bg-white p-4 text-center font-bold text-red-500 uppercase text-xs">Contaminated (Before)</div>
+        </div>
+        <div class="rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-emerald-500">
+            <img src="https://i.imgur.com/ac5xFyr.jpeg" class="w-full h-80 object-cover">
+            <div class="bg-emerald-500 p-4 text-center font-bold text-white uppercase text-xs">Sanitized (After)</div>
         </div>
     </div>
 </section>
 
-<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-[200] p-4">
-    <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full shadow-2xl relative">
-        <button onclick="closeModal('auth-modal')" class="mb-4 text-slate-400 hover:text-emerald-600 flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all">
-            <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
-        <h2 id="auth-title" class="text-2xl font-black mb-6">Account Login</h2>
-        <div class="space-y-3">
-            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 border-none p-4 rounded-xl outline-none">
-            <input id="auth-email" type="email" placeholder="Email Address" class="w-full bg-slate-50 border-none p-4 rounded-xl outline-none hidden">
-            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 border-none p-4 rounded-xl outline-none">
-            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg transition-all">Continue</button>
+<section id="pricing" class="py-20 bg-slate-50 border-y border-slate-100">
+    <div class="max-w-xl mx-auto px-6">
+        <div class="bg-slate-900 text-white p-10 rounded-[3rem] shadow-2xl">
+            <h3 class="text-center text-xl font-bold mb-8">Select Your Bin Count</h3>
+            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePrice()" class="w-full h-2 mb-10 appearance-none">
+            <div class="flex justify-between items-center mb-10">
+                <span id="bin-count-text" class="text-3xl font-black">1 Bin</span>
+                <span id="total-price-text" class="text-5xl font-black text-emerald-400">$15</span>
+            </div>
+            <button onclick="openBookingForm()" class="w-full bg-emerald-500 py-6 rounded-2xl font-black text-xl hover:scale-[1.02] transition-all">Continue to Booking</button>
         </div>
-        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 mt-6 text-xs font-bold uppercase">New? Create Account</button>
+    </div>
+</section>
+
+<section class="py-24 max-w-6xl mx-auto px-6">
+    <div class="flex justify-between items-center mb-16">
+        <h2 class="text-4xl font-black text-slate-900">Client Reviews</h2>
+        <button onclick="checkReviewAuth()" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm">Add Review + Photo</button>
+    </div>
+    <div id="reviews-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </div>
+</section>
+
+<footer class="py-12 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+    © 2024 Trouvaille Clean Bins | Professional Grade Sanitization
+</footer>
+
+<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
+    <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full relative">
+        <button onclick="closeModal('auth-modal')" class="mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <h2 id="auth-title" class="text-2xl font-black mb-6">Account Login</h2>
+        <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500">
+        <input id="auth-email" placeholder="Email (For Sign Up)" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none hidden">
+        <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl mb-6 outline-none">
+        <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg">Continue</button>
+        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 mt-6 text-[10px] font-bold uppercase">New Account? Sign Up</button>
     </div>
 </div>
 
-<div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-[200] p-4">
-    <div class="bg-white p-10 rounded-[3rem] max-w-md w-full shadow-2xl relative">
-        <button onclick="closeModal('booking-modal')" class="mb-4 text-slate-400 hover:text-emerald-600 flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all">
-            <i class="fa-solid fa-arrow-left"></i> Back to Pricing
-        </button>
+<div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
+    <div class="bg-white p-10 rounded-[2.5rem] max-w-md w-full relative">
+        <button onclick="closeModal('booking-modal')" class="mb-4 text-slate-400 text-xs font-bold uppercase tracking-widest"><i class="fa-solid fa-arrow-left"></i> Back</button>
         <h2 class="text-2xl font-black mb-6">Secure Booking</h2>
         <form onsubmit="sendBooking(event)" class="space-y-4">
-            <input id="form-name" required placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-xl outline-none border-none">
-            <input id="form-email" type="email" required placeholder="Email Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none border-none">
-            <input id="form-address" required placeholder="Service Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none border-none">
-            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 bg-slate-50 rounded-xl outline-none border-none">
-            <div class="bg-emerald-900 p-6 rounded-2xl text-center shadow-lg my-4">
-                <p id="modal-total" class="text-4xl font-black text-white">$15</p>
-            </div>
-            <button class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black shadow-xl hover:bg-emerald-700 transition-all">CONFIRM 🧼</button>
+            <input id="form-name" required placeholder="Name" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <input id="form-email" type="email" required placeholder="Email" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <input id="form-address" required placeholder="Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <input id="form-phone" required placeholder="Phone" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <div class="bg-slate-900 p-6 rounded-2xl text-center text-white text-3xl font-black" id="modal-total">$15</div>
+            <button class="w-full bg-emerald-600 text-white py-5 rounded-xl font-black shadow-xl">CONFIRM 🧼</button>
         </form>
     </div>
 </div>
 
 <script>
-    // --- ⚠️ CRITICAL: YOU MUST ADD YOUR PUBLIC KEY HERE ⚠️ ---
-    // Get this from EmailJS: Account -> Public Key
-    emailjs.init("v-4sLf-EzCLBYcWe7"); 
+    // --- SETUP ---
+    emailjs.init("v-4sLf-EzCLBYcWe7"); // Replace with your Public Key!
 
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isSignUp = false;
-    const badWords = ["bad", "mean"]; 
 
     function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
@@ -131,62 +149,79 @@
 
     function handleAuth() {
         const user = document.getElementById('auth-user').value.toLowerCase();
-        const email = document.getElementById('auth-email').value;
-        const pass = document.getElementById('auth-pass').value;
-
-        if (isSignUp) {
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            users.push({ username: user, email: email, password: pass, address: "", phone: "" });
-            localStorage.setItem('users', JSON.stringify(users));
-            currentUser = { username: user, email: email, address: "", phone: "" };
-        } else {
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            const found = users.find(u => u.username === user && u.password === pass);
-            if (!found) return alert("Invalid Login");
-            currentUser = found;
-        }
-
+        if (user.length < 2) return alert("Enter a username!");
+        currentUser = { username: user, email: document.getElementById('auth-email').value };
         localStorage.setItem('loggedUser', JSON.stringify(currentUser));
         closeModal('auth-modal');
         updateUI();
     }
 
-    function logout() {
-        localStorage.removeItem('loggedUser');
-        currentUser = null;
-        updateUI();
-    }
+    function logout() { localStorage.removeItem('loggedUser'); currentUser = null; updateUI(); }
 
     function updateUI() {
-        const authBtn = document.getElementById('auth-action-btn');
-        const navName = document.getElementById('nav-user-name');
+        const btn = document.getElementById('auth-action-btn');
+        const name = document.getElementById('nav-user-name');
+        const avatar = document.getElementById('nav-avatar');
         if (currentUser) {
-            authBtn.innerText = "Sign Out";
-            navName.innerText = currentUser.username;
+            btn.innerText = "Sign Out"; btn.onclick = logout;
+            name.innerText = currentUser.username;
+            avatar.innerText = currentUser.username.charAt(0).toUpperCase();
         } else {
-            authBtn.innerText = "Sign In";
-            navName.innerText = "Guest";
+            btn.innerText = "Sign In"; btn.onclick = openAuthModal;
+            name.innerText = "Guest"; avatar.innerText = "G";
+        }
+        renderReviews();
+    }
+
+    // --- REVIEWS WITH PHOTOS ---
+    function checkReviewAuth() {
+        if (!currentUser) return openAuthModal();
+        let text = prompt("Write your review:");
+        if (text) {
+            let photo = prompt("Paste a Link to a photo of your clean bins (Imgur, Discord, etc.) or leave blank:");
+            let reviews = JSON.parse(localStorage.getItem('savedReviews')) || [];
+            reviews.push({ author: currentUser.username, text: text, img: photo });
+            localStorage.setItem('savedReviews', JSON.stringify(reviews));
+            renderReviews();
         }
     }
 
-    // --- PRICING ---
-    let binCount = 1;
-    let totalPrice = 15;
+    function renderReviews() {
+        const list = document.getElementById('reviews-list');
+        const saved = JSON.parse(localStorage.getItem('savedReviews')) || [];
+        list.innerHTML = `
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                <img src="https://i.imgur.com/ac5xFyr.jpeg" class="w-full h-40 object-cover rounded-2xl mb-4">
+                <p class="text-sm text-slate-600 italic">"They look like new and smell great!"</p>
+                <p class="mt-4 font-bold text-emerald-600">Neighbor Tim ✓</p>
+            </div>
+        `;
+        saved.forEach(r => {
+            let imgTag = r.img ? `<img src="${r.img}" class="w-full h-40 object-cover rounded-2xl mb-4">` : '';
+            list.innerHTML += `
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-emerald-100">
+                    ${imgTag}
+                    <p class="text-sm text-slate-600 italic">"${r.text}"</p>
+                    <p class="mt-4 font-bold text-emerald-600">${r.author} ✓</p>
+                </div>
+            `;
+        });
+    }
+
+    // --- PRICING & EMAIL ---
+    let binCount = 1; let totalPrice = 15;
     function updatePrice() {
-        binCount = parseInt(document.getElementById('bin-slider').value);
+        binCount = document.getElementById('bin-slider').value;
         totalPrice = 15 + (binCount - 1) * 10;
-        document.getElementById('bin-count-text').innerText = binCount + (binCount === 1 ? " Bin" : " Bins");
+        document.getElementById('bin-count-text').innerText = binCount + (binCount == 1 ? " Bin" : " Bins");
         document.getElementById('total-price-text').innerText = '$' + totalPrice;
         document.getElementById('modal-total').innerText = '$' + totalPrice;
     }
 
-    // --- BOOKING ---
     function openBookingForm() { 
         if (currentUser) {
             document.getElementById('form-name').value = currentUser.username;
             document.getElementById('form-email').value = currentUser.email || "";
-            document.getElementById('form-address').value = currentUser.address || "";
-            document.getElementById('form-phone').value = currentUser.phone || "";
         }
         openModal('booking-modal'); 
     }
@@ -195,7 +230,6 @@
         e.preventDefault();
         const btn = e.target.querySelector('button');
         btn.innerText = "SENDING...";
-        
         const params = {
             name: document.getElementById('form-name').value,
             address: document.getElementById('form-address').value,
@@ -204,23 +238,16 @@
             bins: binCount,
             total: totalPrice
         };
-
         try {
-            // Check your Service ID and Template IDs in EmailJS!
             await emailjs.send("service_6ymb279", "template_pruo22c", params); // To You
             await emailjs.send("service_6ymb279", "template_4hi1opb", params); // To Customer
-            
-            alert("Booking Confirmed! Check your email.");
+            alert("Booking Sent Successfully!");
             closeModal('booking-modal');
-            e.target.reset();
-        } catch (err) {
-            console.error("EmailJS Error:", err);
-            alert("Email failed to send. Check your Public Key!");
-        }
+        } catch (err) { alert("Email Failed. Check your Public Key."); }
         btn.innerText = "CONFIRM 🧼";
     }
 
-    updateUI();
+    updateUI(); updatePrice();
 </script>
 </body>
 </html>
