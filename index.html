@@ -33,7 +33,7 @@
     <div class="relative">
         <button onclick="document.getElementById('drop').classList.toggle('show')" class="glass-card pl-4 pr-2 py-2 rounded-full flex items-center gap-3 hover:border-emerald-500/50">
             <span id="nav-name" class="text-[10px] font-bold uppercase opacity-60 tracking-widest">Guest</span>
-            <img id="nav-avatar" src="https://ui-avatars.com/api/?name=?&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover border border-slate-700">
+            <img id="nav-avatar" src="https://ui-avatars.com/api/?name=G&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover border border-slate-700">
         </button>
         <div id="drop" class="dropdown animate-fade">
             <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-3 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20 uppercase">Founder Panel</button>
@@ -89,14 +89,7 @@
         <h2 class="text-2xl font-black italic uppercase mb-6 text-center">Your Profile</h2>
         
         <div class="flex flex-col items-center mb-6">
-            <div class="relative group cursor-pointer" onclick="document.getElementById('img-upload').click()">
-                <img id="profile-preview" src="https://ui-avatars.com/api/?name=User" class="w-24 h-24 rounded-full object-cover border-4 border-emerald-500">
-                <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fa-solid fa-camera text-xl"></i>
-                </div>
-            </div>
-            <input type="file" id="img-upload" class="hidden" accept="image/*" onchange="handleImg(this)">
-            <p class="text-[9px] font-bold uppercase opacity-40 mt-2">Tap photo to change</p>
+            <img id="profile-preview" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff" class="w-24 h-24 rounded-full object-cover border-4 border-emerald-500">
         </div>
 
         <div class="space-y-3">
@@ -192,10 +185,12 @@
         if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
         if(current) {
             document.getElementById('nav-name').innerText = current.username;
-            if(current.photo) {
-                document.getElementById('nav-avatar').src = current.photo;
-                document.getElementById('profile-preview').src = current.photo;
-            }
+            
+            // Set the avatar to the first letter of the username automatically
+            const avatarUrl = `https://ui-avatars.com/api/?name=${current.username}&background=10b981&color=fff`;
+            document.getElementById('nav-avatar').src = avatarUrl;
+            document.getElementById('profile-preview').src = avatarUrl;
+            
             document.getElementById('user-dash').classList.remove('hidden');
             document.getElementById('welcome-msg').innerText = `Yo, ${current.username}!`;
             
@@ -214,17 +209,6 @@
             if(current.username === "Adrien") document.body.classList.add('is-owner');
         } else {
             openM('auth-modal');
-        }
-    }
-
-    function handleImg(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profile-preview').src = e.target.result;
-                current.photo = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
         }
     }
 
@@ -289,7 +273,7 @@
         const list = document.getElementById('founder-rows');
         list.innerHTML = users.map(u => `
             <tr class="border-b border-slate-800/50 hover:bg-white/5">
-                <td class="py-4"><img src="${u.photo || 'https://ui-avatars.com/api/?name='+u.username}" class="w-10 h-10 rounded-full border border-slate-700"></td>
+                <td class="py-4"><img src="https://ui-avatars.com/api/?name=${u.username}&background=10b981&color=fff" class="w-10 h-10 rounded-full border border-slate-700"></td>
                 <td class="py-4">
                     <div class="font-bold uppercase text-white">${u.legalName || u.username}</div>
                     <div class="opacity-40 text-[9px]">${u.email || ''} • ${u.phone || ''}</div>
@@ -356,7 +340,6 @@
                 legalName: document.getElementById('u-legal').value,
                 email: document.getElementById('u-email').value,
                 phone: document.getElementById('u-phone').value,
-                photo: "",
                 address: "", 
                 schedule: "", 
                 status: "New Client"
