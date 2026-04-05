@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Elite | Founder Edition</title>
+    <title>Trouvaille Elite | Management Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s ease-in-out; }
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
-        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); z-index: 110; border: 1px solid #f1f5f9; }
+        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2); z-index: 110; border: 1px solid #f1f5f9; }
         .show { display: block !important; }
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
-        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; background: #10b981; color: white; border-radius: 1rem; font-weight: 800; transform: translateY(200%); transition: 0.4s; z-index: 9999; }
-        .toast.active { transform: translateY(0); }
-        input[type=range] { -webkit-appearance: none; background: #e2e8f0; border-radius: 99px; height: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%; background: #10b981; cursor: pointer; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { background: #10b981; color: white; }
     </style>
 </head>
-<body class="bg-[#F8FAFC] text-slate-900 scroll-smooth">
-
-<div id="toast-msg" class="toast uppercase italic text-sm">Success!</div>
+<body class="bg-[#F8FAFC] text-slate-900">
 
 <nav class="bg-white border-b border-slate-100 sticky top-0 z-[100]">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -32,170 +29,142 @@
             <h1 class="text-xl font-black italic uppercase tracking-tighter">Trouvaille</h1>
         </div>
         <div class="relative">
-            <button onclick="toggleDrop()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white">
+            <button onclick="toggleDrop()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500">
                 <div id="u-av" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">G</div>
                 <span id="u-nm" class="text-sm font-bold italic text-slate-700">Guest</span>
                 <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
             </button>
             <div id="drop" class="dropdown-content overflow-hidden">
                 <button onclick="openM('owner-modal')" class="owner-only w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-black text-emerald-600 border-b">
-                    <i class="fa-solid fa-crown mr-2"></i> FOUNDER
+                    <i class="fa-solid fa-crown mr-2"></i> FOUNDER PANEL
                 </button>
                 <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left px-5 py-4 hover:bg-slate-50 text-sm font-bold text-slate-600 border-b">
-                    <i class="fa-solid fa-user mr-2"></i> PROFILE
+                    <i class="fa-solid fa-user mr-2"></i> MY PROFILE
                 </button>
                 <button id="lo-btn" onclick="logout()" class="hidden w-full text-left px-5 py-4 hover:bg-red-50 text-sm font-bold text-red-500">
                     <i class="fa-solid fa-power-off mr-2"></i> SIGN OUT
                 </button>
                 <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
-                    <i class="fa-solid fa-circle-user mr-2"></i> LOGIN
+                    <i class="fa-solid fa-circle-user mr-2"></i> SIGN IN
                 </button>
             </div>
         </div>
     </div>
 </nav>
 
-<section class="hero-gradient pt-24 pb-40 text-center text-white px-6">
-    <h1 class="text-6xl font-black uppercase italic mb-6">Elite Bin Service</h1>
-    <p class="text-slate-300 italic mb-10">Steam cleaned. Bacteria free.</p>
-    <button onclick="scrollPlans()" class="bg-emerald-500 px-12 py-5 rounded-2xl font-black shadow-xl">VIEW PLANS</button>
-</section>
+<div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
+    <div class="bg-white rounded-[2.5rem] w-full max-w-5xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
+            <div class="flex gap-2">
+                <button onclick="switchTab('tab-users')" id="btn-tab-users" class="tab-btn active px-6 py-2 rounded-full font-black text-xs uppercase italic">User Database</button>
+                <button onclick="switchTab('tab-stats')" id="btn-tab-stats" class="tab-btn px-6 py-2 rounded-full font-black text-xs uppercase italic bg-slate-200 text-slate-500">Overview</button>
+            </div>
+            <button onclick="closeM('owner-modal')" class="text-slate-300 hover:text-red-500 text-2xl">×</button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-8">
+            <div id="tab-users" class="tab-content active">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-black uppercase italic text-lg text-emerald-600">Active Accounts</h3>
+                    <input type="text" id="db-search" oninput="render()" placeholder="Search users..." class="bg-slate-100 px-4 py-2 rounded-lg text-sm font-bold outline-none border-2 border-transparent focus:border-emerald-500">
+                </div>
+                <table class="w-full text-left">
+                    <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
+                        <tr>
+                            <th class="pb-4 pl-2">User</th>
+                            <th class="pb-4">Email</th>
+                            <th class="pb-4">Current Plan</th>
+                            <th class="pb-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="db-list">
+                        </tbody>
+                </table>
+            </div>
 
-<section id="plans" class="max-w-7xl mx-auto px-6 -mt-20 grid lg:grid-cols-3 gap-8">
-    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-2">Single Wash</h4>
-        <div id="s-prc" class="text-5xl font-black mb-4">$15</div>
-        <p class="text-slate-500 text-sm mb-6 italic">One-time deep steam cleaning.</p>
-        <input type="range" id="slid" min="1" max="10" value="1" oninput="updPrc()" class="w-full mb-4">
-        <p id="b-cnt" class="text-center font-black text-emerald-600 mb-6 italic">1 Bin</p>
-        <button onclick="book('Single Wash', true)" class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold">Book</button>
+            <div id="tab-stats" class="tab-content">
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100">
+                        <p class="text-[10px] font-black text-emerald-600 uppercase">Total Users</p>
+                        <h4 id="stat-total" class="text-4xl font-black italic">0</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="bg-slate-900 p-10 rounded-[3rem] shadow-2xl border-4 border-emerald-500 text-white transform scale-105">
-        <h4 class="text-[10px] font-black uppercase text-emerald-400 mb-2">Monthly</h4>
-        <div class="text-6xl font-black mb-4">$20</div>
-        <p class="text-slate-400 text-sm mb-10 italic">Sanitization every 4 weeks.</p>
-        <button onclick="book('Monthly Elite', false, 20)" class="w-full py-4 bg-emerald-500 rounded-xl font-bold">Subscribe</button>
-    </div>
-    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-2">Bi-Monthly</h4>
-        <div class="text-5xl font-black mb-4">$55</div>
-        <p class="text-slate-500 text-sm mb-10 italic">Sanitization every 8 weeks.</p>
-        <button onclick="book('Bi-Monthly', false, 55)" class="w-full py-4 bg-slate-100 rounded-xl font-bold">Select</button>
-    </div>
-</section>
+</div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
     <div class="bg-white p-10 rounded-[3rem] w-full max-w-sm relative">
         <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8">Sign In</h2>
         <div class="space-y-4">
-            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
+            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
             <input id="a-e" placeholder="Email" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none hidden">
-            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
-            <button onclick="auth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit</button>
-            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4">Create Account</button>
+            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
+            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic shadow-lg">Submit</button>
+            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4 hover:text-emerald-500">Create Account</button>
         </div>
-        <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl">×</button>
-    </div>
-</div>
-
-<div id="profile-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-10 rounded-[3rem] w-full max-w-sm relative text-center">
-        <div class="w-20 h-20 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-black" id="p-av"></div>
-        <h2 id="p-nm" class="text-2xl font-black uppercase italic mb-2"></h2>
-        <p id="p-em" class="text-slate-400 font-bold mb-8"></p>
-        <button onclick="closeM('profile-modal')" class="w-full py-4 bg-slate-100 rounded-xl font-black">Close</button>
-    </div>
-</div>
-
-<div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white rounded-[3rem] w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden">
-        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <h2 class="font-black uppercase italic text-emerald-600">Database Management</h2>
-            <button onclick="closeM('owner-modal')" class="text-slate-300 text-2xl">×</button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-8">
-            <table class="w-full text-left">
-                <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
-                    <tr><th class="pb-4">Name</th><th class="pb-4">Email</th><th class="pb-4 text-right">Control</th></tr>
-                </thead>
-                <tbody id="db-list"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div id="book-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-10 rounded-[3rem] w-full max-w-md relative">
-        <h2 class="text-3xl font-black uppercase italic mb-2">Confirm</h2>
-        <p id="b-plan" class="text-emerald-600 font-black text-xs uppercase mb-8"></p>
-        <input id="b-addr" placeholder="Service Address" class="w-full bg-slate-50 p-5 rounded-2xl font-bold mb-4 outline-none">
-        <button id="b-sub" onclick="send()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Send Request</button>
-        <button onclick="closeM('book-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl">×</button>
+        <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl hover:text-red-500">×</button>
     </div>
 </div>
 
 <script>
-    const O_ID = "Adrien";
-    const O_PW = "favela23";
-    const E_ID = "v-4sLf-EzCLBYcWe7";
-    const S_ID = "Service_6ymb279";
-    const T_O = "template_pruo22c";
-    const T_C = "template_4hi1opb";
+    const ADRIEN_ID = "Adrien";
+    const ADRIEN_PW = "favela23";
 
-    let u = JSON.parse(localStorage.getItem('loggedUser')) || null;
-    let mode = true;
-    let curP = "";
+    let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let isLogin = true;
 
-    function init() {
-        emailjs.init(E_ID);
-        if(u) {
-            get('u-nm').innerText = u.username;
-            get('u-av').innerText = u.username[0].toUpperCase();
-            hide('li-btn');
-            show('lo-btn');
-            show('p-btn');
-            if(u.username === O_ID) {
-                document.body.classList.add('is-owner');
-            }
-        }
-    }
-
-    function get(i) { return document.getElementById(i); }
-    function show(i) { get(i).classList.remove('hidden'); }
-    function hide(i) { get(i).classList.add('hidden'); }
-    function openM(i) { if(i==='owner-modal') render(); get(i).classList.remove('hidden'); }
-    function closeM(i) { get(i).classList.add('hidden'); }
+    // --- Core UI Functions ---
+    function get(id) { return document.getElementById(id); }
+    function openM(id) { if(id === 'owner-modal') render(); get(id).classList.remove('hidden'); }
+    function closeM(id) { get(id).classList.add('hidden'); }
     function toggleDrop() { get('drop').classList.toggle('show'); }
 
-    function tAuth() {
-        mode = !mode;
-        get('a-tit').innerText = mode ? "Sign In" : "Register";
-        get('a-e').classList.toggle('hidden', mode);
-        get('a-tgl').innerText = mode ? "Create Account" : "I have an account";
+    // --- Tab Management ---
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active', 'bg-emerald-600', 'text-white');
+            b.classList.add('bg-slate-200', 'text-slate-500');
+        });
+        get(tabId).classList.add('active');
+        const activeBtn = get('btn-' + tabId);
+        activeBtn.classList.add('active', 'bg-emerald-600', 'text-white');
+        activeBtn.classList.remove('bg-slate-200', 'text-slate-500');
     }
 
-    function auth() {
-        const un = get('a-u').value.trim();
-        const pw = get('a-p').value.trim();
-        const em = get('a-e').value.trim();
-        let list = JSON.parse(localStorage.getItem('users')) || [];
+    // --- Authentication ---
+    function tAuth() {
+        isLogin = !isLogin;
+        get('a-tit').innerText = isLogin ? "Sign In" : "Register";
+        get('a-e').classList.toggle('hidden', isLogin);
+    }
 
-        if(mode) {
-            if(un === O_ID && pw === O_PW) return log({username:un, email:"founder@trouvaille.com"});
-            const f = list.find(x => x.username === un && x.password === pw);
-            if(f) log(f); else toast("Error: Invalid Login", true);
+    function handleAuth() {
+        const u = get('a-u').value.trim();
+        const p = get('a-p').value.trim();
+        const e = get('a-e').value.trim();
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        if(isLogin) {
+            if(u === ADRIEN_ID && p === ADRIEN_PW) {
+                return login({ username: u, email: "founder@trouvaille.com", isOwner: true });
+            }
+            const found = users.find(x => x.username === u && x.password === p);
+            if(found) login(found); else alert("Invalid Login");
         } else {
-            if(!un || !pw || !em) return toast("Fill all fields", true);
-            if(list.find(x => x.username === un)) return toast("Name Taken", true);
-            const n = {username:un, password:pw, email:em};
-            list.push(n);
-            localStorage.setItem('users', JSON.stringify(list));
-            log(n);
+            if(!u || !p || !e) return alert("Fill everything!");
+            if(users.find(x => x.username === u)) return alert("Username exists!");
+            const newUser = { username: u, password: p, email: e, plan: "None" };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            login(newUser);
         }
     }
 
-    function log(user) {
-        localStorage.setItem('loggedUser', JSON.stringify(user));
+    function login(obj) {
+        localStorage.setItem('loggedUser', JSON.stringify(obj));
         location.reload();
     }
 
@@ -204,82 +173,74 @@
         location.reload();
     }
 
-    function updPrc() {
-        const v = get('slid').value;
-        get('s-prc').innerText = "$" + (15 + (v-1)*10);
-        get('b-cnt').innerText = v + " Bin" + (v>1?'s':'');
-    }
-
-    function book(p, s, pr) {
-        if(!u) return openM('auth-modal');
-        curP = s ? `Single Wash (${get('slid').value} Bins)` : p;
-        get('b-plan').innerText = curP;
-        openM('book-modal');
-    }
-
-    function send() {
-        const ad = get('b-addr').value;
-        const bt = get('b-sub');
-        if(!ad) return toast("Enter Address", true);
-        bt.disabled = true;
-        bt.innerText = "Sending...";
-
-        const p = {
-            user_name: u.username,
-            user_email: u.email,
-            plan_selected: curP,
-            address: ad,
-            to_email: "favela23@gmail.com"
-        };
-
-        emailjs.send(S_ID, T_O, p).then(() => {
-            emailjs.send(S_ID, T_C, p).then(() => {
-                toast("Order Confirmed!");
-                closeM('book-modal');
-                setTimeout(()=>location.reload(), 2000);
-            });
-        });
-    }
-
+    // --- Founder Database Logic ---
     function render() {
-        const list = JSON.parse(localStorage.getItem('users')) || [];
-        const body = get('db-list');
-        body.innerHTML = list.length ? list.map(x => `
-            <tr class="border-b">
-                <td class="py-4 font-black uppercase text-xs">${x.username}</td>
-                <td class="py-4 text-slate-400 font-bold text-xs">${x.email}</td>
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const search = get('db-search').value.toLowerCase();
+        const list = get('db-list');
+        
+        get('stat-total').innerText = users.length;
+
+        const filtered = users.filter(u => u.username.toLowerCase().includes(search));
+
+        list.innerHTML = filtered.length ? filtered.map(u => `
+            <tr class="border-b hover:bg-slate-50">
+                <td class="py-4 pl-2 font-black uppercase text-xs">${u.username}</td>
+                <td class="py-4 text-slate-400 font-bold text-xs">${u.email}</td>
+                <td class="py-4">
+                    <select onchange="updateSub('${u.username}', this.value)" class="bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase p-1 rounded-md outline-none border border-emerald-200">
+                        <option value="None" ${u.plan === 'None' ? 'selected' : ''}>No Plan</option>
+                        <option value="Single Wash" ${u.plan === 'Single Wash' ? 'selected' : ''}>Single</option>
+                        <option value="Monthly" ${u.plan === 'Monthly' ? 'selected' : ''}>Monthly</option>
+                        <option value="Bi-Monthly" ${u.plan === 'Bi-Monthly' ? 'selected' : ''}>Bi-Monthly</option>
+                    </select>
+                </td>
                 <td class="py-4 text-right">
-                    <button onclick="del('${x.username}')" class="text-red-500 font-black text-[10px] uppercase">Delete</button>
+                    <button onclick="wipeAcc('${u.username}')" class="text-red-500 font-black text-[10px] uppercase hover:underline">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Delete
+                    </button>
                 </td>
             </tr>
-        `).join('') : '<tr><td colspan="3" class="py-10 text-center text-slate-400 font-bold uppercase italic">No Accounts Found</td></tr>';
+        `).join('') : '<tr><td colspan="4" class="py-10 text-center font-bold text-slate-300 italic uppercase">No users found</td></tr>';
     }
 
-    function del(n) {
-        if(!confirm("Delete "+n+"?")) return;
-        let list = JSON.parse(localStorage.getItem('users'));
-        localStorage.setItem('users', JSON.stringify(list.filter(x => x.username !== n)));
+    function updateSub(username, newPlan) {
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        const idx = users.findIndex(x => x.username === username);
+        if(idx !== -1) {
+            users[idx].plan = newPlan;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert(`Updated ${username} to ${newPlan}`);
+        }
+    }
+
+    function wipeAcc(username) {
+        if(!confirm(`Are you sure you want to delete ${username}?`)) return;
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        const updated = users.filter(x => x.username !== username);
+        localStorage.setItem('users', JSON.stringify(updated));
         render();
     }
 
-    function toast(m, err=false) {
-        const t = get('toast-msg');
-        t.innerText = m;
-        t.style.background = err ? "#ef4444" : "#10b981";
-        t.classList.add('active');
-        setTimeout(()=>t.classList.remove('active'), 3000);
-    }
-
-    function scrollPlans() {
-        if(!u) openM('auth-modal');
-        else get('plans').scrollIntoView({behavior:'smooth'});
+    // --- Init ---
+    function boot() {
+        if(currentUser) {
+            get('u-nm').innerText = currentUser.username;
+            get('u-av').innerText = currentUser.username[0].toUpperCase();
+            get('li-btn').classList.add('hidden');
+            get('lo-btn').classList.remove('hidden');
+            get('p-btn').classList.remove('hidden');
+            if(currentUser.username === ADRIEN_ID || currentUser.isOwner) {
+                document.body.classList.add('is-owner');
+            }
+        }
     }
 
     window.onclick = (e) => {
         if(!e.target.closest('.relative')) get('drop').classList.remove('show');
     };
 
-    init();
+    boot();
 </script>
 </body>
 </html>
