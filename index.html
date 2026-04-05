@@ -17,8 +17,11 @@
         .owner-only { display: none; }
         .is-owner .owner-only { display: block; }
         
-        .sub-card { transition: all 0.3s ease; }
-        .sub-card:hover { transform: translateY(-8px); shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        input[type=range] { -webkit-appearance: none; background: #e2e8f0; border-radius: 99px; height: 8px; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+            background: #10b981; cursor: pointer; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 
@@ -28,7 +31,7 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
             <img src="https://i.imgur.com/syOOmTK.png" alt="Logo" class="w-10 h-10">
-            <h1 class="text-xl font-black text-slate-900 tracking-tighter">TROUVAILLE</h1>
+            <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase">Trouvaille</h1>
         </div>
 
         <div class="relative">
@@ -37,10 +40,8 @@
                 <span id="nav-user-name" class="text-sm font-bold text-slate-600">Guest</span>
             </button>
             <div id="profileDropdown" class="dropdown-content absolute right-0 mt-3 w-64 bg-white border border-slate-100 rounded-2xl shadow-2xl py-2 z-[110]">
-                <div class="owner-only px-4 py-2 text-[10px] font-black text-emerald-600 uppercase border-b">👑 Founder Panel</div>
+                <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm font-bold text-emerald-700">🚀 Founder Dashboard</button>
                 <button onclick="openModal('profile-modal')" class="w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm">👤 My Profile</button>
-                <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm font-bold text-emerald-700">🚀 Management</button>
-                <button onclick="openModal('settings-modal')" class="w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm">⚙️ Settings</button>
                 <hr class="my-1">
                 <button id="auth-action-btn" onclick="openAuthModal()" class="w-full text-left px-4 py-2 text-red-500 font-bold text-sm">Sign In</button>
             </div>
@@ -48,74 +49,79 @@
     </div>
 </nav>
 
-<section class="hero-gradient pt-24 pb-32 text-center text-white px-6">
-    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">The Future of <span class="text-emerald-400">Clean.</span></h1>
-    <p class="text-lg opacity-80 mb-10 max-w-xl mx-auto">Elite bin sanitization. Pay securely via Zelle or Cash on service day.</p>
-    <div class="flex flex-wrap justify-center gap-4">
-        <button onclick="scrollToBooking()" class="bg-emerald-500 hover:bg-emerald-400 text-white px-10 py-4 rounded-2xl font-black shadow-xl transition-all">Start Booking</button>
-        <button onclick="document.getElementById('plans').scrollIntoView()" class="bg-white/10 border border-white/20 px-10 py-4 rounded-2xl font-bold hover:bg-white/20 transition-all">View Plans</button>
-    </div>
-</section>
-
-<section id="plans" class="py-24 max-w-6xl mx-auto px-6">
+<section id="plans" class="py-20 max-w-6xl mx-auto px-6">
     <div class="text-center mb-16">
-        <h2 class="text-4xl font-black text-slate-900">Service Tiers</h2>
-        <p class="text-slate-500 mt-2">Professional sanitization on your schedule.</p>
+        <h2 class="text-4xl font-black text-slate-900 mb-2">Professional Service Plans</h2>
+        <p class="text-slate-500">Select the frequency that fits your household needs.</p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
-        <div class="sub-card bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
-            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 tracking-widest">Single Mission</h4>
-            <div class="text-4xl font-black mb-6">$15<span class="text-sm text-slate-400">/bin</span></div>
-            <ul class="text-sm text-slate-600 space-y-4 mb-8">
-                <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> 200° Heat Blast</li>
-                <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> Premium Deodorizer</li>
+    <div class="grid md:grid-cols-3 gap-8 items-start">
+        
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
+            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 tracking-widest">Single Wash</h4>
+            <div id="single-price-display" class="text-4xl font-black mb-6">$15</div>
+            
+            <div class="mb-8">
+                <label class="text-[10px] font-bold text-slate-400 uppercase block mb-4">How many bins?</label>
+                <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updateSinglePrice()" class="w-full mb-2">
+                <p id="bin-count-label" class="text-center text-sm font-bold text-emerald-600 italic">1 Bin Selected</p>
+            </div>
+
+            <ul class="text-sm text-slate-600 space-y-3 mb-8">
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 200° Sanitization</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Odor Elimination</li>
             </ul>
-            <button onclick="openBookingForm('One-Time')" class="w-full py-4 bg-slate-100 rounded-2xl font-bold hover:bg-slate-900 hover:text-white transition-all">Select One-Time</button>
+            <button onclick="openBookingForm('Single Wash', true)" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-emerald-600 transition-all">Book Single</button>
         </div>
 
-        <div class="sub-card bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border-4 border-emerald-500 relative">
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase">Best Value</div>
+        <div class="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border-4 border-emerald-500 relative transform md:scale-105">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Most Popular</div>
             <h4 class="font-bold text-emerald-400 uppercase text-[10px] mb-2 tracking-widest">Monthly Elite</h4>
-            <div class="text-4xl font-black text-white mb-6">$12<span class="text-sm text-slate-500">/mo</span></div>
+            <div class="text-4xl font-black text-white mb-6">$20<span class="text-sm text-slate-500">/mo</span></div>
             <ul class="text-sm text-slate-300 space-y-4 mb-8">
-                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Automatic Scheduling</li>
-                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Priority Support</li>
-                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Cancel Anytime</li>
+                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Fixed Monthly Cleaning</li>
+                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Priority Scheduling</li>
+                <li><i class="fa-solid fa-star text-emerald-500 mr-2"></i> Deodorizer Included</li>
             </ul>
-            <button onclick="openBookingForm('Monthly Subscription')" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-all">Subscribe via Zelle/Cash</button>
+            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black hover:bg-emerald-400 transition-all">Subscribe Now</button>
         </div>
 
-        <div class="sub-card bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
-            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 tracking-widest">Quarterly Refresh</h4>
-            <div class="text-4xl font-black mb-6">$45<span class="text-sm text-slate-400">/3 mo</span></div>
-            <ul class="text-sm text-slate-600 space-y-4 mb-8">
-                <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> 4 Cleans Per Year</li>
-                <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> Text Reminders</li>
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
+            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 tracking-widest">Bi-Monthly</h4>
+            <div class="text-4xl font-black mb-2">$55</div>
+            <p class="text-[10px] font-bold text-slate-400 mb-6 uppercase">3 Months | 3 Washes/Mo</p>
+            <ul class="text-sm text-slate-600 space-y-3 mb-8">
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Total 9 Elite Washes</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Heavy Duty Refresh</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Best Value per Wash</li>
             </ul>
-            <button onclick="openBookingForm('Quarterly')" class="w-full py-4 bg-slate-100 rounded-2xl font-bold hover:bg-slate-900 hover:text-white transition-all">Select Quarterly</button>
+            <button onclick="openBookingForm('Bi-Monthly', false, 55)" class="w-full py-4 bg-slate-100 rounded-2xl font-bold hover:bg-slate-900 hover:text-white transition-all">Select Bi-Monthly</button>
         </div>
+
     </div>
 </section>
 
 <div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-xl flex items-center justify-center z-[200] p-4">
     <div class="bg-white rounded-[3rem] max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl">
         <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <div>
-                <h2 class="text-2xl font-black text-slate-900 italic uppercase">Founder Dashboard</h2>
-                <p class="text-[10px] font-bold text-emerald-600 tracking-widest uppercase">Trouvaille Clean Bins Management</p>
-            </div>
-            <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900 transition-all"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
+            <h2 class="text-2xl font-black text-slate-900 italic uppercase">Founder Dashboard</h2>
+            <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
         </div>
         <div class="flex-1 overflow-y-auto p-8">
+            <div id="admin-stats" class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100">
+                    <p class="text-[10px] font-black text-emerald-600 uppercase">Current Users</p>
+                    <p id="total-user-count" class="text-3xl font-black text-slate-900">0</p>
+                </div>
+                <div class="bg-red-50 p-6 rounded-3xl border border-red-100">
+                    <p class="text-[10px] font-black text-red-600 uppercase">Banned</p>
+                    <p id="total-banned-count" class="text-3xl font-black text-slate-900">0</p>
+                </div>
+            </div>
             <div class="bg-white border rounded-2xl overflow-hidden">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-100 text-slate-500 font-bold text-[10px] uppercase">
-                        <tr>
-                            <th class="p-4">Customer</th>
-                            <th class="p-4">Plan Status</th>
-                            <th class="p-4 text-right">Admin Actions</th>
-                        </tr>
+                        <tr><th class="p-4">Customer</th><th class="p-4">Last Plan</th><th class="p-4 text-right">Actions</th></tr>
                     </thead>
                     <tbody id="owner-user-list"></tbody>
                 </table>
@@ -126,79 +132,89 @@
 
 <div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
     <div class="bg-white p-10 rounded-[3rem] max-w-md w-full relative shadow-2xl">
-        <button onclick="closeModal('booking-modal')" class="mb-4 text-slate-400 text-[10px] font-bold uppercase tracking-widest"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
         <h2 class="text-2xl font-black mb-2">Secure Booking</h2>
         <p id="plan-label" class="text-emerald-600 font-bold text-xs mb-6 uppercase tracking-widest"></p>
         
         <form onsubmit="sendBooking(event)" class="space-y-4">
-            <input id="form-name" required placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-xl outline-none border border-transparent focus:border-emerald-500 transition-all">
-            <input id="form-email" type="email" required placeholder="Email Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none border border-transparent focus:border-emerald-500 transition-all">
-            <input id="form-address" required placeholder="Service Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none border border-transparent focus:border-emerald-500 transition-all">
-            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 bg-slate-50 rounded-xl outline-none border border-transparent focus:border-emerald-500 transition-all">
+            <input id="form-name" required placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <input id="form-address" required placeholder="Service Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
+            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
             
             <div class="bg-slate-900 p-8 rounded-3xl text-center">
-                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Amount Due (Cash/Zelle)</p>
+                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Total Due (Cash/Zelle)</p>
                 <p id="modal-total" class="text-4xl font-black text-white">$15</p>
-                <p class="text-emerald-400 text-[10px] font-bold mt-2 italic uppercase">Pay on Service Day</p>
             </div>
             
-            <button class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black shadow-xl hover:bg-emerald-700 transition-all">CONFIRM BOOKING 🧼</button>
+            <button class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black shadow-xl hover:bg-emerald-700 transition-all">CONFIRM MISSION 🧼</button>
         </form>
+        <button onclick="closeModal('booking-modal')" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-xmark text-xl"></i></button>
     </div>
 </div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
     <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full shadow-2xl relative">
-        <button onclick="closeModal('auth-modal')" class="mb-4 text-slate-400 text-[10px] font-bold uppercase tracking-widest"><i class="fa-solid fa-arrow-left"></i> Back</button>
         <h2 id="auth-title" class="text-2xl font-black mb-6">Account Login</h2>
         <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none">
         <input id="auth-email" placeholder="Email (New Users Only)" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none hidden">
         <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl mb-6 outline-none">
         <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg">Continue</button>
-        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 mt-6 text-[10px] font-bold uppercase">New Account? Sign Up</button>
+        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 mt-6 text-[10px] font-bold uppercase">New? Sign Up</button>
     </div>
 </div>
 
 <script>
-    // --- FOUNDER CONFIG ---
-    const OWNER_USERNAME = "owner"; 
     emailjs.init("v-4sLf-EzCLBYcWe7"); 
 
+    const OWNER_USERNAME = "owner"; 
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
-    let selectedPlan = "One-Time";
+    let currentSelectedPlan = "";
+    let currentTotal = 15;
 
-    // --- UI LOGIC ---
+    // --- PRICING LOGIC ---
+    function updateSinglePrice() {
+        const bins = document.getElementById('bin-slider').value;
+        const price = 15 + (bins - 1) * 10;
+        document.getElementById('single-price-display').innerText = "$" + price;
+        document.getElementById('bin-count-label').innerText = bins + (bins == 1 ? " Bin Selected" : " Bins Selected");
+        currentTotal = price;
+    }
+
+    function openBookingForm(plan, isSingle, fixedPrice) {
+        currentSelectedPlan = plan;
+        if (isSingle) {
+            updateSinglePrice(); // Pull from slider
+            const bins = document.getElementById('bin-slider').value;
+            currentSelectedPlan = `Single Wash (${bins} Bins)`;
+        } else {
+            currentTotal = fixedPrice;
+        }
+
+        document.getElementById('plan-label').innerText = "Tier: " + currentSelectedPlan;
+        document.getElementById('modal-total').innerText = "$" + currentTotal;
+        
+        if (currentUser) {
+            document.getElementById('form-name').value = currentUser.username;
+        }
+        openModal('booking-modal');
+    }
+
+    // --- UI & AUTH ---
     function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
     function openModal(id) { 
         if (id === 'owner-panel') renderOwnerList();
         document.getElementById(id).classList.remove('hidden'); 
     }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function scrollToBooking() { document.getElementById('plans').scrollIntoView({ behavior: 'smooth' }); }
-
-    // --- AUTH ---
-    function openAuthModal() { openModal('auth-modal'); }
-    function toggleAuthMode() {
-        const isSignUp = document.getElementById('auth-email').classList.toggle('hidden');
-        document.getElementById('auth-title').innerText = isSignUp ? "Account Login" : "Create Profile";
-    }
 
     function handleAuth() {
         const user = document.getElementById('auth-user').value.toLowerCase();
-        const pass = document.getElementById('auth-pass').value;
-        if (!user || !pass) return;
-
+        if (!user) return;
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const found = users.find(u => u.username === user);
+        if (found && found.banned) return alert("Account Banned.");
 
-        if (found && found.banned) return alert("This account is permanently banned.");
-
-        currentUser = found || { username: user, email: document.getElementById('auth-email').value, plan: "Free" };
-        
-        if (!found) {
-            users.push(currentUser);
-            localStorage.setItem('users', JSON.stringify(users));
-        }
+        currentUser = found || { username: user, email: document.getElementById('auth-email').value, plan: "New User" };
+        if (!found) { users.push(currentUser); localStorage.setItem('users', JSON.stringify(users)); }
 
         localStorage.setItem('loggedUser', JSON.stringify(currentUser));
         closeModal('auth-modal');
@@ -206,64 +222,60 @@
     }
 
     function updateUI() {
-        const navName = document.getElementById('nav-user-name');
-        const avatar = document.getElementById('nav-avatar');
         if (currentUser) {
-            navName.innerText = currentUser.username;
-            avatar.innerText = currentUser.username.charAt(0).toUpperCase();
+            document.getElementById('nav-user-name').innerText = currentUser.username;
+            document.getElementById('nav-avatar').innerText = currentUser.username.charAt(0).toUpperCase();
             if (currentUser.username === OWNER_USERNAME) document.body.classList.add('is-owner');
         }
-    }
-
-    // --- BOOKING ---
-    function openBookingForm(plan) {
-        selectedPlan = plan;
-        document.getElementById('plan-label').innerText = "Selected Tier: " + plan;
-        document.getElementById('modal-total').innerText = (plan === 'One-Time') ? "$15" : (plan === 'Monthly Subscription' ? "$12" : "$45");
-        
-        if (currentUser) {
-            document.getElementById('form-name').value = currentUser.username;
-            document.getElementById('form-email').value = currentUser.email || "";
-        }
-        openModal('booking-modal');
     }
 
     async function sendBooking(e) {
         e.preventDefault();
         const btn = e.target.querySelector('button');
-        btn.innerText = "SENDING REQUEST...";
+        btn.innerText = "SENDING...";
         
         const params = {
             name: document.getElementById('form-name').value,
             address: document.getElementById('form-address').value,
             phone: document.getElementById('form-phone').value,
-            email: document.getElementById('form-email').value,
-            plan: selectedPlan,
-            total: document.getElementById('modal-total').innerText,
-            payment: "CASH / ZELLE ON ARRIVAL"
+            plan: currentSelectedPlan,
+            total: currentTotal,
+            payment: "CASH / ZELLE"
         };
 
         try {
-            await emailjs.send("service_6ymb279", "template_pruo22c", params); // To You
-            await emailjs.send("service_6ymb279", "template_4hi1opb", params); // To Customer
-            alert("Booking Sent! Please have your Zelle or Cash ready on service day.");
+            await emailjs.send("service_6ymb279", "template_pruo22c", params);
+            alert("Mission Booked! Payment due on service day.");
+            
+            // Save plan to user profile for Owner Panel
+            if (currentUser) {
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                const idx = users.findIndex(u => u.username === currentUser.username);
+                if (idx !== -1) {
+                    users[idx].plan = currentSelectedPlan;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+            }
             closeModal('booking-modal');
-        } catch (err) { alert("Dispatch Error."); }
-        btn.innerText = "CONFIRM BOOKING 🧼";
+        } catch (err) { alert("Error sending booking."); }
+        btn.innerText = "CONFIRM MISSION 🧼";
     }
 
     // --- OWNER ACTIONS ---
     function renderOwnerList() {
         const list = document.getElementById('owner-user-list');
         const users = JSON.parse(localStorage.getItem('users')) || [];
+        document.getElementById('total-user-count').innerText = users.length;
+        document.getElementById('total-banned-count').innerText = users.filter(u => u.banned).length;
+
         list.innerHTML = "";
         users.forEach(u => {
             if (u.username === OWNER_USERNAME) return;
             list.innerHTML += `
                 <tr class="border-t ${u.banned ? 'bg-red-50' : ''}">
-                    <td class="p-4 font-bold text-slate-700">${u.username}</td>
-                    <td class="p-4 text-xs font-bold ${u.banned ? 'text-red-500' : 'text-emerald-600'}">${u.banned ? 'BANNED' : (u.plan || 'No Active Plan')}</td>
-                    <td class="p-4 text-right space-x-3">
+                    <td class="p-4 font-bold">${u.username}</td>
+                    <td class="p-4 text-xs font-bold text-emerald-600">${u.plan || 'No History'}</td>
+                    <td class="p-4 text-right">
                         <button onclick="adminAction('${u.username}', 'ban')" class="text-red-600 font-black text-[10px] uppercase hover:underline">${u.banned ? 'Unban' : 'Ban'}</button>
                     </td>
                 </tr>
@@ -274,14 +286,17 @@
     function adminAction(username, type) {
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const idx = users.findIndex(u => u.username === username);
-        if (idx === -1) return;
-        if (type === 'ban') users[idx].banned = !users[idx].banned;
+        if (idx !== -1 && type === 'ban') users[idx].banned = !users[idx].banned;
         localStorage.setItem('users', JSON.stringify(users));
         renderOwnerList();
     }
 
+    function toggleAuthMode() {
+        const isSignUp = document.getElementById('auth-email').classList.toggle('hidden');
+        document.getElementById('auth-title').innerText = isSignUp ? "Account Login" : "Create Profile";
+    }
+
     updateUI();
 </script>
-
 </body>
 </html>
