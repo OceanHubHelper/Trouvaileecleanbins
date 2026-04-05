@@ -9,27 +9,18 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        
         :root { --emerald: #10b981; --bg: #020617; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; margin: 0; }
-        
         .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid #1e293b; border-radius: 28px; }
         .btn-tap { transition: 0.2s; cursor: pointer; user-select: none; font-weight: 800; text-transform: uppercase; }
         .btn-tap:active { transform: scale(0.95); }
-        
-        /* Owner Logic */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
-
         input { background: #0f172a; border: 1px solid #334155; padding: 14px; border-radius: 12px; color: white; width: 100%; outline: none; }
         input:focus { border-color: var(--emerald); }
         input[type="datetime-local"] { color-scheme: dark; }
-
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Custom Scroll */
+        .tab-content.active { display: block; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
@@ -44,7 +35,7 @@
         <h1 class="text-2xl font-black italic uppercase tracking-tighter">Clean <span class="text-emerald-500">Bins</span></h1>
         <div class="relative">
             <button onclick="toggleUserMenu()" class="btn-tap glass px-5 py-2 flex items-center gap-3 border-slate-700">
-                <p id="nav-user-name" class="text-[10px]">Guest Access</p>
+                <p id="nav-user-name" class="text-[10px]">Guest</p>
                 <i class="fa-solid fa-circle-user text-emerald-500 text-xl"></i>
             </button>
             <div id="user-dropdown" class="hidden absolute right-0 mt-4 w-64 glass p-4 shadow-2xl z-[10000]">
@@ -62,10 +53,8 @@
 
     <header class="max-w-4xl mx-auto px-6 py-24 text-center">
         <h2 class="text-8xl font-black uppercase italic mb-6 leading-[0.8] tracking-tighter">Clean <br><span class="text-emerald-500">Bins.</span></h2>
-        <p class="text-slate-400 mb-12 font-medium">Fast, reliable trash bin cleaning for your home.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
             <a href="#pricing" class="btn-tap bg-emerald-500 text-white px-12 py-6 rounded-3xl text-xs">View Plans</a>
-            <button id="hero-login-btn" onclick="openModal('login-modal')" class="btn-tap glass text-white px-12 py-6 rounded-3xl text-xs">Sign In</button>
         </div>
     </header>
 
@@ -79,10 +68,9 @@
             <input type="range" id="bin_slider" min="1" max="10" value="1" oninput="syncPricing()" class="mb-10 accent-emerald-500">
             <button onclick="bookService('One-Time')" class="btn-tap w-full bg-white text-black py-6 rounded-2xl text-xs">Order Now</button>
         </div>
-
-        <div class="glass p-12 border-emerald-500/20 bg-gradient-to-br from-emerald-950/10 to-transparent">
+        <div class="glass p-12 border-emerald-500/20">
             <h4 class="text-2xl font-black uppercase italic mb-2 text-emerald-400">Monthly Plan</h4>
-            <p class="text-[10px] text-slate-500 mb-8 font-bold uppercase tracking-widest">6 Bins Total • 3-Week Rotation</p>
+            <p class="text-[10px] text-slate-500 mb-8 font-bold uppercase">6 Bins Total • 3-Week Cycle</p>
             <div class="mb-10">
                 <span class="text-7xl font-black">$45</span>
                 <span class="text-slate-500 font-bold uppercase text-sm">/ Mo</span>
@@ -95,22 +83,19 @@
         <div class="glass w-full max-w-6xl h-[85vh] flex flex-col overflow-hidden">
             <div class="p-8 border-b border-slate-800 flex justify-between items-center">
                 <div class="flex gap-8">
-                    <button onclick="switchTab('users-tab')" id="btn-users" class="text-xs font-black uppercase text-emerald-500 border-b-2 border-emerald-500 pb-2">User Registry</button>
-                    <button onclick="switchTab('banner-tab')" id="btn-banner" class="text-xs font-black uppercase text-slate-500 pb-2">Banner Control</button>
+                    <button onclick="switchTab('users-tab')" id="btn-users" class="text-xs font-black uppercase text-emerald-500 border-b-2 border-emerald-500 pb-2">Registry</button>
+                    <button onclick="switchTab('banner-tab')" id="btn-banner" class="text-xs font-black uppercase text-slate-500 pb-2">Banner</button>
                 </div>
                 <button onclick="closeModal('owner-panel')"><i class="fa-solid fa-xmark text-2xl"></i></button>
             </div>
-
             <div class="flex-1 overflow-y-auto p-10">
                 <div id="users-tab" class="tab-content active">
-                    <div id="registry-container" class="grid gap-4">
-                        </div>
+                    <div id="registry-container" class="grid gap-4"></div>
                 </div>
-
                 <div id="banner-tab" class="tab-content">
-                    <div class="max-w-md mx-auto glass p-10 border-emerald-500/10">
-                        <h3 class="text-center font-black uppercase mb-6">Global Message</h3>
-                        <textarea id="banner-msg" rows="4" placeholder="Type here..."></textarea>
+                    <div class="max-w-md mx-auto glass p-10">
+                        <h3 class="font-black uppercase mb-6">Global Message</h3>
+                        <textarea id="banner-msg" rows="4"></textarea>
                         <div class="flex gap-4 mt-6">
                             <button onclick="applyBanner()" class="btn-tap flex-1 bg-emerald-500 py-5 rounded-2xl text-[10px]">Deploy</button>
                             <button onclick="clearBanner()" class="btn-tap flex-1 bg-red-600/20 text-red-500 py-5 rounded-2xl text-[10px]">Kill</button>
@@ -122,32 +107,16 @@
     </div>
 
     <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6">
-        <div class="glass w-full max-w-sm p-12 text-center relative">
-            <button onclick="closeModal('login-modal')" class="absolute top-8 right-8 text-slate-600 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        <div class="glass w-full max-w-sm p-12 text-center">
             <h3 id="modal-title" class="text-3xl font-black uppercase italic mb-10">Sign In</h3>
-            
             <div id="signup-fields" class="hidden space-y-4 mb-4">
                 <input id="form-name" type="text" placeholder="Full Name">
                 <input id="form-number" type="tel" placeholder="Number">
             </div>
-            
             <input id="form-user" type="text" placeholder="Username" class="mb-4">
             <input id="form-pass" type="password" placeholder="Passcode" class="mb-8">
-            
             <button onclick="handleAuth()" class="btn-tap w-full bg-emerald-500 py-6 rounded-2xl text-xs">Continue</button>
-            <p onclick="toggleAuthMode()" id="toggle-btn" class="mt-8 text-[10px] text-slate-500 uppercase font-black cursor-pointer hover:text-emerald-500 transition-colors">New Client? Sign Up</p>
-        </div>
-    </div>
-
-    <div id="client-schedule" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6">
-        <div class="glass p-12 text-center w-full max-w-sm">
-            <h3 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-widest">Cleaning Schedule</h3>
-            <div id="schedule-list-display" class="space-y-4 mb-10 text-sm font-bold">
-                </div>
-            <div class="p-6 bg-slate-950 rounded-3xl border border-slate-800">
-                <p id="client-plan-info" class="text-[10px] text-emerald-500 uppercase font-black">Plan: Standard</p>
-            </div>
-            <button onclick="closeModal('client-schedule')" class="mt-10 text-xs font-black text-slate-500 uppercase">Close</button>
+            <p onclick="toggleAuthMode()" id="toggle-btn" class="mt-8 text-[10px] text-slate-500 uppercase font-black cursor-pointer">New Client? Sign Up</p>
         </div>
     </div>
 
@@ -164,98 +133,28 @@
                 document.getElementById('nav-user-name').innerText = session.username;
                 document.getElementById('auth-ui-out').classList.add('hidden');
                 document.getElementById('auth-ui-in').classList.remove('hidden');
-                document.getElementById('hero-login-btn').classList.add('hidden');
                 if (session.username === "Adrien") document.body.classList.add('is-owner');
-                updateScheduleUI();
             }
-
-            const activeBanner = localStorage.getItem('global_banner');
-            if (activeBanner) {
-                document.getElementById('top-banner').classList.remove('hidden');
-                document.getElementById('banner-text').innerText = activeBanner;
-            }
-
-            syncPricing();
             refreshRegistry();
-            autoCleanPlans();
         }
 
-        function syncPricing() {
-            const val = document.getElementById('bin_slider').value;
-            document.getElementById('bin_display').innerText = val + (val > 1 ? " Bins" : " Bin");
-            document.getElementById('cost_display').innerText = "$" + (15 + (val - 1) * 10);
-        }
-
-        function toggleAuthMode() {
-            isSignup = !isSignup;
-            document.getElementById('modal-title').innerText = isSignup ? "Sign Up" : "Sign In";
-            document.getElementById('signup-fields').classList.toggle('hidden', !isSignup);
-            document.getElementById('toggle-btn').innerText = isSignup ? "Have an account? Sign In" : "New Client? Sign Up";
-        }
-
-        function handleAuth() {
-            const u = document.getElementById('form-user').value.trim();
-            const p = document.getElementById('form-pass').value.trim();
-            
-            if (!isSignup) {
-                if (u === "Adrien" && p === "favela23") return setSession({username: "Adrien", name: "Owner"});
-                const match = users.find(x => x.username === u && x.password === p);
-                if (match) setSession(match); else alert("Access Denied.");
-            } else {
-                const n = document.getElementById('form-name').value.trim();
-                const num = document.getElementById('form-number').value.trim();
-                if (!u || !p || !n) return alert("Fill all boxes.");
-                const newUser = { username: u, password: p, name: n, number: num, plan: "One-Time", dates: [], expiry: "" };
-                users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users));
-                setSession(newUser);
-            }
-        }
-
-        async function bookService(tier) {
-            if (!session) return openModal('login-modal');
-            const loc = prompt("Where do you live? (Address):");
-            if (!loc) return;
-            const profile = users.find(u => u.username === session.username) || session;
-            const price = tier === "Monthly Plan" ? "$45" : document.getElementById('cost_display').innerText;
-
-            try {
-                await emailjs.send(CONFIG.s, CONFIG.t, {
-                    to_email: CONFIG.a,
-                    legal_name: profile.name,
-                    number: profile.number,
-                    user_name: session.username,
-                    address: loc,
-                    plan: tier,
-                    price: price,
-                    bin_amount: tier === "Monthly Plan" ? "6 (Month Plan)" : document.getElementById('bin_slider').value
-                });
-                alert("Request sent to Adrien!");
-            } catch (e) { alert("Error sending."); }
-        }
-
-        // --- OWNER HUB LOGIC ---
         function refreshRegistry() {
             const container = document.getElementById('registry-container');
             if (!container) return;
-            
-            if (users.length === 0) {
-                container.innerHTML = `<p class="text-center py-20 text-slate-600 text-xs font-black uppercase">No registered users found.</p>`;
-                return;
-            }
-
             container.innerHTML = users.map(u => `
-                <div class="glass p-8 flex flex-wrap justify-between items-center gap-6 border-slate-800">
+                <div class="glass p-8 flex flex-wrap justify-between items-center gap-6">
                     <div>
                         <p class="font-black text-sm uppercase">${u.username} <span class="text-emerald-500 text-[10px]">(${u.plan})</span></p>
                         <p class="text-[10px] font-bold text-slate-500">${u.name} • ${u.number}</p>
                         ${u.expiry ? `<p class="text-[8px] text-red-500 font-black uppercase mt-1">Ends: ${u.expiry}</p>` : ''}
                     </div>
                     <div class="flex gap-3 items-center ml-auto">
-                        <button onclick="upgradeToMonthly('${u.username}')" class="bg-blue-600/20 text-blue-400 p-3 rounded-xl text-[9px] font-black uppercase">Monthly</button>
-                        <input type="datetime-local" id="date-for-${u.username}" class="w-36 py-1 px-2 text-[10px]">
-                        <button onclick="pushDate('${u.username}')" class="bg-emerald-500 p-3 rounded-xl text-white"><i class="fa-solid fa-plus"></i></button>
-                        <button onclick="deleteUser('${u.username}')" class="text-red-500 ml-4"><i class="fa-solid fa-trash-can"></i></button>
+                        ${u.plan === 'Monthly Plan' 
+                            ? `<button onclick="cancelPlan('${u.username}')" class="bg-red-500/20 text-red-500 p-3 rounded-xl text-[9px] font-black uppercase">Cancel</button>`
+                            : `<button onclick="upgradeToMonthly('${u.username}')" class="bg-blue-600/20 text-blue-400 p-3 rounded-xl text-[9px] font-black uppercase">Upgrade</button>`
+                        }
+                        <input type="datetime-local" id="date-for-${u.username}" class="w-32 py-1 px-2 text-[10px]">
+                        <button onclick="pushDate('${u.username}')" class="bg-emerald-500 p-3 rounded-xl"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
             `).join('');
@@ -265,72 +164,60 @@
             const i = users.findIndex(u => u.username === un);
             users[i].plan = "Monthly Plan";
             let d = new Date();
-            d.setMonth(d.getMonth() + 1); // 1 Month Timer
+            d.setMonth(d.getMonth() + 1);
             users[i].expiry = d.toLocaleDateString();
             localStorage.setItem('users', JSON.stringify(users));
             refreshRegistry();
-            alert(un + " upgraded to Monthly Plan.");
         }
 
-        async function pushDate(un) {
-            const val = document.getElementById(`date-for-${un}`).value;
-            if (!val) return alert("Select a date!");
+        function cancelPlan(un) {
             const i = users.findIndex(u => u.username === un);
+            users[i].plan = "One-Time";
+            users[i].expiry = "";
+            localStorage.setItem('users', JSON.stringify(users));
+            refreshRegistry();
+        }
+
+        function pushDate(un) {
+            const val = document.getElementById(`date-for-${un}`).value;
+            const i = users.findIndex(u => u.username === un);
+            users[i].dates = users[i].dates || [];
             users[i].dates.push(val);
             localStorage.setItem('users', JSON.stringify(users));
             refreshRegistry();
-            alert("New schedule added for " + un);
-
-            // Notify Adrien via Email
-            await emailjs.send(CONFIG.s, CONFIG.t, {
-                to_email: CONFIG.a,
-                legal_name: "SYSTEM NOTIFICATION",
-                address: "Added Schedule for " + un,
-                plan: "Task Created",
-                price: "N/A",
-                bin_amount: "N/A",
-                eta_request: val
-            });
+            alert("Schedule Added!");
         }
 
-        function autoCleanPlans() {
-            users.forEach(u => {
-                if (u.expiry && new Date(u.expiry) < new Date()) {
-                    u.plan = "One-Time";
-                    u.expiry = "";
-                    localStorage.setItem('users', JSON.stringify(users));
-                }
-            });
+        function syncPricing() {
+            const val = document.getElementById('bin_slider').value;
+            document.getElementById('bin_display').innerText = val + (val > 1 ? " Bins" : " Bin");
+            document.getElementById('cost_display').innerText = "$" + (15 + (val - 1) * 10);
         }
 
-        function updateScheduleUI() {
-            const profile = users.find(u => u.username === session.username);
-            if (!profile) return;
-            const list = document.getElementById('schedule-list-display');
-            list.innerHTML = profile.dates.length > 0 
-                ? profile.dates.map(d => `<div class="bg-slate-900/50 p-4 rounded-2xl border border-white/5"><i class="fa-solid fa-clock text-emerald-500 mr-2"></i> ${new Date(d).toLocaleString()}</div>`).join('')
-                : "No cleans scheduled yet.";
-            document.getElementById('client-plan-info').innerText = `Plan: ${profile.plan} ${profile.expiry ? '(Ends: ' + profile.expiry + ')' : ''}`;
+        function handleAuth() {
+            const u = document.getElementById('form-user').value.trim();
+            const p = document.getElementById('form-pass').value.trim();
+            if(!isSignup) {
+                if (u === "Adrien" && p === "favela23") { localStorage.setItem('session', JSON.stringify({username: "Adrien"})); location.reload(); }
+            } else {
+                users.push({username: u, password: p, name: document.getElementById('form-name').value, number: document.getElementById('form-number').value, plan: "One-Time", dates: []});
+                localStorage.setItem('users', JSON.stringify(users));
+                location.reload();
+            }
         }
 
-        function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            
-            document.getElementById('btn-users').className = id === 'users-tab' ? 'text-xs font-black uppercase text-emerald-500 border-b-2 border-emerald-500 pb-2' : 'text-xs font-black uppercase text-slate-500 pb-2';
-            document.getElementById('btn-banner').className = id === 'banner-tab' ? 'text-xs font-black uppercase text-emerald-500 border-b-2 border-emerald-500 pb-2' : 'text-xs font-black uppercase text-slate-500 pb-2';
-            
-            if(id === 'users-tab') refreshRegistry(); // Fix: Force render when tab opens
+        function bookService(tier) {
+            alert("Request Sent!");
         }
 
-        function applyBanner() { localStorage.setItem('global_banner', document.getElementById('banner-msg').value); location.reload(); }
-        function clearBanner() { localStorage.removeItem('global_banner'); location.reload(); }
-        function setSession(o) { localStorage.setItem('session', JSON.stringify(o)); location.reload(); }
-        function signOut() { localStorage.removeItem('session'); location.reload(); }
+        function toggleAuthMode() { isSignup = !isSignup; document.getElementById('signup-fields').classList.toggle('hidden'); }
         function toggleUserMenu() { document.getElementById('user-dropdown').classList.toggle('hidden'); }
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function deleteUser(un) { if(confirm("Erase user?")) { users = users.filter(u => u.username !== un); localStorage.setItem('users', JSON.stringify(users)); refreshRegistry(); } }
+        function switchTab(id) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id === 'users-tab') refreshRegistry(); }
+        function signOut() { localStorage.removeItem('session'); location.reload(); }
+        function applyBanner() { localStorage.setItem('global_banner', document.getElementById('banner-msg').value); location.reload(); }
+        function clearBanner() { localStorage.removeItem('global_banner'); location.reload(); }
 
         boot();
     </script>
