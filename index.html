@@ -3,209 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clean Bins | Service Manager</title>
-    
+    <title>Clean Bins | Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            --main-bg: #020617;
-            --accent: #10b981;
-            --card-bg: rgba(15, 23, 42, 0.95);
-            --border: #1e293b;
-        }
-
-        * { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            scroll-behavior: smooth;
-        }
-
-        body { 
-            background: var(--main-bg); 
-            color: #f8fafc; 
-            line-height: 1.6;
-        }
-
-        /* UI Components */
-        .glass-card { 
-            background: var(--card-bg); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid var(--border); 
-            border-radius: 32px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        .action-btn { 
-            transition: all 0.2s ease; 
-            cursor: pointer; 
-            user-select: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .action-btn:active { transform: scale(0.94); }
-
-        /* Navigation Styles */
-        .nav-link { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #64748b; }
-        .nav-link:hover { color: var(--accent); }
-
-        /* Owner Visibility Logic */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: white; margin: 0; overflow-x: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid #1e293b; border-radius: 24px; }
+        .btn { transition: 0.2s; cursor: pointer; user-select: none; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; text-transform: uppercase; }
+        .btn:active { transform: scale(0.95); }
         .owner-view { display: none !important; }
         body.is-owner .owner-view { display: block !important; }
-
-        /* Forms */
-        input, textarea, select {
-            background: #0f172a;
-            border: 1px solid #334155;
-            padding: 16px;
-            border-radius: 16px;
-            color: white;
-            width: 100%;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        input:focus { border-color: var(--accent); outline: none; }
+        input, textarea { background: #0f172a; border: 1px solid #334155; padding: 14px; border-radius: 12px; color: white; width: 100%; outline: none; }
+        input:focus { border-color: #10b981; }
         input[type="datetime-local"] { color-scheme: dark; }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-up { animation: fadeIn 0.4s ease forwards; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--main-bg); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-20">
 
-    <div id="announcement-bar" class="hidden bg-emerald-600 text-white py-4 text-center sticky top-0 z-[9999] shadow-lg">
-        <div class="container mx-auto px-6 flex justify-center items-center gap-3">
-            <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
-            <span id="banner-content" class="text-[11px] font-black uppercase tracking-widest">Update Available</span>
+    <div id="top-banner" class="hidden bg-emerald-600 text-white py-3 text-center sticky top-0 z-[9999] font-bold text-[10px] uppercase tracking-widest shadow-xl">
+        <div class="flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bullhorn animate-bounce"></i>
+            <span id="banner-text">Notice</span>
         </div>
     </div>
 
-    <nav class="p-6 border-b border-slate-800/50 sticky top-0 bg-[#020617]/80 backdrop-blur-md z-[9000]">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-                    <i class="fa-solid fa-soap text-white text-sm"></i>
+    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto">
+        <h1 class="text-2xl font-black italic uppercase">Clean <span class="text-emerald-500">Bins</span></h1>
+        <div class="relative">
+            <button onclick="toggleMenu()" class="btn glass px-5 py-2 flex items-center gap-3 border-slate-700">
+                <p id="u-display" class="text-[10px]">Guest</p>
+                <i class="fa-solid fa-user-circle text-emerald-500 text-xl"></i>
+            </button>
+            <div id="u-menu" class="hidden absolute right-0 mt-4 w-64 glass p-4 shadow-2xl z-[10000]">
+                <div id="auth-on" class="hidden space-y-2">
+                    <button onclick="openModal('founder-hub')" class="owner-view w-full p-4 bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px]">Owner Hub</button>
+                    <button onclick="openModal('my-time')" class="w-full p-4 hover:bg-slate-800 rounded-xl text-[10px]">My Schedule</button>
+                    <button onclick="logout()" class="w-full p-4 text-red-500 text-[10px]">Sign Out</button>
                 </div>
-                <h1 class="text-xl font-extrabold uppercase italic tracking-tighter">Clean <span class="text-emerald-500">Bins</span></h1>
-            </div>
-
-            <div class="flex items-center gap-6">
-                <div class="hidden md:flex gap-8 mr-8">
-                    <a href="#" class="nav-link">Home</a>
-                    <a href="#prices" class="nav-link">Prices</a>
-                </div>
-                
-                <div class="relative">
-                    <button onclick="toggleUserMenu()" class="action-btn glass-card px-4 py-2 flex items-center gap-3 border-slate-700">
-                        <span id="display-user" class="text-[10px] font-bold uppercase text-slate-400 tracking-wide">Guest</span>
-                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-emerald-500 border border-emerald-500/20">
-                            <i class="fa-solid fa-user-ninja"></i>
-                        </div>
-                    </button>
-                    
-                    <div id="user-dropdown" class="hidden absolute right-0 mt-4 w-64 glass-card p-4 shadow-2xl z-[9999]">
-                        <div id="auth-state-on" class="hidden space-y-2">
-                            <button onclick="openModal('owner-hub')" class="owner-view w-full p-4 bg-emerald-500/10 rounded-2xl text-emerald-500 text-[10px] font-black uppercase">Owner Hub</button>
-                            <button onclick="openModal('my-status-box')" class="w-full p-4 hover:bg-slate-800 rounded-2xl text-white text-[10px] font-black uppercase">My Time</button>
-                            <button onclick="signOut()" class="w-full p-4 text-red-500 text-[10px] font-black uppercase hover:bg-red-500/10 rounded-2xl">Sign Out</button>
-                        </div>
-                        <div id="auth-state-off">
-                            <button onclick="openModal('login-signup-modal')" class="w-full bg-emerald-500 py-4 rounded-2xl text-white text-[10px] font-black uppercase shadow-lg shadow-emerald-500/20">Sign In</button>
-                        </div>
-                    </div>
+                <div id="auth-off">
+                    <button onclick="openModal('auth-modal')" class="w-full bg-emerald-500 py-4 rounded-xl text-white text-[10px]">Sign In</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="max-w-5xl mx-auto px-6 py-24 text-center animate-up">
-        <h2 class="text-8xl font-black uppercase italic mb-8 leading-[0.9] tracking-tighter">Clean <br><span class="text-emerald-500">Bins.</span></h2>
-        <p class="text-slate-400 max-w-lg mx-auto text-lg mb-12 font-medium">We come to you. We clean your bins. We make them smell like new. No stress, just clean.</p>
-        
+    <header class="max-w-4xl mx-auto px-6 py-20 text-center">
+        <h2 class="text-7xl font-black uppercase italic mb-4 leading-none">Clean <span class="text-emerald-500">Bins</span></h2>
+        <p class="text-slate-400 mb-10">Professional trash bin cleaning. Refresh your home today.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#prices" class="action-btn bg-emerald-500 text-white px-12 py-6 rounded-3xl font-black uppercase text-[11px] shadow-2xl shadow-emerald-500/30">See Our Prices</a>
-            <button id="main-signin-btn" onclick="openModal('login-signup-modal')" class="action-btn glass-card text-white px-12 py-6 rounded-3xl font-black uppercase text-[11px]">Join Now</button>
+            <a href="#plans" class="btn bg-emerald-500 text-white px-10 py-5 rounded-2xl text-[11px]">View Plans</a>
+            <button id="hero-login" onclick="openModal('auth-modal')" class="btn glass text-white px-10 py-5 rounded-2xl text-[11px]">Client Login</button>
         </div>
     </header>
 
-    <section id="prices" class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 py-16">
-        <div class="glass-card p-12 relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-500">
-            <h3 class="text-3xl font-black italic mb-8 uppercase text-emerald-500">One-Time Clean</h3>
-            <div class="space-y-8 mb-12">
-                <div class="flex justify-between items-end">
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">How many bins?</p>
-                        <span id="bin_amount_label" class="text-5xl font-black">1 Bin</span>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Cost</p>
-                        <span id="price_display" class="text-5xl font-black">$15</span>
-                    </div>
-                </div>
-                <input type="range" id="bin_amount_slider" min="1" max="10" value="1" oninput="calculatePrice()" class="w-full h-3 bg-slate-800 rounded-full appearance-none accent-emerald-500 cursor-pointer">
+    <section id="plans" class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+        <div class="glass p-10 border-slate-800">
+            <h4 class="text-2xl font-black uppercase italic mb-6 text-emerald-500">One-Time</h4>
+            <div class="flex justify-between items-end mb-8">
+                <span id="bin-qty" class="text-4xl font-black">1 Bin</span>
+                <span id="price-val" class="text-4xl font-black">$15</span>
             </div>
-            <button onclick="requestJob('One-Time')" class="action-btn w-full bg-white text-black py-7 rounded-[2rem] font-black uppercase text-xs hover:bg-emerald-500 hover:text-white transition-all">Request Service</button>
+            <input type="range" id="bin-range" min="1" max="10" value="1" oninput="updatePricing()" class="mb-10 accent-emerald-500">
+            <button onclick="book('One-Time')" class="btn w-full bg-white text-black py-6 rounded-2xl text-xs">Order Now</button>
         </div>
 
-        <div class="glass-card p-12 bg-gradient-to-br from-emerald-950/20 to-slate-900/50 border-emerald-500/20">
-            <div class="flex justify-between items-start mb-10">
-                <h3 class="text-3xl font-black italic uppercase text-emerald-400">Monthly Plan</h3>
-                <span class="px-4 py-1 bg-emerald-500 text-white text-[8px] font-black uppercase rounded-full">Top Choice</span>
+        <div class="glass p-10 border-emerald-500/20">
+            <h4 class="text-2xl font-black uppercase italic mb-2 text-emerald-400">Monthly Plan</h4>
+            <p class="text-[10px] text-slate-500 mb-6 font-bold uppercase">6 Bins Total • 3-Week Cycle</p>
+            <div class="mb-10">
+                <span class="text-7xl font-black">$45</span>
+                <span class="text-slate-500 font-bold uppercase text-sm">/ Mo</span>
             </div>
-            <div class="mb-12">
-                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Starts At Only</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-8xl font-black">$45</span>
-                    <span class="text-slate-500 font-bold uppercase text-sm">/ mo</span>
-                </div>
-            </div>
-            <ul class="space-y-4 mb-12 text-sm font-semibold text-slate-300">
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Monthly scheduled visits</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Heavy odor removal</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Priority support</li>
-            </ul>
-            <button onclick="requestJob('Monthly Plan')" class="action-btn w-full bg-emerald-500 text-white py-7 rounded-[2rem] font-black uppercase text-xs shadow-2xl shadow-emerald-500/40">Sign Up Now</button>
+            <button onclick="book('Monthly Plan')" class="btn w-full bg-emerald-500 text-white py-6 rounded-2xl text-xs">Get Subscription</button>
         </div>
     </section>
 
-    <div id="owner-hub" class="hidden fixed inset-0 bg-slate-950/98 z-[10000] p-4 flex items-center justify-center">
-        <div class="glass-card w-full max-w-6xl h-[90vh] rounded-[3rem] flex flex-col overflow-hidden shadow-emerald-500/10">
-            <div class="p-8 border-b border-slate-800 flex flex-wrap justify-between items-center bg-slate-900/50 gap-6">
-                <h3 class="text-xl font-black uppercase italic">Owner <span class="text-emerald-500">Hub</span></h3>
-                <div class="flex bg-slate-950 p-1.5 rounded-2xl">
-                    <button onclick="switchTab('tab-registry')" id="btn-reg" class="px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all bg-emerald-500 text-white">Registry</button>
-                    <button onclick="switchTab('tab-banner')" id="btn-ban" class="px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-slate-500">Banner</button>
+    <div id="founder-hub" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] p-4 flex items-center justify-center">
+        <div class="glass w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden">
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
+                <div class="flex gap-6">
+                    <button onclick="showTab('tab-registry')" class="text-xs font-black uppercase text-emerald-500">User List</button>
+                    <button onclick="showTab('tab-announcement')" class="text-xs font-black uppercase text-slate-500">Banner Control</button>
                 </div>
-                <button onclick="closeModal('owner-hub')" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:text-red-500"><i class="fa-solid fa-x"></i></button>
+                <button onclick="closeModal('founder-hub')"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-
-            <div class="flex-1 overflow-y-auto p-10">
+            <div class="flex-1 overflow-y-auto p-8">
                 <div id="tab-registry" class="tab-content active space-y-4">
-                    <div class="flex justify-between items-center mb-6">
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Customer Database</p>
-                    </div>
-                    <div id="registry-list" class="grid gap-4">
-                        </div>
+                    <div id="registry-render" class="grid gap-4"></div>
                 </div>
-
-                <div id="tab-banner" class="tab-content">
-                    <div class="max-w-md mx-auto glass-card p-10 rounded-[2.5rem]">
-                        <h4 class="text-center font-black uppercase mb-6">Site Message</h4>
-                        <textarea id="banner-input" rows="4" class="mb-6" placeholder="Type what you want everyone to see..."></textarea>
-                        <div class="grid grid-cols-2 gap-4">
-                            <button onclick="publishBanner()" class="action-btn bg-emerald-500 py-4 rounded-xl text-[10px] font-black uppercase">Post Live</button>
-                            <button onclick="killBanner()" class="action-btn bg-red-600/20 text-red-500 py-4 rounded-xl text-[10px] font-black uppercase">Turn Off</button>
+                <div id="tab-announcement" class="tab-content">
+                    <div class="max-w-md mx-auto glass p-8">
+                        <h3 class="text-center font-black uppercase mb-4">Set Global Banner</h3>
+                        <textarea id="banner-input" placeholder="Type message..."></textarea>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="saveBanner()" class="btn flex-1 bg-emerald-500 py-4 rounded-xl text-[10px]">Post</button>
+                            <button onclick="killBanner()" class="btn flex-1 bg-red-600/20 text-red-500 py-4 rounded-xl text-[10px]">Clear</button>
                         </div>
                     </div>
                 </div>
@@ -213,222 +111,209 @@
         </div>
     </div>
 
-    <div id="login-signup-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] flex items-center justify-center p-6 backdrop-blur-md">
-        <div class="glass-card w-full max-w-sm p-12 rounded-[3.5rem] relative">
-            <button onclick="closeModal('login-signup-modal')" class="absolute top-8 right-10 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            
-            <div class="text-center mb-10">
-                <h3 id="auth-main-title" class="text-3xl font-black uppercase italic">Sign In</h3>
-                <p id="auth-sub-title" class="text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] mt-2">Identification Needed</p>
+    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6">
+        <div class="glass w-full max-w-sm p-10 text-center">
+            <h3 id="auth-title" class="text-3xl font-black uppercase italic mb-8">Sign In</h3>
+            <div id="reg-inputs" class="hidden space-y-3 mb-3">
+                <input id="reg-name" type="text" placeholder="Full Name">
+                <input id="reg-num" type="tel" placeholder="Number">
             </div>
-            
-            <div class="space-y-4">
-                <div id="registration-extra" class="hidden space-y-4">
-                    <input id="new_legal_name" type="text" placeholder="Full Name">
-                    <input id="new_contact_info" type="tel" placeholder="Contact Information">
-                </div>
-                
-                <input id="auth_user" type="text" placeholder="Username">
-                <input id="auth_pass" type="password" placeholder="Passcode">
-                
-                <button onclick="runAuth()" class="action-btn w-full bg-emerald-500 py-6 rounded-2xl font-black text-xs uppercase shadow-xl shadow-emerald-500/20 mt-4">Continue</button>
-                <button onclick="flipAuth()" id="auth-toggle-btn" class="w-full text-[10px] font-bold text-slate-500 uppercase hover:text-emerald-500 py-4">New here? Sign Up</button>
-            </div>
+            <input id="auth-u" type="text" placeholder="Username" class="mb-3">
+            <input id="auth-p" type="password" placeholder="Passcode" class="mb-6">
+            <button onclick="doAuth()" class="btn w-full bg-emerald-500 py-5 rounded-2xl text-xs">Continue</button>
+            <p onclick="toggleAuth()" id="auth-toggle" class="mt-6 text-[10px] text-slate-500 uppercase cursor-pointer font-bold">New Account? Sign Up</p>
         </div>
     </div>
 
-    <div id="my-status-box" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] flex items-center justify-center p-6">
-        <div class="glass-card p-12 rounded-[4rem] text-center w-full max-w-sm border-emerald-500/20">
-            <h3 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-[0.3em]">Your Service Time</h3>
-            <div class="py-12 bg-slate-950 rounded-[2.5rem] border border-white/5 shadow-inner">
-                <p id="status-display" class="text-3xl font-black text-emerald-400 italic">No Service Set</p>
+    <div id="my-time" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6">
+        <div class="glass p-10 text-center w-full max-w-xs border-emerald-500/20">
+            <h3 class="text-[10px] font-black uppercase text-slate-500 mb-6">Cleaning Schedule</h3>
+            <div id="client-schedule-list" class="space-y-2 mb-8 text-sm font-bold">
+                </div>
+            <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800">
+                <p id="timer-txt" class="text-[10px] text-emerald-500 uppercase font-black">Plan: Standard</p>
             </div>
-            <button onclick="closeModal('my-status-box')" class="mt-10 text-[10px] font-black uppercase text-slate-500 hover:text-white">Done</button>
+            <button onclick="closeModal('my-time')" class="mt-8 text-xs font-black text-slate-500 uppercase">Close</button>
         </div>
     </div>
 
     <script>
-        // --- EMAIL SYSTEM CONFIG ---
-        const MAIL_SETTINGS = {
-            sID: "service_6ymb279",
-            tID: "template_pruo22c",
-            pKey: "Or10zkajJK3CNcnic",
-            owner: "favela23@gmail.com"
-        };
-        emailjs.init(MAIL_SETTINGS.pKey);
+        const CFG = { s: "service_6ymb279", t: "template_pruo22c", k: "Or10zkajJK3CNcnic", a: "favela23@gmail.com" };
+        emailjs.init(CFG.k);
 
-        // --- STATE MANAGEMENT ---
-        let userDb = JSON.parse(localStorage.getItem('users')) || [];
-        let activeSession = JSON.parse(localStorage.getItem('session')) || null;
-        let authMode = "login";
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let session = JSON.parse(localStorage.getItem('session')) || null;
+        let isSigningUp = false;
 
-        // --- CORE INITIALIZATION ---
-        function appBoot() {
-            if (activeSession) {
-                document.getElementById('display-user').innerText = activeSession.username;
-                document.getElementById('auth-state-off').classList.add('hidden');
-                document.getElementById('auth-state-on').classList.remove('hidden');
-                document.getElementById('main-signin-btn').classList.add('hidden');
-                
-                if (activeSession.username === "Adrien") {
-                    document.body.classList.add('is-owner');
-                }
-
-                const myInfo = userDb.find(u => u.username === activeSession.username) || activeSession;
-                document.getElementById('status-display').innerText = myInfo.eta || "Standby Mode";
+        function start() {
+            if (session) {
+                document.getElementById('u-display').innerText = session.username;
+                document.getElementById('auth-off').classList.add('hidden');
+                document.getElementById('auth-on').classList.remove('hidden');
+                document.getElementById('hero-login').classList.add('hidden');
+                if (session.username === "Adrien") document.body.classList.add('is-owner');
+                updateClientView();
             }
-
-            const liveBanner = localStorage.getItem('global_message');
-            if (liveBanner) {
-                document.getElementById('announcement-bar').classList.remove('hidden');
-                document.getElementById('banner-content').innerText = liveBanner;
+            const banner = localStorage.getItem('global_banner');
+            if (banner) {
+                document.getElementById('top-banner').classList.remove('hidden');
+                document.getElementById('banner-text').innerText = banner;
             }
-
-            calculatePrice();
-            refreshRegistry();
+            updatePricing();
+            renderUsers();
+            checkSchedules();
         }
 
-        // --- UI LOGIC ---
-        function calculatePrice() {
-            const bin_amount = document.getElementById('bin_amount_slider').value;
-            const price = 15 + (bin_amount - 1) * 10;
-            document.getElementById('bin_amount_label').innerText = `${bin_amount} Bin${bin_amount > 1 ? 's' : ''}`;
-            document.getElementById('price_display').innerText = `$${price}`;
+        function updatePricing() {
+            const v = document.getElementById('bin-range').value;
+            document.getElementById('bin-qty').innerText = v + (v > 1 ? " Bins" : " Bin");
+            document.getElementById('price-val').innerText = "$" + (15 + (v - 1) * 10);
         }
 
-        function flipAuth() {
-            authMode = authMode === "login" ? "signup" : "login";
-            document.getElementById('auth-main-title').innerText = authMode === "signup" ? "Sign Up" : "Sign In";
-            document.getElementById('registration-extra').classList.toggle('hidden', authMode === "login");
-            document.getElementById('auth-toggle-btn').innerText = authMode === "login" ? "New here? Sign Up" : "Back to Sign In";
+        function toggleAuth() {
+            isSigningUp = !isSigningUp;
+            document.getElementById('auth-title').innerText = isSigningUp ? "Sign Up" : "Sign In";
+            document.getElementById('reg-inputs').classList.toggle('hidden', !isSigningUp);
+            document.getElementById('auth-toggle').innerText = isSigningUp ? "Already have an account? Sign In" : "New Account? Sign Up";
         }
 
-        function runAuth() {
-            const uInput = document.getElementById('auth_user').value.trim();
-            const pInput = document.getElementById('auth_pass').value.trim();
-
-            if (authMode === "login") {
-                if (uInput === "Adrien" && pInput === "favela23") return finishAuth({username: "Adrien", name: "Owner"});
-                const matched = userDb.find(u => u.username === uInput && u.password === pInput);
-                if (matched) finishAuth(matched); else alert("Invalid username or passcode.");
+        function doAuth() {
+            const u = document.getElementById('auth-u').value.trim();
+            const p = document.getElementById('auth-p').value.trim();
+            if (!isSigningUp) {
+                if (u === "Adrien" && p === "favela23") return login({username:"Adrien", name:"Owner"});
+                const user = users.find(x => x.username === u && x.password === p);
+                if (user) login(user); else alert("Login Failed.");
             } else {
-                const fName = document.getElementById('new_legal_name').value.trim();
-                const cInfo = document.getElementById('new_contact_info').value.trim();
-                if (!uInput || !pInput || !fName) return alert("Please fill everything in.");
-                
-                const userProfile = { 
-                    username: uInput, 
-                    password: pInput, 
-                    name: fName, 
-                    contact_information: cInfo, 
-                    eta: "" 
-                };
-                userDb.push(userProfile);
-                localStorage.setItem('users', JSON.stringify(userDb));
-                finishAuth(userProfile);
+                const n = document.getElementById('reg-name').value.trim();
+                const num = document.getElementById('reg-num').value.trim();
+                if (!u || !p || !n) return alert("Fill everything!");
+                const newUser = { username: u, password: p, name: n, number: num, plan: "One-Time", schedule: [], expiry: "" };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                login(newUser);
             }
         }
 
-        function finishAuth(obj) {
-            localStorage.setItem('session', JSON.stringify(obj));
-            location.reload();
-        }
-
-        function signOut() { localStorage.removeItem('session'); location.reload(); }
-
-        // --- SERVICE LOGIC ---
-        async function requestJob(planName) {
-            if (!activeSession) return openModal('login-signup-modal');
-            const loc = prompt("Street Address for Service:");
-            if (!loc) return;
-
-            const profile = userDb.find(u => u.username === activeSession.username) || activeSession;
-            const bin_amount = planName === "Monthly Plan" ? "Subscription" : document.getElementById('bin_amount_slider').value;
-            const finalPrice = planName === "Monthly Plan" ? "$45" : document.getElementById('price_display').innerText;
+        async function book(tier) {
+            if (!session) return openModal('auth-modal');
+            const addr = prompt("Enter Service Address:");
+            if (!addr) return;
+            const profile = users.find(u => u.username === session.username) || session;
+            const price = tier === "Monthly Plan" ? "$45" : document.getElementById('price-val').innerText;
 
             try {
-                await emailjs.send(MAIL_SETTINGS.sID, MAIL_SETTINGS.tID, {
-                    to_email: MAIL_SETTINGS.owner,
+                await emailjs.send(CFG.s, CFG.t, {
+                    to_email: CFG.a,
                     legal_name: profile.name,
-                    contact_information: profile.contact_information, // Updated naming
-                    user_name: activeSession.username,
-                    address: loc,
-                    plan: planName,
-                    price: finalPrice,
-                    bin_amount: bin_amount // Updated naming
+                    number: profile.number,
+                    user_name: session.username,
+                    address: addr,
+                    plan: tier,
+                    price: price,
+                    bin_amount: tier === "Monthly Plan" ? "6 (Subscription)" : document.getElementById('bin-range').value
                 });
-                alert("Request Sent! Adrien will be in touch.");
-            } catch(e) { alert("Sending Failed."); }
+                alert("Order sent to Adrien!");
+            } catch (e) { alert("Error!"); }
         }
 
         // --- OWNER COMMANDS ---
-        function refreshRegistry() {
-            const listArea = document.getElementById('registry-list');
-            if (!listArea) return;
-            if (userDb.length === 0) {
-                listArea.innerHTML = `<p class="text-center py-10 text-slate-600 text-xs font-bold uppercase tracking-widest">No Clients Registered</p>`;
-                return;
-            }
-
-            listArea.innerHTML = userDb.map(u => `
-                <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-4">
+        function renderUsers() {
+            const list = document.getElementById('registry-render');
+            if (!list) return;
+            list.innerHTML = users.map(u => `
+                <div class="glass p-6 flex flex-wrap justify-between items-center gap-4">
                     <div>
-                        <p class="font-black text-white text-sm uppercase">${u.username}</p>
-                        <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">${u.name} • ${u.contact_information}</p>
+                        <p class="font-black text-sm uppercase">${u.username} <span class="text-[9px] text-emerald-500">(${u.plan})</span></p>
+                        <p class="text-[10px] font-bold text-slate-500">${u.name} • ${u.number}</p>
+                        ${u.expiry ? `<p class="text-[8px] text-red-400 uppercase mt-1">Expires: ${u.expiry}</p>` : ''}
                     </div>
-                    <div class="flex gap-2 items-center ml-auto">
-                        <input type="datetime-local" id="time_pick_${u.username}" class="w-32 py-1 px-2 text-[10px]">
-                        <button onclick="updateETA('${u.username}')" class="action-btn bg-emerald-500 p-3 rounded-xl text-white"><i class="fa-solid fa-check"></i></button>
-                        <button onclick="expelUser('${u.username}')" class="action-btn bg-red-600/10 text-red-500 p-3 rounded-xl hover:bg-red-600 hover:text-white transition-all"><i class="fa-solid fa-trash"></i></button>
+                    <div class="flex gap-2 items-center">
+                        <button onclick="setMonthly('${u.username}')" class="bg-blue-600/20 text-blue-400 p-2 rounded-lg text-[9px] font-bold uppercase">Upgrade</button>
+                        <input type="datetime-local" id="date-${u.username}" class="w-32 py-1 px-2 text-[10px]">
+                        <button onclick="addSchedule('${u.username}')" class="bg-emerald-500 p-2 rounded-lg"><i class="fa-solid fa-plus"></i></button>
+                        <button onclick="trash('${u.username}')" class="text-red-500 ml-2"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function updateETA(un) {
-            const rawVal = document.getElementById(`time_pick_${un}`).value;
-            if (!rawVal) return;
-            const dateObj = new Date(rawVal);
-            const timeString = dateObj.toLocaleDateString() + " @ " + dateObj.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        function setMonthly(un) {
+            const i = users.findIndex(u => u.username === un);
+            users[i].plan = "Monthly Plan";
+            // Set expiry for 1 month from now
+            let d = new Date();
+            d.setMonth(d.getMonth() + 1);
+            users[i].expiry = d.toLocaleDateString();
+            localStorage.setItem('users', JSON.stringify(users));
+            renderUsers();
+            alert(`${un} is now Monthly. Ends on ${users[i].expiry}`);
+        }
+
+        async function addSchedule(un) {
+            const val = document.getElementById(`date-${un}`).value;
+            if (!val) return;
+            const i = users.findIndex(u => u.username === un);
+            users[i].schedule.push(val);
+            localStorage.setItem('users', JSON.stringify(users));
+            renderUsers();
+            alert("Schedule Added!");
             
-            const idx = userDb.findIndex(u => u.username === un);
-            userDb[idx].eta = timeString;
-            localStorage.setItem('users', JSON.stringify(userDb));
-            alert("Schedule Updated for " + un);
-            refreshRegistry();
+            // Email Adrien about the new scheduled task
+            await emailjs.send(CFG.s, CFG.t, {
+                to_email: CFG.a,
+                legal_name: "SYSTEM ALERT",
+                address: "New Schedule Created for " + un,
+                plan: "Task Scheduled",
+                price: "N/A",
+                bin_amount: "N/A",
+                eta_request: val
+            });
         }
 
-        function publishBanner() {
-            const val = document.getElementById('banner-input').value;
-            localStorage.setItem('global_message', val);
-            location.reload();
+        function checkSchedules() {
+            const today = new Date().toISOString().split('T')[0];
+            users.forEach(u => {
+                // Check for cleaning day
+                u.schedule.forEach(s => {
+                    if (s.startsWith(today)) {
+                        console.log("Job Today: " + u.username);
+                        // You could trigger an email here too
+                    }
+                });
+                // Check for plan expiry
+                if (u.expiry && new Date(u.expiry) < new Date()) {
+                    u.plan = "One-Time";
+                    u.expiry = "";
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+            });
         }
 
-        function killBanner() {
-            localStorage.removeItem('global_message');
-            location.reload();
+        function updateClientView() {
+            const profile = users.find(u => u.username === session.username);
+            if (!profile) return;
+            const list = document.getElementById('client-schedule-list');
+            list.innerHTML = profile.schedule.length > 0 
+                ? profile.schedule.map(s => `<div><i class="fa-solid fa-calendar-day text-emerald-500 mr-2"></i> ${new Date(s).toLocaleString()}</div>`).join('')
+                : "No cleans scheduled.";
+            document.getElementById('timer-txt').innerText = `Plan: ${profile.plan} ${profile.expiry ? '(Ends: ' + profile.expiry + ')' : ''}`;
         }
 
-        function expelUser(un) {
-            if (confirm("Delete " + un + "?")) {
-                userDb = userDb.filter(u => u.username !== un);
-                localStorage.setItem('users', JSON.stringify(userDb));
-                refreshRegistry();
-            }
-        }
-
-        // --- UTILS ---
-        function toggleUserMenu() { document.getElementById('user-dropdown').classList.toggle('hidden'); }
+        function saveBanner() { localStorage.setItem('global_banner', document.getElementById('banner-input').value); location.reload(); }
+        function killBanner() { localStorage.removeItem('global_banner'); location.reload(); }
+        function login(o) { localStorage.setItem('session', JSON.stringify(o)); location.reload(); }
+        function logout() { localStorage.removeItem('session'); location.reload(); }
+        function toggleMenu() { document.getElementById('u-menu').classList.toggle('hidden'); }
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('btn-reg').className = id === 'tab-registry' ? 'px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-slate-500';
-            document.getElementById('btn-ban').className = id === 'tab-banner' ? 'px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-slate-500';
         }
+        function trash(un) { if(confirm("Delete?")) { users = users.filter(u => u.username !== un); localStorage.setItem('users', JSON.stringify(users)); renderUsers(); } }
 
-        appBoot();
+        start();
     </script>
 </body>
 </html>
