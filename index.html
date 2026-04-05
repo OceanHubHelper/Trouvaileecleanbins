@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Clean Bins | Elite Sanitization</title>
+    <title>Trouvaille Clean Bins | Founder Edition</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -15,25 +15,19 @@
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
         .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border: 1px solid #f1f5f9; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); z-index: 110; }
         .show { display: block !important; }
+        
+        /* The Secret Sauce for the Owner Panel */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
+        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        #announcement-bar { display: none; }
-        #announcement-bar.active { display: flex; }
-        input[type=range] { -webkit-appearance: none; background: #e2e8f0; border-radius: 99px; height: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%; background: #10b981; cursor: pointer; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 
 <body class="tail-container bg-[#F8FAFC] text-slate-900 scroll-smooth">
 
-<div id="announcement-bar" class="bg-emerald-600 text-white px-6 py-3 font-black text-xs uppercase tracking-widest justify-between items-center sticky top-0 z-[120]">
-    <span id="announcement-text"></span>
-    <button onclick="deleteAnnouncement()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
-</div>
-
-<nav class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
+<nav class="bg-white border-b border-slate-100 sticky top-0 z-[100]">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
             <img src="https://i.imgur.com/syOOmTK.png" alt="Logo" class="w-10 h-10">
@@ -41,8 +35,8 @@
         </div>
 
         <div class="relative">
-            <button onclick="toggleDropdown(event)" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
-                <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-extrabold text-xs uppercase">G</div>
+            <button onclick="toggleDropdown(event)" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white">
+                <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-extrabold text-xs">G</div>
                 <span id="nav-user-name" class="text-sm font-bold text-slate-700 italic">Guest</span>
                 <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
             </button>
@@ -50,9 +44,6 @@
             <div id="profileDropdown" class="dropdown-content overflow-hidden">
                 <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-black text-emerald-600 border-b">
                     <i class="fa-solid fa-crown mr-2"></i> FOUNDER PANEL
-                </button>
-                <button id="nav-profile-btn" onclick="openModal('profile-modal')" class="hidden w-full text-left px-5 py-4 hover:bg-slate-50 text-sm font-bold text-slate-600 border-b">
-                    <i class="fa-solid fa-id-card mr-2"></i> My Profile
                 </button>
                 <button id="logout-btn" onclick="logout()" class="hidden w-full text-left px-5 py-4 hover:bg-red-50 text-sm font-bold text-red-500">
                     <i class="fa-solid fa-power-off mr-2"></i> Sign Out
@@ -65,107 +56,51 @@
     </div>
 </nav>
 
-<section class="hero-gradient pt-28 pb-40 text-center text-white px-6">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase italic">Elite Bin Cleaning</h1>
-        <p class="text-lg text-slate-300 mb-12 max-w-xl mx-auto font-medium italic">High-pressure steam sanitization. Authenticated users only.</p>
-        <button onclick="checkAuthAndScroll()" class="bg-emerald-500 hover:bg-emerald-400 text-white px-14 py-5 rounded-2xl font-black shadow-2xl transition-all">VIEW PRICING</button>
-    </div>
+<section class="hero-gradient pt-20 pb-32 text-center text-white px-6">
+    <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase italic">Elite Bin Care</h1>
+    <p class="text-slate-300 mb-8 italic">Sanitize your bins. Protect your home.</p>
+    <button onclick="checkAuthAndScroll()" class="bg-emerald-500 px-10 py-4 rounded-xl font-black">GET STARTED</button>
 </section>
 
-<section id="plans" class="py-24 max-w-7xl mx-auto px-6 -mt-32">
-    <div class="grid lg:grid-cols-3 gap-10">
-        <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col">
-            <h4 class="text-slate-400 font-bold uppercase text-[10px] mb-2 tracking-widest">On-Demand</h4>
-            <div id="single-price-display" class="text-5xl font-black text-slate-900 mb-4">$15</div>
-            <p class="text-slate-500 text-sm mb-6 font-medium italic">One-time steam deep clean for your bins.</p>
-            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updateSinglePrice()" class="w-full mb-4">
-            <p id="bin-count-label" class="text-center text-sm font-black text-emerald-600 mb-6 italic">1 Bin Selected</p>
-            <button onclick="openBookingForm('Single Wash', true)" class="mt-auto w-full py-5 bg-slate-900 text-white rounded-2xl font-black">Book Now</button>
+<div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[500] p-4">
+    <div class="bg-white rounded-[2rem] max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="p-6 border-b flex justify-between items-center bg-slate-50">
+            <h2 class="font-black uppercase italic text-emerald-600">Founder Database</h2>
+            <button onclick="closeModal('owner-panel')" class="text-slate-400 hover:text-red-500 text-2xl"><i class="fa-solid fa-circle-xmark"></i></button>
         </div>
-        <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-2xl border-4 border-emerald-500 transform lg:scale-110 z-10 flex flex-col text-white">
-            <h4 class="text-emerald-400 font-bold uppercase text-[10px] mb-2 tracking-widest">Monthly Elite</h4>
-            <div class="text-6xl font-black mb-4">$20</div>
-            <p class="text-slate-400 text-sm mb-10 font-medium italic">Full sanitization every 4 weeks. No smells, no germs.</p>
-            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="mt-auto w-full py-5 bg-emerald-500 text-white rounded-2xl font-black">Subscribe</button>
-        </div>
-        <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col">
-            <h4 class="text-slate-400 font-bold uppercase text-[10px] mb-2 tracking-widest">Bi-Monthly</h4>
-            <div class="text-5xl font-black text-slate-900 mb-4">$55</div>
-            <p class="text-slate-500 text-sm mb-10 font-medium italic">Balanced protection every 8 weeks.</p>
-            <button onclick="openBookingForm('Bi-Monthly Elite', false, 55)" class="mt-auto w-full py-5 bg-slate-100 text-slate-900 rounded-2xl font-black">Select</button>
-        </div>
-    </div>
-</section>
-
-<div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[300] p-4">
-    <div class="bg-white p-10 rounded-[3rem] max-w-md w-full relative shadow-2xl">
-        <h2 class="text-3xl font-black mb-2 italic uppercase">Finalize Mission</h2>
-        <p id="plan-display" class="text-emerald-600 font-black text-xs mb-8 uppercase"></p>
-        <div class="space-y-4">
-            <input id="book-address" placeholder="Service Address" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
-            <button id="confirm-btn" onclick="executeOrder()" class="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black uppercase italic shadow-xl">Confirm & Send Email</button>
-        </div>
-        <button onclick="closeModal('booking-modal')" class="absolute top-10 right-10 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
-    </div>
-</div>
-
-<div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4">
-    <div class="bg-white rounded-[3rem] max-w-5xl w-full max-h-[90vh] flex flex-col overflow-hidden">
-        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <div class="flex gap-4">
-                <button onclick="switchTab('user-tab')" id="user-tab-btn" class="bg-emerald-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase italic">Database</button>
-                <button onclick="switchTab('ann-tab')" id="ann-tab-btn" class="bg-slate-200 text-slate-600 px-6 py-2 rounded-full font-black text-xs uppercase italic">Broadcast</button>
-            </div>
-            <button onclick="closeModal('owner-panel')" class="text-slate-300"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-8">
-            <div id="user-tab" class="tab-content active">
-                <table class="w-full text-left">
-                    <thead class="text-[10px] uppercase font-black text-slate-400">
-                        <tr><th class="p-5">User</th><th class="p-5">Email</th><th class="p-5 text-right">Actions</th></tr>
-                    </thead>
-                    <tbody id="owner-user-list"></tbody>
-                </table>
-            </div>
-            <div id="ann-tab" class="tab-content">
-                <textarea id="ann-input" placeholder="Message..." class="w-full p-5 bg-slate-50 rounded-2xl h-32 mb-4 font-bold"></textarea>
-                <button onclick="saveAnnouncement()" class="bg-emerald-600 text-white px-8 py-4 rounded-xl font-black uppercase">Post Announcement</button>
-            </div>
+        <div class="flex-1 overflow-y-auto p-6">
+            <table class="w-full text-left">
+                <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
+                    <tr><th class="pb-4">Username</th><th class="pb-4">Email</th><th class="pb-4 text-right">Action</th></tr>
+                </thead>
+                <tbody id="owner-user-list">
+                    </tbody>
+            </table>
         </div>
     </div>
 </div>
 
-<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-md flex items-center justify-center z-[250] p-4">
-    <div class="bg-white p-10 rounded-[3rem] max-w-sm w-full relative">
-        <h2 id="auth-title" class="text-3xl font-black mb-8 italic uppercase">Sign In</h2>
+<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/95 flex items-center justify-center z-[600] p-4">
+    <div class="bg-white p-8 rounded-[2rem] max-w-sm w-full relative">
+        <h2 id="auth-title" class="text-2xl font-black mb-6 uppercase italic">Sign In</h2>
         <div class="space-y-4">
-            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
-            <input id="auth-email" placeholder="Email (For Notifications)" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none hidden">
-            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
-            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Continue</button>
-            <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 text-[10px] font-black uppercase tracking-widest mt-4">Create Account</button>
+            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none">
+            <input id="auth-email" placeholder="Email" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none hidden">
+            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none">
+            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase">Continue</button>
+            <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 text-xs font-bold uppercase mt-4">Create Account</button>
         </div>
+        <button onclick="closeModal('auth-modal')" class="absolute top-6 right-6 text-slate-300">×</button>
     </div>
 </div>
 
 <script>
-    // --- CREDENTIALS ---
     emailjs.init("v-4sLf-EzCLBYcWe7");
-    const EMAIL_SERVICE = "Service_6ymb279";
-    const OWNER_TEMPLATE = "template_pruo22c";
-    const CUSTOMER_TEMPLATE = "template_4hi1opb";
-    const OWNER_DATA = { user: "Adrien", pass: "favela23" };
+    const OWNER_ID = "Adrien";
+    const OWNER_PASS = "favela23";
 
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isLoginMode = true;
-    let currentPlan = "";
-
-    // --- NAVIGATION & UI ---
-    function checkAuthAndScroll() {
-        if (!currentUser) openModal('auth-modal');
-        else document.getElementById('plans').scrollIntoView({behavior:'smooth'});
-    }
 
     function toggleDropdown(e) { e.stopPropagation(); document.getElementById("profileDropdown").classList.toggle("show"); }
     window.onclick = () => { document.getElementById("profileDropdown").classList.remove('show'); };
@@ -176,107 +111,95 @@
     }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // --- BOOKING LOGIC ---
-    function updateSinglePrice() {
-        const val = document.getElementById('bin-slider').value;
-        document.getElementById('single-price-display').innerText = "$" + (15 + (val - 1) * 10);
-        document.getElementById('bin-count-label').innerText = val + " Bin" + (val > 1 ? "s" : "") + " Selected";
-    }
-
-    function openBookingForm(plan, isSingle) {
-        if (!currentUser) return openModal('auth-modal');
-        currentPlan = isSingle ? `Single Wash (${document.getElementById('bin-slider').value} Bins)` : plan;
-        document.getElementById('plan-display').innerText = currentPlan;
-        openModal('booking-modal');
-    }
-
-    function executeOrder() {
-        const addr = document.getElementById('book-address').value;
-        const btn = document.getElementById('confirm-btn');
-        if (!addr) return alert("Please enter an address.");
-
-        btn.innerText = "PROCESSING...";
-        btn.disabled = true;
-
-        const params = {
-            user_name: currentUser.username,
-            user_email: currentUser.email || "No Email Provided",
-            plan_selected: currentPlan,
-            address: addr,
-            to_email: "favela23@gmail.com" // You can change this to your email
-        };
-
-        // Send to Owner
-        emailjs.send(EMAIL_SERVICE, OWNER_TEMPLATE, params).then(() => {
-            // Send to Customer
-            emailjs.send(EMAIL_SERVICE, CUSTOMER_TEMPLATE, params).then(() => {
-                alert("SUCCESS! Owner notified and confirmation sent to you.");
-                closeModal('booking-modal');
-                location.reload();
-            });
-        }).catch(err => {
-            alert("Email Error. Check Console.");
-            console.error(err);
-            btn.innerText = "CONFIRM & SEND";
-            btn.disabled = false;
-        });
-    }
-
-    // --- AUTH ---
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById('auth-title').innerText = isLoginMode ? "Sign In" : "Register";
         document.getElementById('auth-email').classList.toggle('hidden', isLoginMode);
+        document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Create Account" : "I have an account";
     }
 
     function handleAuth() {
         const u = document.getElementById('auth-user').value.trim();
         const p = document.getElementById('auth-pass').value.trim();
         const e = document.getElementById('auth-email').value.trim();
+        
+        // Load the most recent user list
         let users = JSON.parse(localStorage.getItem('users')) || [];
 
         if (isLoginMode) {
-            if (u === OWNER_DATA.user && p === OWNER_DATA.pass) return login({ username: u, isOwner: true });
+            // Check Owner First
+            if (u === OWNER_ID && p === OWNER_PASS) {
+                return login({ username: u, isOwner: true });
+            }
+            // Check Users
             const found = users.find(x => x.username === u && x.password === p);
-            if (found) login(found); else alert("Wrong credentials.");
+            if (found) login(found); else alert("Invalid Login.");
         } else {
-            if (users.find(x => x.username === u)) return alert("Taken.");
-            const newUser = { username: u, password: p, email: e, plan: "New" };
+            // Register
+            if (!u || !p || !e) return alert("Fill all fields.");
+            if (users.find(x => x.username === u)) return alert("Username taken.");
+            
+            const newUser = { username: u, password: p, email: e };
             users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('users', JSON.stringify(users)); // Save to master list
             login(newUser);
         }
     }
-    function login(u) { localStorage.setItem('loggedUser', JSON.stringify(u)); location.reload(); }
-    function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
 
-    // --- DATABASE ---
+    function login(u) {
+        localStorage.setItem('loggedUser', JSON.stringify(u));
+        location.reload(); 
+    }
+
+    function logout() {
+        localStorage.removeItem('loggedUser');
+        location.reload();
+    }
+
     function renderOwnerList() {
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        document.getElementById('owner-user-list').innerHTML = users.map(u => `
-            <tr class="border-b">
-                <td class="p-5 font-black uppercase text-xs">${u.username}</td>
-                <td class="p-5 text-slate-400 font-bold text-xs">${u.email || 'None'}</td>
-                <td class="p-5 text-right"><button onclick="deleteUser('${u.username}')" class="text-red-500 font-black text-xs uppercase">Delete</button></td>
-            </tr>`).join('');
+        const list = document.getElementById('owner-user-list');
+        
+        if (users.length === 0) {
+            list.innerHTML = `<tr><td colspan="3" class="py-10 text-center text-slate-400 font-bold">No registered accounts found.</td></tr>`;
+            return;
+        }
+
+        list.innerHTML = users.map(u => `
+            <tr class="border-b hover:bg-slate-50 transition-colors">
+                <td class="py-4 font-black uppercase text-xs">${u.username}</td>
+                <td class="py-4 text-slate-400 font-bold text-xs">${u.email}</td>
+                <td class="py-4 text-right">
+                    <button onclick="deleteUser('${u.username}')" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-red-500 hover:text-white">Delete</button>
+                </td>
+            </tr>
+        `).join('');
     }
-    function deleteUser(u) {
-        let users = JSON.parse(localStorage.getItem('users'));
-        localStorage.setItem('users', JSON.stringify(users.filter(x => x.username !== u)));
-        renderOwnerList();
+
+    function deleteUser(username) {
+        if (!confirm(`Permanently delete ${username}?`)) return;
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        const updated = users.filter(x => x.username !== username);
+        localStorage.setItem('users', JSON.stringify(updated));
+        renderOwnerList(); // Refresh list immediately
     }
 
     function init() {
         if (currentUser) {
             document.getElementById('nav-user-name').innerText = currentUser.username;
-            document.getElementById('nav-avatar').innerText = currentUser.username[0];
+            document.getElementById('nav-avatar').innerText = currentUser.username[0].toUpperCase();
             document.getElementById('login-btn').classList.add('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
-            document.getElementById('nav-profile-btn').classList.remove('hidden');
-            if (currentUser.isOwner) document.body.classList.add('is-owner');
+            
+            // Critical: Enable Owner Panel for Adrien
+            if (currentUser.username === OWNER_ID || currentUser.isOwner === true) {
+                document.body.classList.add('is-owner');
+            }
         }
     }
+
     init();
 </script>
+
 </body>
 </html>
