@@ -41,10 +41,10 @@
                     <img id="nav-img" src="https://ui-avatars.com/api/?name=?&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover">
                 </button>
                 <div id="drop" class="dropdown overflow-hidden">
-                    <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20 uppercase">FOUNDER PANEL</button>
-                    <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold border-b border-slate-800/20 uppercase">Settings</button>
-                    <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-500/10 text-[10px] font-bold text-red-500 uppercase">Sign Out</button>
-                    <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold text-emerald-500 uppercase">Sign In</button>
+                    <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20 uppercase tracking-widest">Founder Panel</button>
+                    <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold border-b border-slate-800/20 uppercase tracking-widest">Settings</button>
+                    <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-500/10 text-[10px] font-bold text-red-500 uppercase tracking-widest">Sign Out</button>
+                    <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Sign In</button>
                 </div>
             </div>
         </div>
@@ -53,8 +53,8 @@
 
 <header class="pt-32 pb-20 px-6 text-center">
     <h2 class="text-6xl md:text-8xl font-black italic uppercase leading-none mb-6">Pristine Bins.<br><span class="text-emerald-500">Elite Care.</span></h2>
-    <p class="opacity-60 text-lg mb-10 max-w-xl mx-auto font-medium">Professional bin sanitization for your home. Odor-free, bacteria-free, hassle-free.</p>
-    <button onclick="document.getElementById('process').scrollIntoView()" class="bg-emerald-500 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm shadow-xl hover:scale-105">Learn More</button>
+    <p class="opacity-60 text-lg mb-10 max-w-xl mx-auto font-medium">Professional bin sanitization for your home. Odor-free and hassle-free.</p>
+    <button onclick="document.getElementById('process').scrollIntoView()" class="bg-emerald-500 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm shadow-xl hover:scale-105">Get Started</button>
 </header>
 
 <section id="client-dashboard" class="hidden py-10 max-w-4xl mx-auto px-6">
@@ -62,11 +62,11 @@
         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
                 <h3 class="text-xs font-black uppercase tracking-[0.2em] text-emerald-500 mb-2">Service Status</h3>
-                <h4 id="dash-welcome" class="text-2xl font-black italic uppercase">Welcome back!</h4>
+                <h4 id="dash-welcome" class="text-2xl font-black italic uppercase">Welcome!</h4>
             </div>
             <div class="text-center md:text-right">
                 <p class="text-[10px] font-bold uppercase opacity-50 mb-1">Next Scheduled Wash</p>
-                <div id="dash-time" class="text-xl font-black text-emerald-500">Not Scheduled Yet</div>
+                <div id="dash-time" class="text-xl font-black text-emerald-500">Pending Assignment</div>
             </div>
         </div>
     </div>
@@ -76,29 +76,29 @@
     <h3 class="text-3xl font-black uppercase italic mb-16">The Process</h3>
     <div class="grid md:grid-cols-3 gap-12">
         <div class="glass-card p-8 rounded-[2rem]">
-            <i class="fa-solid fa-calendar-check text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2 uppercase">Schedule</h4>
-            <p class="text-sm opacity-60">We coordinate with your local trash pickup schedule.</p>
+            <i class="fa-solid fa-truck-pickup text-4xl text-emerald-500 mb-6"></i>
+            <h4 class="font-bold mb-2 uppercase">Curb-Side Pickup</h4>
+            <p class="text-sm opacity-60">We arrive on your trash collection day to ensure your bins are empty.</p>
         </div>
         <div class="glass-card p-8 rounded-[2rem]">
-            <i class="fa-solid fa-hand-sparkles text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2 uppercase">Sanitize</h4>
-            <p class="text-sm opacity-60">Eco-friendly deep cleaning to neutralize 99% of germs.</p>
+            <i class="fa-solid fa-soap text-4xl text-emerald-500 mb-6"></i>
+            <h4 class="font-bold mb-2 uppercase">Deep Sanitize</h4>
+            <p class="text-sm opacity-60">Professional cleaning that eliminates grime and germs effectively.</p>
         </div>
         <div class="glass-card p-8 rounded-[2rem]">
-            <i class="fa-solid fa-leaf text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2 uppercase">Refresh</h4>
-            <p class="text-sm opacity-60">Natural deodorizers leave your bins smelling like new.</p>
+            <i class="fa-solid fa-wind text-4xl text-emerald-500 mb-6"></i>
+            <h4 class="font-bold mb-2 uppercase">Natural Deodorize</h4>
+            <p class="text-sm opacity-60">We apply eco-friendly formulas to keep your bins smelling fresh.</p>
         </div>
     </div>
 </section>
 
 <section class="py-24 max-w-6xl mx-auto px-6">
-    <h3 class="text-center text-3xl font-black uppercase italic mb-16">Client Feedback</h3>
+    <h3 class="text-center text-3xl font-black uppercase italic mb-16">Reviews</h3>
     <div class="grid md:grid-cols-3 gap-6">
-        <div class="glass-card p-8 rounded-3xl text-sm italic">"Exactly what my garage needed. No more smell!" - Mike R.</div>
-        <div class="glass-card p-8 rounded-3xl text-sm italic">"Quick, professional, and eco-friendly. 5 stars." - Sarah L.</div>
-        <div class="glass-card p-8 rounded-3xl text-sm italic">"The monthly plan is a game changer." - Jason K.</div>
+        <div class="glass-card p-8 rounded-3xl text-sm italic">"Garage finally smells clean. Highly recommend!" - Mike R.</div>
+        <div class="glass-card p-8 rounded-3xl text-sm italic">"Professional service and great results." - Sarah L.</div>
+        <div class="glass-card p-8 rounded-3xl text-sm italic">"The monthly plan keeps the smells away for good." - Jason K.</div>
     </div>
 </section>
 
@@ -108,7 +108,7 @@
         <div class="glass-card p-12 rounded-[3rem] text-left">
             <span class="text-emerald-500 font-black text-[10px] uppercase tracking-widest">On-Demand</span>
             <h4 class="text-2xl font-black uppercase italic mt-1 mb-4">Single Wash</h4>
-            <p class="opacity-60 text-sm mb-8">Perfect for seasonal deep-cleans or clearing out tough grime after a major cleanup.</p>
+            <p class="opacity-60 text-sm mb-8">One-time deep clean for seasonal buildup or post-event waste.</p>
             <div class="mb-8">
                 <div class="flex justify-between items-end mb-4">
                     <span id="bin-display" class="text-3xl font-black">1 Bin</span>
@@ -116,21 +116,21 @@
                 </div>
                 <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updPrc()">
             </div>
-            <button onclick="book('Single Wash')" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase text-xs hover:bg-emerald-400">Order Single</button>
+            <button onclick="book('Single Wash')" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase text-xs">Book Single</button>
         </div>
         <div class="bg-emerald-600 p-12 rounded-[3rem] text-left text-white shadow-2xl">
             <span class="text-emerald-200 font-black text-[10px] uppercase tracking-widest">Elite Subscription</span>
             <h4 class="text-2xl font-black uppercase italic mt-1 mb-4">Monthly Elite</h4>
-            <p class="text-emerald-50 text-sm mb-12">Total maintenance. We visit every month to keep your bins sanitized and fresh year-round.</p>
+            <p class="text-emerald-50 text-sm mb-12">Washed every month to keep your bins sanitized year-round.</p>
             <div class="text-5xl font-black mb-8">$20 <span class="text-sm font-normal opacity-70">/mo</span></div>
-            <button onclick="book('Monthly Elite')" class="w-full bg-white text-emerald-600 py-5 rounded-2xl font-black uppercase text-xs hover:bg-emerald-50">Join Membership</button>
+            <button onclick="book('Monthly Elite')" class="w-full bg-white text-emerald-600 py-5 rounded-2xl font-black uppercase text-xs">Subscribe</button>
         </div>
     </div>
 </section>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-black/90 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">Access</h2>
+        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">System Access</h2>
         <div class="space-y-3">
             <input id="a-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             <div id="reg-fields" class="hidden space-y-3">
@@ -139,7 +139,7 @@
             </div>
             <input id="a-p" type="password" placeholder="Passcode" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             <button onclick="auth()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Continue</button>
-            <button onclick="tAuth()" id="a-tgl" class="w-full opacity-50 text-[10px] font-black uppercase mt-4">Create Account</button>
+            <button onclick="tAuth()" id="a-tgl" class="w-full opacity-50 text-[10px] font-black uppercase mt-4">New? Create Account</button>
         </div>
         <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
@@ -151,12 +151,12 @@
         <div class="space-y-4">
             <div class="flex items-center gap-4 mb-4">
                 <img id="edit-preview" src="" class="w-20 h-20 rounded-full object-cover border-4 border-emerald-500">
-                <input id="p-img" placeholder="Avatar Image URL" class="flex-1 bg-inherit border border-slate-800/40 p-4 rounded-xl text-xs">
+                <input id="p-img" placeholder="Avatar URL" class="flex-1 bg-inherit border border-slate-800/40 p-4 rounded-xl text-xs">
             </div>
             <input id="p-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
             <input id="p-e" placeholder="Email" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
             <input id="p-ph" placeholder="Phone" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
-            <button onclick="saveProfile()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Save Changes</button>
+            <button onclick="saveProfile()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Update Account</button>
         </div>
         <button onclick="closeM('profile-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
@@ -164,9 +164,9 @@
 
 <div id="book-modal" class="hidden fixed inset-0 bg-black/95 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 class="text-2xl font-black uppercase italic mb-2">Book Wash</h2>
+        <h2 class="text-2xl font-black uppercase italic mb-2">Finalize Wash</h2>
         <p id="b-summary" class="text-emerald-500 font-black text-xs uppercase mb-8"></p>
-        <input id="b-addr" placeholder="Service Address" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
+        <input id="b-addr" placeholder="Address for Service" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
         <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Confirm Request</button>
         <button onclick="closeM('book-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
@@ -175,13 +175,13 @@
 <div id="owner-panel" class="hidden fixed inset-0 bg-black/98 z-[500] flex items-center justify-center p-4">
     <div class="glass-card rounded-[3rem] w-full max-w-6xl h-[80vh] flex flex-col overflow-hidden">
         <div class="p-8 border-b border-slate-800/20 flex justify-between items-center">
-            <h2 class="text-sm font-black uppercase text-emerald-500 italic">Trouvaille Founder Panel</h2>
+            <h2 class="text-sm font-black uppercase text-emerald-500 italic">User Database</h2>
             <button onclick="closeM('owner-panel')" class="opacity-40 text-3xl">&times;</button>
         </div>
         <div class="flex-1 overflow-y-auto p-8">
             <table class="w-full text-left text-xs">
                 <thead class="uppercase opacity-40 font-black border-b border-slate-800/20">
-                    <tr><th class="pb-6">User</th><th class="pb-6">Contact</th><th class="pb-6">Plan</th><th class="pb-6">Set Schedule</th><th class="pb-6 text-right">Actions</th></tr>
+                    <tr><th class="pb-6">User</th><th class="pb-6">Contact</th><th class="pb-6">Plan</th><th class="pb-6">Schedule</th><th class="pb-6 text-right">Delete</th></tr>
                 </thead>
                 <tbody id="db-list"></tbody>
             </table>
@@ -190,11 +190,11 @@
 </div>
 
 <script>
-    // FIXED EMAILJS CONFIG
-    const E_PUB = "v-4sLf-EzCLBYcWe7"; // Correct Public Key
-    const E_SER = "Service_6ymb279";    // Correct Service ID
-    const T_OWN = "template_pruo22c";
-    const T_CUS = "template_4hi1opb";
+    // FIXED EMAILJS CONFIG FROM YOUR DASHBOARD
+    const E_PUB = "v-4sLf-EzCLBYcWe7"; 
+    const E_SER = "service_6ymb279"; // Changed to lowercase 's'
+    const T_OWN = "template_pruo22c"; 
+    const T_CUS = "template_4hi1opb"; 
 
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isLogin = true;
@@ -213,8 +213,8 @@
             document.getElementById('lo-btn').classList.remove('hidden');
             document.getElementById('p-btn').classList.remove('hidden');
             document.getElementById('client-dashboard').classList.remove('hidden');
-            document.getElementById('dash-welcome').innerText = `Welcome back, ${currentUser.username}!`;
-            document.getElementById('dash-time').innerText = currentUser.schedule || "Pending Selection";
+            document.getElementById('dash-welcome').innerText = `Hello, ${currentUser.username}!`;
+            document.getElementById('dash-time').innerText = currentUser.schedule || "Not Assigned Yet";
             
             if(currentUser.username === "Adrien") document.body.classList.add('is-owner');
         }
@@ -237,7 +237,7 @@
         const addr = document.getElementById('b-addr').value;
         const btn = document.getElementById('b-sub');
         if(!addr) return alert("Address required.");
-        btn.innerText = "SENDING..."; btn.disabled = true;
+        btn.innerText = "Processing..."; btn.disabled = true;
 
         const data = {
             user_name: currentUser.username,
@@ -251,11 +251,12 @@
         try {
             await emailjs.send(E_SER, T_OWN, data);
             await emailjs.send(E_SER, T_CUS, data);
-            alert("Booking request sent to Adrien!");
+            alert("Booking request sent! Adrien will contact you soon.");
             location.reload();
         } catch (e) {
-            alert("Email error. Please check your EmailJS dashboard.");
-            btn.innerText = "RETRY"; btn.disabled = false;
+            console.error("EmailJS Error details:", e); // Check browser console for why it fails
+            alert("Email delivery failed. Ensure your Service ID is 'service_6ymb279'. Check console for info.");
+            btn.innerText = "Retry"; btn.disabled = false;
         }
     }
 
@@ -265,10 +266,10 @@
             <tr class="border-b border-slate-800/10">
                 <td class="py-6 font-bold uppercase">${u.username}</td>
                 <td class="py-6 opacity-60">${u.email || u.phone || 'N/A'}</td>
-                <td class="py-6 text-emerald-500 font-black">${u.plan || 'None'}</td>
+                <td class="py-6 text-emerald-500 font-black">${u.plan || 'No Plan'}</td>
                 <td class="py-6">
                     <input type="datetime-local" id="sch-${u.username}" value="${u.schedule_val || ''}" class="bg-inherit border border-slate-800/20 p-2 rounded text-[10px]">
-                    <button onclick="setSchedule('${u.username}')" class="bg-emerald-500 text-white p-2 rounded ml-1 text-[10px] font-black uppercase">Set</button>
+                    <button onclick="setSchedule('${u.username}')" class="bg-emerald-500 text-white p-2 rounded ml-1 text-[10px] font-black">Set</button>
                 </td>
                 <td class="py-6 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-bold uppercase text-[10px]">Wipe</button></td>
             </tr>`).join('');
@@ -278,14 +279,14 @@
         let users = JSON.parse(localStorage.getItem('users'));
         const idx = users.findIndex(u => u.username === userKey);
         const input = document.getElementById('sch-' + userKey);
-        if(!input.value) return alert("Pick a time.");
+        if(!input.value) return alert("Select a time first.");
         
         const dateObj = new Date(input.value);
         users[idx].schedule = dateObj.toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
         users[idx].schedule_val = input.value;
         
         localStorage.setItem('users', JSON.stringify(users));
-        alert("Schedule updated for " + userKey);
+        alert("Schedule set for " + userKey);
         renderDB();
     }
 
@@ -298,10 +299,10 @@
             if(u === "Adrien" && p === "favela23") login({username:"Adrien", email:"favela23@gmail.com"});
             else {
                 const f = users.find(x => x.username === u && x.password === p);
-                if(f) login(f); else alert("Invalid credentials.");
+                if(f) login(f); else alert("Login failed.");
             }
         } else {
-            if(!u || !p) return alert("Fill all fields.");
+            if(!u || !p) return alert("Fill out all fields.");
             const newUser = {username:u, password:p, email:document.getElementById('a-e').value, phone:document.getElementById('a-ph').value, plan:"None", avatar: "", schedule: "", schedule_val: ""};
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
