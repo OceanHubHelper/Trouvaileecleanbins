@@ -6,7 +6,7 @@
     <title>Trouvaille Bins</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         :root { --bg: #020617; --card: #0f172a; --text: #f8fafc; --border: #1e293b; --accent: #10b981; }
@@ -18,8 +18,6 @@
         body.is-owner .owner-only { display: block !important; }
         .dropdown { display: none; position: absolute; right: 0; top: 115%; width: 16rem; background: var(--card); border: 1px solid var(--border); border-radius: 1rem; z-index: 100; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
         .show { display: block !important; }
-        input[type=range] { -webkit-appearance: none; background: #334155; height: 6px; border-radius: 5px; width: 100%; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #10b981; cursor: pointer; border: 2px solid white; }
     </style>
 </head>
 <body>
@@ -45,34 +43,24 @@
     </div>
 </nav>
 
-<section id="client-dashboard" class="hidden py-10 max-w-4xl mx-auto px-6">
-    <div class="glass-card p-8 rounded-[2.5rem] border-emerald-500/30 bg-emerald-500/5">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div>
-                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-emerald-500 mb-2">Service Status</h3>
-                <h4 id="dash-welcome" class="text-2xl font-black italic uppercase">Welcome!</h4>
-            </div>
-            <div class="text-center md:text-right">
-                <p class="text-[10px] font-bold uppercase opacity-50 mb-1">Next Scheduled Wash</p>
-                <div id="dash-time" class="text-xl font-black text-emerald-500">Pending Assignment</div>
-            </div>
-        </div>
-    </div>
-</section>
+<header class="pt-32 pb-20 px-6 text-center">
+    <h2 class="text-6xl md:text-8xl font-black italic uppercase leading-none mb-6">Pristine Bins.<br><span class="text-emerald-500">Elite Care.</span></h2>
+    <p class="opacity-60 text-lg mb-10 max-w-xl mx-auto font-medium">Eco-friendly sanitization for your bins.</p>
+    <button onclick="document.getElementById('plans').scrollIntoView()" class="bg-emerald-500 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm shadow-xl hover:scale-105">Start Now</button>
+</header>
 
 <section id="plans" class="py-20 max-w-5xl mx-auto px-6 text-center">
-    <h3 class="text-3xl font-black uppercase italic mb-16">Service Plans</h3>
     <div class="grid md:grid-cols-2 gap-8">
         <div class="glass-card p-12 rounded-[3rem] text-left">
             <h4 class="text-2xl font-black uppercase italic mb-4">Single Wash</h4>
             <div class="mb-8">
                 <div class="flex justify-between items-end mb-4"><span id="bin-display" class="text-3xl font-black">1 Bin</span><span id="single-price" class="text-3xl font-black text-emerald-500">$15</span></div>
-                <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updPrc()">
+                <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updPrc()" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
             </div>
-            <button onclick="book('Single Wash')" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase text-xs">Book Single</button>
+            <button onclick="book('Single Wash')" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase text-xs">Book</button>
         </div>
         <div class="bg-emerald-600 p-12 rounded-[3rem] text-left text-white shadow-2xl">
-            <h4 class="text-2xl font-black uppercase italic mb-4">Monthly Elite</h4>
+            <h4 class="text-2xl font-black uppercase italic mb-4">Monthly</h4>
             <div class="text-5xl font-black mb-8">$20 <span class="text-sm font-normal opacity-70">/mo</span></div>
             <button onclick="book('Monthly Elite')" class="w-full bg-white text-emerald-600 py-5 rounded-2xl font-black uppercase text-xs">Subscribe</button>
         </div>
@@ -81,57 +69,39 @@
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-black/90 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">Access</h2>
+        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">Sign In</h2>
         <div class="space-y-3">
             <input id="a-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             <div id="reg-fields" class="hidden space-y-3">
                 <input id="a-e" placeholder="Email" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
-                <input id="a-ph" placeholder="Phone" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             </div>
             <input id="a-p" type="password" placeholder="Passcode" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
-            <button onclick="auth()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Continue</button>
+            <button onclick="auth()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Go</button>
             <button onclick="tAuth()" id="a-tgl" class="w-full opacity-50 text-[10px] font-black uppercase mt-4">Create Account</button>
         </div>
-        <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
 </div>
 
 <div id="book-modal" class="hidden fixed inset-0 bg-black/95 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 class="text-2xl font-black uppercase italic mb-2">Finalize Wash</h2>
+        <h2 class="text-2xl font-black uppercase italic mb-2">Confirm</h2>
         <p id="b-summary" class="text-emerald-500 font-black text-xs uppercase mb-8"></p>
-        <input id="b-addr" placeholder="Address for Service" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
-        <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Confirm Request</button>
+        <input id="b-addr" placeholder="Service Address" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
+        <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase tracking-widest">Confirm Wash</button>
         <button onclick="closeM('book-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
 </div>
 
-<div id="owner-panel" class="hidden fixed inset-0 bg-black/98 z-[500] flex items-center justify-center p-4">
-    <div class="glass-card rounded-[3rem] w-full max-w-6xl h-[80vh] flex flex-col overflow-hidden">
-        <div class="p-8 border-b border-slate-800/20 flex justify-between items-center">
-            <h2 class="text-sm font-black uppercase text-emerald-500 italic">Founder Dashboard</h2>
-            <button onclick="closeM('owner-panel')" class="opacity-40 text-3xl">&times;</button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-8">
-            <table class="w-full text-left text-xs">
-                <thead class="uppercase opacity-40 font-black border-b border-slate-800/20">
-                    <tr><th class="pb-6">User</th><th class="pb-6">Contact</th><th class="pb-6">Schedule</th><th class="pb-6 text-right">Action</th></tr>
-                </thead>
-                <tbody id="db-list"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 <script>
-    // THE EXACT IDS
-    const E_PUB = "v-4sLf-EzCLBYcWe7"; 
+    // THE KEYS
+    const E_PUB = "Or10zkajJK3CNcnic"; 
     const E_SER = "service_6ymb279"; 
     const T_OWN = "template_pruo22c"; 
     const T_CUS = "template_4hi1opb"; 
 
+    // Initializing with the global method
     (function(){
-        emailjs.init({ publicKey: E_PUB });
+        emailjs.init(E_PUB);
     })();
 
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
@@ -141,22 +111,12 @@
 
     function boot() {
         if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
-        if(localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
         if(currentUser) {
             document.getElementById('nav-name').innerText = currentUser.username;
             document.getElementById('li-btn').classList.add('hidden');
             document.getElementById('lo-btn').classList.remove('hidden');
-            document.getElementById('p-btn').classList.remove('hidden');
-            document.getElementById('client-dashboard').classList.remove('hidden');
-            document.getElementById('dash-welcome').innerText = `Hello, ${currentUser.username}!`;
-            document.getElementById('dash-time').innerText = currentUser.schedule || "Not Assigned Yet";
             if(currentUser.username === "Adrien") document.body.classList.add('is-owner');
         }
-    }
-
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
     }
 
     function updPrc() {
@@ -172,58 +132,26 @@
         const btn = document.getElementById('b-sub');
         if(!addr) return alert("Address required.");
         
-        btn.innerText = "Attempting Send..."; 
-        btn.disabled = true;
+        btn.innerText = "Sending..."; btn.disabled = true;
 
         const data = {
             user_name: currentUser.username,
-            user_contact: currentUser.email || currentUser.phone,
+            user_contact: currentUser.email || "N/A",
             plan_selected: activePlan,
             price: activePrice,
-            address: addr,
-            to_email: "favela23@gmail.com" // Ensure this matches your template field
+            address: addr
         };
 
         try {
-            const res = await emailjs.send(E_SER, T_OWN, data);
-            console.log("SUCCESS!", res.status, res.text);
+            // Using the simpler .send method
+            await emailjs.send(E_SER, T_OWN, data);
             await emailjs.send(E_SER, T_CUS, data);
-            alert("Booking Confirmed! Check your email.");
+            alert("Sent! We will contact you soon.");
             location.reload();
         } catch (e) {
-            // DEBUG ALERT
-            alert("CRITICAL ERROR:\n" + JSON.stringify(e));
-            console.error("EmailJS Failed", e);
-            btn.innerText = "Try Again"; 
-            btn.disabled = false;
+            alert("Error: " + (e.text || "Check your Public Key in EmailJS Settings. Current: " + E_PUB));
+            btn.innerText = "Confirm Wash"; btn.disabled = false;
         }
-    }
-
-    function renderDB() {
-        const users = JSON.parse(localStorage.getItem('users'));
-        document.getElementById('db-list').innerHTML = users.map(u => `
-            <tr class="border-b border-slate-800/10">
-                <td class="py-6 font-bold uppercase">${u.username}</td>
-                <td class="py-6 opacity-60">${u.email || u.phone || 'N/A'}</td>
-                <td class="py-6">
-                    <input type="datetime-local" id="sch-${u.username}" value="${u.schedule_val || ''}" class="bg-inherit border border-slate-800/20 p-2 rounded text-[10px]">
-                    <button onclick="setSchedule('${u.username}')" class="bg-emerald-500 text-white p-2 rounded ml-1 text-[10px] font-black">Set</button>
-                </td>
-                <td class="py-6 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-bold uppercase text-[10px]">Wipe</button></td>
-            </tr>`).join('');
-    }
-
-    function setSchedule(userKey) {
-        let users = JSON.parse(localStorage.getItem('users'));
-        const idx = users.findIndex(u => u.username === userKey);
-        const input = document.getElementById('sch-' + userKey);
-        if(!input.value) return alert("Select a time.");
-        const dateObj = new Date(input.value);
-        users[idx].schedule = dateObj.toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
-        users[idx].schedule_val = input.value;
-        localStorage.setItem('users', JSON.stringify(users));
-        alert("Schedule set!");
-        renderDB();
     }
 
     function auth() {
@@ -231,14 +159,13 @@
         const p = document.getElementById('a-p').value;
         let users = JSON.parse(localStorage.getItem('users'));
         if(isLogin) {
-            if(u === "Adrien" && p === "favela23") login({username:"Adrien", email:"favela23@gmail.com"});
+            if(u === "Adrien" && p === "favela23") login({username:"Adrien"});
             else {
                 const f = users.find(x => x.username === u && x.password === p);
-                if(f) login(f); else alert("Login failed.");
+                if(f) login(f); else alert("Failed.");
             }
         } else {
-            if(!u || !p) return alert("Fill all fields.");
-            const newUser = {username:u, password:p, email:document.getElementById('a-e').value, phone:document.getElementById('a-ph').value, plan:"None", schedule: "", schedule_val: ""};
+            const newUser = {username:u, password:p, email:document.getElementById('a-e').value};
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
             login(newUser);
@@ -247,12 +174,11 @@
 
     function login(obj) { localStorage.setItem('loggedUser', JSON.stringify(obj)); location.reload(); }
     function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
-    function tAuth() { isLogin = !isLogin; document.getElementById('a-tit').innerText = isLogin ? "Access" : "Register"; document.getElementById('reg-fields').classList.toggle('hidden', isLogin); }
-    function openM(id) { if(id==='owner-panel') renderDB(); document.getElementById(id).classList.remove('hidden'); }
+    function tAuth() { isLogin = !isLogin; document.getElementById('a-tit').innerText = isLogin ? "Sign In" : "Sign Up"; document.getElementById('reg-fields').classList.toggle('hidden', isLogin); }
+    function openM(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeM(id) { document.getElementById(id).classList.add('hidden'); }
     function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
     function book(plan) { if(!currentUser) return openM('auth-modal'); activePlan = plan; updPrc(); if(plan !== 'Single Wash') activePrice = "$20/mo"; document.getElementById('b-summary').innerText = plan + " | " + activePrice; openM('book-modal'); }
-    function del(n) { let users = JSON.parse(localStorage.getItem('users')); localStorage.setItem('users', JSON.stringify(users.filter(u => u.username !== n))); renderDB(); }
 
     boot();
 </script>
