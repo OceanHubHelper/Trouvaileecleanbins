@@ -3,765 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Bins | Professional Logistics & Sanitation Enterprise</title>
+    <title>Trouvaille Bins | Ultra-Response Logistics</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <style>
-        /* --- BRAND DESIGN SYSTEM --- */
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
             --bg: #020617;
             --card: #0f172a;
-            --border: #1e293b;
             --emerald: #10b981;
             --gold: #fbbf24;
-            --gold-glow: rgba(251, 191, 36, 0.5);
-            --emerald-glow: rgba(16, 185, 129, 0.4);
-            --glass: rgba(15, 23, 42, 0.8);
+            --border: #1e293b;
         }
 
-        * {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: #f8fafc; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg);
-            color: #f8fafc;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- CUSTOM SCROLLBAR --- */
+        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--emerald); }
+        ::-webkit-scrollbar-thumb { background: var(--emerald); border-radius: 10px; }
 
-        /* --- ADVANCED STATUS ENGINE --- */
-        .status-founder { 
-            color: var(--emerald) !important; 
-            text-shadow: 0 0 20px var(--emerald-glow);
-            font-weight: 800;
-            letter-spacing: -0.02em;
+        /* BUTTON RESPONSIVENESS */
+        .btn-active {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            user-select: none;
         }
-        
-        .status-gold { 
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px var(--gold-glow));
-            font-weight: 900;
-            text-transform: uppercase;
-        }
+        .btn-active:active { transform: scale(0.95); filter: brightness(0.8); }
 
-        .status-member { 
-            color: #64748b; 
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 9px;
-        }
-
-        /* --- UI ARCHITECTURE --- */
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
+        /* GLASS MORPHISM */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(20px);
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid var(--border);
         }
 
-        .glass-card:hover {
-            border-color: rgba(16, 185, 129, 0.4);
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
-            transform: translateY(-8px);
-        }
+        /* PRICING STYLES */
+        .strike-price { text-decoration: line-through; opacity: 0.4; font-size: 0.5em; vertical-align: middle; }
+        .promo-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; }
 
-        .nav-blur {
-            background: rgba(2, 6, 23, 0.85);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
-        }
+        /* ANIMATIONS */
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slide { animation: slideUp 0.4s ease-out forwards; }
 
-        /* --- DROPDOWN LOGIC --- */
-        .dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 120%;
-            width: 20rem;
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 2rem;
-            z-index: 9999;
-            padding: 1.25rem;
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
-            transform-origin: top right;
-        }
-        .dropdown.show { display: block; animation: ultraPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-        @keyframes ultraPop {
-            from { transform: scale(0.8) translateY(-20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* --- COMPONENTS --- */
+        .dropdown-content { display: none; }
+        .dropdown-content.active { display: block; animation: slideUp 0.2s ease-out; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
-
-        .btn-primary {
-            background: var(--emerald);
-            color: white;
-            padding: 1.25rem 2.5rem;
-            border-radius: 1.25rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6);
-            filter: brightness(1.1);
-        }
-
-        .input-main {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            color: white;
-            padding: 1.25rem;
-            border-radius: 1.25rem;
-            width: 100%;
-            outline: none;
-            transition: 0.3s;
-        }
-        .input-main:focus { border-color: var(--emerald); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
-
-        /* --- TABS --- */
-        .tab-trigger {
-            padding: 1rem 0;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: #64748b;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
-        }
-        .tab-trigger.active {
-            color: var(--emerald);
-            border-bottom-color: var(--emerald);
-            text-shadow: 0 0 10px var(--emerald-glow);
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 5px var(--emerald-glow); }
-            50% { box-shadow: 0 0 20px var(--emerald-glow); }
-            100% { box-shadow: 0 0 5px var(--emerald-glow); }
-        }
-        .live-indicator { width: 8px; height: 8px; background: var(--emerald); border-radius: 50%; display: inline-block; animation: glowPulse 2s infinite; }
     </style>
 </head>
-<body>
+<body class="pb-20">
 
-    <div id="global-announcer" class="hidden bg-emerald-600 text-white py-4 px-6 text-center sticky top-0 z-[10000] border-b border-white/10">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <i class="fa-solid fa-satellite-dish animate-pulse"></i>
-            <span id="announcement-content" class="text-[11px] font-black uppercase tracking-[0.4em]"></span>
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
+    <div id="promo-banner" class="hidden bg-red-600 text-white py-3 text-center font-black uppercase text-[10px] tracking-[0.3em] sticky top-0 z-[9999]">
+        <i class="fa-solid fa-fire-flame-curved mr-2"></i> Limited Time: <span id="promo-text">50% OFF</span> Applied at checkout!
     </div>
 
-    <nav class="nav-blur p-6 sticky top-0 z-[9000]">
+    <nav class="p-6 glass-panel sticky top-0 z-[9000] border-b border-slate-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4 group cursor-pointer">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform group-hover:rotate-12">
-                    <i class="fa-solid fa-wind text-xl"></i>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-wind text-white"></i>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-black italic uppercase tracking-tighter leading-none">Trouvaille <span class="text-emerald-500">Bins</span></h1>
-                    <p class="text-[8px] font-bold uppercase tracking-widest text-slate-500 mt-1">Industrial Grade Hygiene</p>
-                </div>
+                <h1 class="text-xl font-black italic uppercase text-white">Trouvaille <span class="text-emerald-500">Bins</span></h1>
             </div>
 
             <div class="relative">
-                <button onclick="toggleUserDropdown()" class="glass-card flex items-center gap-5 pl-6 pr-2 py-2 rounded-full border-slate-800 hover:border-emerald-500/50">
+                <button onclick="toggleDropdown()" class="btn-active glass-panel px-5 py-2 rounded-full border-slate-800 flex items-center gap-3">
                     <div class="text-right">
-                        <p id="nav-display-name" class="text-[10px] font-black uppercase tracking-tight">Guest User</p>
-                        <p id="nav-display-status" class="text-[8px] font-bold uppercase opacity-40">System Offline</p>
+                        <p id="nav-user" class="text-[10px] font-black uppercase">Guest</p>
+                        <p id="nav-role" class="text-[8px] font-bold opacity-40 uppercase">Offline</p>
                     </div>
-                    <img id="nav-display-avatar" src="https://ui-avatars.com/api/?name=?&background=0f172a&color=fff" class="w-11 h-11 rounded-full border-2 border-slate-700 object-cover">
+                    <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700"></div>
                 </button>
 
-                <div id="user-context-menu" class="dropdown">
-                    <div id="auth-state-active" class="hidden space-y-2">
-                        <div class="p-4 bg-slate-900/50 rounded-2xl mb-4 border border-slate-800">
-                            <p class="text-[8px] font-black uppercase text-slate-500 mb-1">Account Connected</p>
-                            <p id="drop-legal-name" class="text-xs font-bold text-white">Full Identity Loaded</p>
-                        </div>
-                        
-                        <button onclick="openModal('founder-panel')" class="owner-only w-full flex items-center gap-4 p-4 hover:bg-emerald-500/10 text-emerald-500 rounded-2xl transition-all border border-emerald-500/10">
-                            <i class="fa-solid fa-shield-crown"></i>
-                            <span class="text-[10px] font-black uppercase">Founder Dashboard</span>
+                <div id="user-menu" class="dropdown-content absolute right-0 mt-4 w-64 glass-panel p-4 rounded-3xl border-slate-800 shadow-2xl">
+                    <div id="logged-in-ui" class="hidden space-y-2">
+                        <button onclick="openModal('founder-panel')" class="owner-only w-full p-4 hover:bg-emerald-500/10 rounded-2xl text-emerald-500 text-[10px] font-black uppercase flex items-center gap-3">
+                            <i class="fa-solid fa-gauge-high"></i> Founder Console
                         </button>
-                        
-                        <button onclick="openModal('schedule-view-modal')" class="w-full flex items-center gap-4 p-4 hover:bg-slate-800 rounded-2xl transition-all">
-                            <i class="fa-solid fa-calendar-day opacity-40"></i>
-                            <span class="text-[10px] font-black uppercase">My Arrival Time</span>
+                        <button onclick="openModal('schedule-modal')" class="w-full p-4 hover:bg-slate-800 rounded-2xl text-white text-[10px] font-black uppercase flex items-center gap-3">
+                            <i class="fa-solid fa-clock"></i> My Arrival
                         </button>
-
-                        <div class="h-[1px] bg-slate-800 my-4 mx-2"></div>
-                        
-                        <button onclick="executeLogout()" class="w-full flex items-center gap-4 p-4 hover:bg-red-500/10 text-red-500 rounded-2xl transition-all">
-                            <i class="fa-solid fa-power-off"></i>
-                            <span class="text-[10px] font-black uppercase">Terminate Session</span>
+                        <hr class="border-slate-800 my-2">
+                        <button onclick="logout()" class="w-full p-4 hover:bg-red-500/10 rounded-2xl text-red-500 text-[10px] font-black uppercase flex items-center gap-3">
+                            <i class="fa-solid fa-power-off"></i> Terminate
                         </button>
                     </div>
-
-                    <div id="auth-state-guest">
-                        <div class="text-center p-6 mb-4">
-                            <i class="fa-solid fa-user-lock text-3xl text-slate-700 mb-4"></i>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sign in to book service</p>
-                        </div>
-                        <button onclick="openModal('gatekeeper-modal')" class="w-full bg-emerald-500 text-white p-5 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-emerald-500/20">
-                            Login / Register
-                        </button>
+                    <div id="guest-ui">
+                        <button onclick="openModal('auth-modal')" class="w-full bg-emerald-500 p-4 rounded-2xl text-white text-[10px] font-black uppercase btn-active">Login / Register</button>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="max-w-7xl mx-auto px-6 pt-32 pb-48 relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-        
-        <div class="text-center relative z-10">
-            <div class="inline-flex items-center gap-3 bg-slate-900 border border-slate-800 px-6 py-3 rounded-full mb-12">
-                <span class="live-indicator"></span>
-                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500">Service Area Active</span>
-            </div>
-            
-            <h2 class="text-7xl md:text-[11rem] font-black uppercase italic tracking-tighter leading-[0.8] mb-12">
-                Pure <br><span class="text-emerald-500">Sanitation.</span>
-            </h2>
-            
-            <p class="text-slate-400 text-xl max-w-3xl mx-auto font-medium leading-relaxed mb-16">
-                Revolutionizing curbside bin hygiene with 200°F high-pressure steam. 
-                Eliminate 99.9% of bacteria, odors, and pests instantly.
-            </p>
+    <header class="max-w-4xl mx-auto px-6 pt-24 pb-32 text-center">
+        <h2 class="text-6xl md:text-8xl font-black uppercase italic leading-[0.9] mb-8">Professional <br><span class="text-emerald-500">Sanitation.</span></h2>
+        <p class="text-slate-400 font-medium text-lg mb-12">Industrial steam cleaning for residential bins. <br>99.9% Bacteria removal. 100% Odor elimination.</p>
+        <div class="flex justify-center gap-4">
+            <a href="#pricing" class="btn-active bg-emerald-500 text-white px-10 py-5 rounded-2xl font-black uppercase text-[10px] tracking-widest">Book Now</a>
+        </div>
+    </header>
 
-            <div class="flex flex-wrap justify-center gap-6">
-                <a href="#plans" class="btn-primary">View Logistics Plans</a>
-                <button onclick="openModal('gatekeeper-modal')" class="glass-card px-12 py-6 rounded-2xl font-black uppercase text-xs hover:bg-slate-800">System Access</button>
+    <section id="pricing" class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+        <div class="glass-panel p-12 rounded-[3rem] border-slate-800 relative overflow-hidden group">
+            <div id="badge-one" class="hidden absolute top-6 right-6 promo-badge animate-pulse">SALE</div>
+            <h4 class="text-3xl font-black uppercase italic mb-2 text-white">One-Time</h4>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-10">Single Deep Wash</p>
+            
+            <div class="mb-12">
+                <div class="flex justify-between items-end mb-6">
+                    <span id="label-bins" class="text-5xl font-black italic text-white">1 Bin</span>
+                    <div class="text-right">
+                        <span id="old-price-one" class="strike-price hidden">$15.00</span>
+                        <span id="current-price-one" class="text-5xl font-black text-emerald-500">$15.00</span>
+                    </div>
+                </div>
+                <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="calcPrices()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none accent-emerald-500 cursor-pointer">
             </div>
+            
+            <button onclick="startBooking('On-Demand')" class="btn-active w-full bg-white text-black py-6 rounded-2xl font-black uppercase text-[10px] tracking-widest">Select Plan</button>
+        </div>
+
+        <div class="p-12 rounded-[3rem] bg-gradient-to-br from-indigo-900 to-slate-900 border-2 border-emerald-500/50 relative overflow-hidden group shadow-2xl shadow-emerald-500/10">
+            <div id="badge-gold" class="hidden absolute top-6 right-6 promo-badge animate-pulse">PROMO</div>
+            <h4 class="text-3xl font-black uppercase italic mb-2 text-white">Elite Gold</h4>
+            <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-10">Monthly Maintenance</p>
+            
+            <div class="mb-12">
+                <div class="text-left">
+                    <span id="old-price-gold" class="strike-price hidden">$45.00</span>
+                    <p class="text-[8rem] font-black leading-none text-white tracking-tighter" id="current-price-gold">$45</p>
+                    <p class="text-[10px] font-black uppercase text-slate-400">Per Month • Unlimited Bins</p>
+                </div>
+            </div>
+            
+            <button onclick="startBooking('Elite Gold')" class="btn-active w-full bg-emerald-500 text-white py-6 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-emerald-500/30">Secure Membership</button>
         </div>
     </section>
 
-    <section id="plans" class="max-w-7xl mx-auto px-6 pb-48">
-        <div class="grid lg:grid-cols-2 gap-12">
-            <div class="glass-card p-16 rounded-[4rem] flex flex-col justify-between group">
-                <div>
-                    <div class="flex justify-between items-start mb-12">
-                        <div>
-                            <h4 class="text-4xl font-black uppercase italic mb-2">On-Demand</h4>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em]">Single Deep Sanitation</p>
-                        </div>
-                        <div class="w-16 h-16 bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-800">
-                            <i class="fa-solid fa-bolt-lightning text-emerald-500"></i>
-                        </div>
-                    </div>
-
-                    <div class="mb-16">
-                        <div class="flex justify-between items-end mb-8">
-                            <span id="label-bins" class="text-6xl font-black italic text-white">1 Bin</span>
-                            <span id="label-price" class="text-6xl font-black text-emerald-500">$15</span>
-                        </div>
-                        <input type="range" id="slider-bins" min="1" max="10" value="1" oninput="syncPricingEngine()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-                    </div>
-
-                    <ul class="space-y-6 mb-16 text-xs font-black uppercase tracking-widest text-slate-400">
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> High-Pressure Steam Blast</li>
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> Eco-Friendly Deodorizer</li>
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> No Subscription Required</li>
-                    </ul>
-                </div>
-                <button onclick="initiateServiceRequest('On-Demand')" class="w-full bg-slate-900 border border-slate-700 py-8 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-emerald-500 hover:border-emerald-500 transition-all">Execute Booking</button>
+    <div id="founder-panel" class="hidden fixed inset-0 bg-slate-950/95 z-[10000] p-4 flex items-center justify-center backdrop-blur-md">
+        <div class="glass-panel w-full max-w-6xl h-[90vh] rounded-[3rem] flex flex-col overflow-hidden">
+            <div class="p-8 border-b border-slate-800 flex gap-8">
+                <button onclick="switchTab('tab-users')" class="admin-tab active text-[10px] font-black uppercase tracking-widest text-emerald-500">Clients</button>
+                <button onclick="switchTab('tab-promo')" class="admin-tab text-[10px] font-black uppercase tracking-widest text-slate-500">Promotions</button>
+                <button onclick="switchTab('tab-broadcast')" class="admin-tab text-[10px] font-black uppercase tracking-widest text-slate-500">Broadcast</button>
+                <button onclick="closeModal('founder-panel')" class="ml-auto text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
-            <div class="bg-emerald-600 p-16 rounded-[4rem] text-white shadow-2xl shadow-emerald-500/20 relative overflow-hidden flex flex-col justify-between">
-                <div class="absolute -right-20 -bottom-20 text-[20rem] font-black text-white/5 italic -rotate-12 pointer-events-none">GOLD</div>
-                
-                <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-12">
-                        <div>
-                            <h4 class="text-4xl font-black uppercase italic mb-2">Monthly Gold</h4>
-                            <p class="text-[10px] font-bold text-white/60 uppercase tracking-[0.3em]">Full Maintenance Plan</p>
-                        </div>
-                        <div class="bg-white/20 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Most Popular</div>
-                    </div>
-
-                    <div class="mb-16">
-                        <p class="text-[10rem] font-black leading-none tracking-tighter mb-4">$20<span class="text-2xl font-bold opacity-40 italic">/mo</span></p>
-                    </div>
-
-                    <ul class="space-y-6 mb-16 text-xs font-black uppercase tracking-widest">
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Priority Response Time</li>
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Monthly Schedule Slot</li>
-                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Premium Gold Status Icon</li>
-                    </ul>
-                </div>
-                <button onclick="initiateServiceRequest('Monthly Subscription')" class="relative z-10 w-full bg-white text-emerald-600 py-8 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.2em] shadow-xl hover:bg-slate-100 transition-all">Unlock Gold Status</button>
-            </div>
-        </div>
-    </section>
-
-    <div id="founder-panel" class="hidden fixed inset-0 bg-slate-950/95 z-[10000] p-4 flex items-center justify-center backdrop-blur-3xl">
-        <div class="glass-card w-full max-w-7xl h-[90vh] rounded-[4rem] overflow-hidden flex flex-col border-slate-800">
-            <div class="p-10 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
-                <div class="flex gap-12">
-                    <button onclick="switchAdminTab('users')" id="tab-users-btn" class="tab-trigger active">Client Database</button>
-                    <button onclick="switchAdminTab('schedule')" id="tab-schedule-btn" class="tab-trigger">Master Schedule</button>
-                    <button onclick="switchAdminTab('alerts')" id="tab-alerts-btn" class="tab-trigger">Global Alerts</button>
-                </div>
-                <button onclick="closeModal('founder-panel')" class="w-14 h-14 rounded-full border border-slate-800 flex items-center justify-center text-2xl hover:bg-red-500/10 hover:text-red-500 transition-all">&times;</button>
-            </div>
-
-            <div class="flex-1 overflow-auto p-12">
-                <div id="admin-view-users" class="admin-view">
-                    <table class="w-full text-left">
-                        <thead class="text-[10px] font-black uppercase text-slate-500 border-b border-slate-800/50">
-                            <tr>
-                                <th class="pb-8">Client Information</th>
-                                <th class="pb-8">Membership</th>
-                                <th class="pb-8">Location Data</th>
-                                <th class="pb-8 text-right">System Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="master-user-table-body">
-                            </tbody>
-                    </table>
-                </div>
-
-                <div id="admin-view-schedule" class="admin-view hidden space-y-8">
-                    <div class="flex gap-6 mb-12">
-                        <input type="text" id="schedule-search-input" oninput="renderScheduleMatrix()" placeholder="Filter clients by name..." class="input-main">
-                        <div class="glass-card px-10 flex items-center rounded-2xl">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Live Queue</span>
-                        </div>
-                    </div>
-                    <div id="master-schedule-grid" class="grid md:grid-cols-2 gap-8">
+            <div class="flex-1 overflow-y-auto p-10">
+                <div id="tab-users" class="tab-content active">
+                    <div id="user-list-admin" class="grid gap-4">
                         </div>
                 </div>
 
-                <div id="admin-view-alerts" class="admin-view hidden">
-                    <div class="max-w-2xl mx-auto text-center py-20">
-                        <div class="w-24 h-24 bg-emerald-500/10 text-emerald-500 rounded-[2.5rem] flex items-center justify-center text-4xl mx-auto mb-10">
-                            <i class="fa-solid fa-message-captions"></i>
+                <div id="tab-promo" class="tab-content">
+                    <div class="max-w-md mx-auto space-y-8 py-10">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-black uppercase italic mb-4">Pricing Engine</h3>
+                            <p class="text-xs text-slate-500 font-bold uppercase">Apply a global discount percentage</p>
                         </div>
-                        <h3 class="text-3xl font-black uppercase italic mb-6">Global Site Banner</h3>
-                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-12">Broadcast updates to all users instantly</p>
                         
-                        <textarea id="global-alert-input" class="input-main h-48 mb-8 text-center text-xl" placeholder="E.g. SPRING WASH SPECIAL: 20% OFF!"></textarea>
-                        
-                        <div class="flex gap-4">
-                            <button onclick="publishGlobalAlert()" class="btn-primary flex-1">Push Broadcast</button>
-                            <button onclick="clearGlobalAlert()" class="px-10 bg-red-500/10 text-red-500 rounded-2xl font-black uppercase text-[10px]">Clear</button>
+                        <div class="glass-panel p-8 rounded-3xl space-y-6">
+                            <div>
+                                <label class="text-[10px] font-black uppercase text-slate-500 mb-3 block">Discount Percentage (%)</label>
+                                <input type="number" id="promo-input" placeholder="0" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-white font-bold focus:border-emerald-500 outline-none">
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <button onclick="applyDiscount()" class="flex-1 bg-emerald-500 py-4 rounded-xl text-white font-black uppercase text-[10px] btn-active">Activate Discount</button>
+                                <button onclick="resetDiscount()" class="flex-1 bg-slate-800 py-4 rounded-xl text-white font-black uppercase text-[10px] btn-active">Reset</button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <div id="tab-broadcast" class="tab-content">
+                    <div class="max-w-md mx-auto space-y-6 py-10">
+                        <textarea id="broadcast-msg" class="w-full bg-slate-900 border border-slate-800 p-6 rounded-2xl text-white h-40 focus:border-emerald-500 outline-none" placeholder="Enter alert message..."></textarea>
+                        <button onclick="setBroadcast()" class="w-full bg-emerald-500 py-4 rounded-xl text-white font-black uppercase text-[10px] btn-active">Push Update</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="schedule-view-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[10001] flex items-center justify-center p-6 backdrop-blur-2xl">
-        <div class="glass-card w-full max-w-sm p-12 rounded-[4rem] text-center border-emerald-500/20">
-            <div class="w-28 h-28 bg-emerald-500/10 text-emerald-500 rounded-[3rem] flex items-center justify-center text-5xl mx-auto mb-10 border border-emerald-500/10">
-                <i class="fa-solid fa-truck-clock"></i>
-            </div>
-            <h3 class="text-3xl font-black uppercase italic mb-2">Truck Dispatch</h3>
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-12">Arrival Estimation</p>
-            
-            <div class="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] shadow-inner mb-12">
-                <p id="arrival-display-time" class="text-2xl font-black text-emerald-400 italic tracking-tight">System Updating...</p>
-            </div>
-            
-            <button onclick="closeModal('schedule-view-modal')" class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30 hover:opacity-100 transition-all">Dismiss Dashboard</button>
-        </div>
-    </div>
-
-    <div id="gatekeeper-modal" class="hidden fixed inset-0 bg-slate-950/99 z-[11000] flex items-center justify-center p-6">
-        <div class="glass-card w-full max-w-md p-14 rounded-[4.5rem] text-center border-slate-800 shadow-[0_0_100px_rgba(16,185,129,0.05)]">
-            <div class="w-20 h-20 bg-emerald-500 rounded-3xl flex items-center justify-center text-white text-3xl mx-auto mb-10 shadow-2xl shadow-emerald-500/20">
-                <i class="fa-solid fa-fingerprint"></i>
-            </div>
-            
-            <h2 id="gatekeeper-title" class="text-4xl font-black uppercase italic mb-10">Access Portal</h2>
-            
+    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] flex items-center justify-center p-6">
+        <div class="glass-panel w-full max-w-sm p-10 rounded-[3rem] text-center">
+            <h3 id="auth-title" class="text-3xl font-black uppercase italic mb-8">Access</h3>
             <div class="space-y-4">
-                <div id="reg-fields-group" class="hidden space-y-4">
-                    <input id="reg-input-legal" type="text" placeholder="Full Legal Name" class="input-main font-bold">
-                    <input id="reg-input-phone" type="tel" placeholder="Mobile Phone (Required)" class="input-main font-bold">
+                <div id="reg-extra" class="hidden space-y-4">
+                    <input id="reg-name" type="text" placeholder="Full Name" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-white">
+                    <input id="reg-phone" type="tel" placeholder="Phone Number" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-white">
                 </div>
-                
-                <input id="gate-input-user" type="text" placeholder="Username" class="input-main font-bold">
-                <input id="gate-input-pass" type="password" placeholder="System Passcode" class="input-main font-bold">
-                
-                <button onclick="processGatekeeperRequest()" class="w-full btn-primary py-7 rounded-3xl text-sm mt-6">Authorize Identity</button>
+                <input id="auth-user" type="text" placeholder="Username" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-white">
+                <input id="auth-pass" type="password" placeholder="Passcode" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-white">
+                <button onclick="handleAuth()" class="w-full bg-emerald-500 py-5 rounded-xl text-white font-black uppercase text-[10px] btn-active mt-4">Execute</button>
+                <p onclick="toggleAuth()" id="auth-toggle" class="text-[9px] font-black uppercase text-slate-500 mt-6 cursor-pointer hover:text-emerald-500">Need an account? Sign up</p>
             </div>
-            
-            <p onclick="toggleGatekeeperMode()" id="gate-toggle-text" class="text-[10px] font-black uppercase text-slate-500 mt-12 cursor-pointer hover:text-emerald-500 transition-all">No account? Secure your spot now</p>
+        </div>
+    </div>
+
+    <div id="schedule-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] flex items-center justify-center p-6">
+        <div class="glass-panel w-full max-w-xs p-10 rounded-[3rem] text-center">
+            <i class="fa-solid fa-truck-bolt text-4xl text-emerald-500 mb-6"></i>
+            <h3 class="text-2xl font-black uppercase italic mb-2">Truck Status</h3>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-8">Estimated Arrival</p>
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+                <p id="eta-view" class="text-xl font-black text-emerald-400 italic">Not Scheduled</p>
+            </div>
+            <button onclick="closeModal('schedule-modal')" class="mt-8 text-[9px] font-black uppercase text-slate-500">Close</button>
         </div>
     </div>
 
     <script>
-        /* --- GLOBAL SYSTEM CONFIGURATION --- */
-        const APP_VERSION = "4.0.0-PRO";
-        const SYSTEM_KEY = "Or10zkajJK3CNcnic";
-        const SERVICE_HANDLE = "service_6ymb279";
-        const TEMPLATE_HANDLE = "template_pruo22c";
-        const FOUNDER_CONTACT = "favela23@gmail.com";
+        // SYSTEM CONFIG
+        const SERVICE_ID = "service_6ymb279";
+        const TEMPLATE_ID = "template_pruo22c";
+        const PUBLIC_KEY = "Or10zkajJK3CNcnic";
+        const ADMIN_EMAIL = "favela23@gmail.com";
 
-        emailjs.init(SYSTEM_KEY);
+        emailjs.init(PUBLIC_KEY);
 
-        let activeSession = JSON.parse(localStorage.getItem('loggedUser')) || null;
-        let isRegistrationMode = false;
-        let currentRequestTier = '';
-        let currentRequestPrice = '$15';
-        let currentRequestBins = '1';
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let session = JSON.parse(localStorage.getItem('session')) || null;
+        let isRegister = false;
+        let currentDiscount = parseInt(localStorage.getItem('discount')) || 0;
 
-        /* --- SYSTEM KERNEL --- */
-        function systemBoot() {
-            console.log("Trouvaille Bins Kernel Loading...");
-            
-            // Database Initialization
-            if(!localStorage.getItem('users')) {
-                localStorage.setItem('users', JSON.stringify([]));
-            }
-            
-            // Session Verification
-            if(activeSession) {
-                document.getElementById('auth-state-active').classList.remove('hidden');
-                document.getElementById('auth-state-guest').classList.add('hidden');
-                document.getElementById('nav-display-name').innerText = activeSession.username;
+        // KERNEL INITIALIZATION
+        function init() {
+            if(session) {
+                document.getElementById('nav-user').innerText = session.username;
+                document.getElementById('nav-role').innerText = session.role || "Member";
+                document.getElementById('nav-avatar').style.background = `linear-gradient(45deg, #10b981, #059669)`;
+                document.getElementById('logged-in-ui').classList.remove('hidden');
+                document.getElementById('guest-ui').classList.add('hidden');
                 
-                const db = JSON.parse(localStorage.getItem('users'));
-                const identity = db.find(u => u.username === activeSession.username) || activeSession;
-                
-                const statusTag = document.getElementById('nav-display-status');
-                const avatar = document.getElementById('nav-display-avatar');
-                
-                // Owner Privilege Check
-                if(activeSession.username === "Adrien") {
+                if(session.username === "Adrien") {
                     document.body.classList.add('is-owner');
-                    statusTag.innerText = "System Founder";
-                    statusTag.className = "text-[8px] font-bold uppercase status-founder";
-                } else if(identity.status === "Monthly Member") {
-                    statusTag.innerText = "Gold Member";
-                    statusTag.className = "text-[8px] font-bold uppercase status-gold";
-                } else {
-                    statusTag.innerText = identity.status || "Active Member";
-                    statusTag.className = "text-[8px] font-bold uppercase status-member";
                 }
 
-                // Data Injection
-                document.getElementById('drop-legal-name').innerText = identity.legalName || "Standard User Profile";
-                if(identity.schedule) {
-                    document.getElementById('arrival-display-time').innerText = identity.schedule;
-                }
-                avatar.src = `https://ui-avatars.com/api/?name=${activeSession.username}&background=10b981&color=fff&bold=true`;
+                const me = users.find(u => u.username === session.username);
+                if(me && me.eta) document.getElementById('eta-view').innerText = me.eta;
             }
 
-            // Global Alert Sync
-            const alertMsg = localStorage.getItem('globalAnn');
+            const alertMsg = localStorage.getItem('broadcast');
             if(alertMsg) {
-                document.getElementById('global-announcer').classList.remove('hidden');
-                document.getElementById('announcement-content').innerText = alertMsg;
+                const banner = document.getElementById('promo-banner');
+                banner.classList.remove('hidden');
+                document.getElementById('promo-text').innerText = alertMsg;
             }
+
+            calcPrices();
+            renderUsers();
         }
 
-        /* --- AUTHENTICATION ENGINE --- */
-        function processGatekeeperRequest() {
-            const username = document.getElementById('gate-input-user').value.trim();
-            const passcode = document.getElementById('gate-input-pass').value;
-            let database = JSON.parse(localStorage.getItem('users'));
+        // PRICING ENGINE
+        function calcPrices() {
+            const slider = document.getElementById('bin-slider').value;
+            const baseOne = 15 + (slider - 1) * 10;
+            const baseGold = 45;
 
-            if(!isRegistrationMode) {
-                // Founder Bypass
-                if(username === "Adrien" && passcode === "favela23") {
-                    return commitSession({username: "Adrien", status: "Founder"});
-                }
-                
-                // Standard Login
-                const userRecord = database.find(u => u.username === username && u.password === passcode);
-                if(userRecord) {
-                    commitSession(userRecord);
-                } else {
-                    alert("IDENTITY REJECTED: Credentials do not match our secure records.");
-                }
+            const finalOne = currentDiscount > 0 ? (baseOne * (1 - currentDiscount/100)) : baseOne;
+            const finalGold = currentDiscount > 0 ? (baseGold * (1 - currentDiscount/100)) : baseGold;
+
+            // UI UPDATES
+            document.getElementById('label-bins').innerText = `${slider} ${slider > 1 ? 'Bins' : 'Bin'}`;
+            
+            if(currentDiscount > 0) {
+                document.getElementById('old-price-one').innerText = `$${baseOne.toFixed(2)}`;
+                document.getElementById('old-price-one').classList.remove('hidden');
+                document.getElementById('old-price-gold').innerText = `$${baseGold.toFixed(2)}`;
+                document.getElementById('old-price-gold').classList.remove('hidden');
+                document.getElementById('badge-one').classList.remove('hidden');
+                document.getElementById('badge-gold').classList.remove('hidden');
+                document.getElementById('promo-banner').classList.remove('hidden');
+                document.getElementById('promo-text').innerText = `${currentDiscount}% DISCOUNT ACTIVE!`;
             } else {
-                // Registration Logic
-                const legalName = document.getElementById('reg-input-legal').value.trim();
-                const phone = document.getElementById('reg-input-phone').value.trim();
+                document.getElementById('old-price-one').classList.add('hidden');
+                document.getElementById('old-price-gold').classList.add('hidden');
+                document.getElementById('badge-one').classList.add('hidden');
+                document.getElementById('badge-gold').classList.add('hidden');
+            }
 
-                if(!username || !passcode || !legalName || !phone) {
-                    return alert("DATA ERROR: All registration fields must be completed.");
+            document.getElementById('current-price-one').innerText = `$${finalOne.toFixed(2)}`;
+            document.getElementById('current-price-gold').innerText = `$${finalGold.toFixed(0)}`;
+        }
+
+        // AUTHENTICATION
+        function handleAuth() {
+            const u = document.getElementById('auth-user').value.trim();
+            const p = document.getElementById('auth-pass').value.trim();
+
+            if(!isRegister) {
+                if(u === "Adrien" && p === "favela23") {
+                    login({username: "Adrien", role: "Founder"});
+                    return;
                 }
+                const user = users.find(x => x.username === u && x.password === p);
+                if(user) login(user);
+                else alert("Access Denied");
+            } else {
+                const name = document.getElementById('reg-name').value.trim();
+                const phone = document.getElementById('reg-phone').value.trim();
+                if(!u || !p || !name || !phone) return alert("Fields Required");
+                if(users.some(x => x.username === u)) return alert("User exists");
 
-                if(database.some(u => u.username === username)) {
-                    return alert("COLLISION ERROR: That username is already secured by another member.");
-                }
-
-                const newUserProfile = {
-                    username: username,
-                    password: passcode,
-                    legalName: legalName,
-                    phone: phone,
-                    status: "Active Member",
-                    address: "Not Provided",
-                    schedule: "Pending Dispatch"
-                };
-
-                database.push(newUserProfile);
-                localStorage.setItem('users', JSON.stringify(database));
-                commitSession(newUserProfile);
+                const newUser = { username: u, password: p, name, phone, role: "Member", eta: "Not Scheduled" };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                login(newUser);
             }
         }
 
-        function commitSession(userObject) {
-            localStorage.setItem('loggedUser', JSON.stringify(userObject));
+        function login(obj) {
+            localStorage.setItem('session', JSON.stringify(obj));
             location.reload();
         }
 
-        function executeLogout() {
-            localStorage.removeItem('loggedUser');
+        function logout() {
+            localStorage.removeItem('session');
             location.reload();
         }
 
-        function toggleGatekeeperMode() {
-            isRegistrationMode = !isRegistrationMode;
-            document.getElementById('gatekeeper-title').innerText = isRegistrationMode ? "Member Signup" : "Access Portal";
-            document.getElementById('reg-fields-group').classList.toggle('hidden', !isRegistrationMode);
-            document.getElementById('gate-toggle-text').innerText = isRegistrationMode ? "Already a member? Secure Login" : "No account? Secure your spot now";
-        }
-
-        /* --- PRICING & LOGISTICS ENGINE --- */
-        function syncPricingEngine() {
-            const count = document.getElementById('slider-bins').value;
-            currentRequestBins = count;
-            currentRequestPrice = "$" + (15 + (count - 1) * 10);
+        // BOOKING LOGIC
+        async function startBooking(tier) {
+            if(!session) return openModal('auth-modal');
             
-            document.getElementById('label-bins').innerText = count + (count > 1 ? " Bins" : " Bin");
-            document.getElementById('label-price').innerText = currentRequestPrice;
-        }
+            const addr = prompt("Enter full delivery address:");
+            if(!addr) return;
 
-        async function initiateServiceRequest(tier) {
-            if(!activeSession) return openModal('gatekeeper-modal');
-            
-            currentRequestTier = tier;
-            if(tier === "Monthly Subscription") {
-                currentRequestPrice = "$20";
-                currentRequestBins = "Full Site Plan";
-            }
+            const me = users.find(u => u.username === session.username) || session;
+            const price = tier === "Elite Gold" ? 
+                document.getElementById('current-price-gold').innerText : 
+                document.getElementById('current-price-one').innerText;
 
-            const targetAddress = prompt("Confirm your precise service address (Street, City, Zip):");
-            if(!targetAddress) return;
-
-            // CRITICAL DATA LOOKUP: Get phone number from DB
-            const db = JSON.parse(localStorage.getItem('users'));
-            const fullProfile = db.find(u => u.username === activeSession.username) || activeSession;
-
-            const dispatchParams = {
-                to_email: FOUNDER_CONTACT,
-                user_name: activeSession.username,
-                legal_name: fullProfile.legalName || activeSession.username,
-                user_phone: fullProfile.phone || "UNAVAILABLE", // THE FIX
-                address: targetAddress,
-                plan_tier: currentRequestTier,
-                bin_quantity: currentRequestBins,
-                total_cost: currentRequestPrice
+            const params = {
+                to_email: ADMIN_EMAIL,
+                user_name: me.username,
+                legal_name: me.name || me.username,
+                user_phone: me.phone || "No Phone",
+                address: addr,
+                plan: tier,
+                price: price,
+                bins: document.getElementById('bin-slider').value
             };
 
             try {
-                // EmailJS API Handshake
-                await emailjs.send(SERVICE_HANDLE, TEMPLATE_HANDLE, dispatchParams);
-                
-                // Update User Profile in DB
-                let masterDb = JSON.parse(localStorage.getItem('users'));
-                let userIdx = masterDb.findIndex(u => u.username === activeSession.username);
-                
-                if(userIdx !== -1) {
-                    masterDb[userIdx].status = tier === "Monthly Subscription" ? "Monthly Member" : "Booked: " + tier;
-                    masterDb[userIdx].address = targetAddress;
-                    localStorage.setItem('users', JSON.stringify(masterDb));
-                }
-                
-                alert("LOGISTICS DISPATCHED: Your booking and contact information have been sent to the Founder.");
-                location.reload();
-            } catch (err) {
-                console.error("System Malfunction:", err);
-                alert("CRITICAL ERROR: The dispatch system is currently overloaded. Please try again later.");
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+                alert("BOOKING SENT! Founder will update your arrival time soon.");
+            } catch(e) {
+                alert("Service Error");
             }
         }
 
-        /* --- ADMINISTRATIVE CONTROL MATRIX --- */
-        function switchAdminTab(target) {
-            document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
-            
-            document.getElementById('admin-view-' + target).classList.remove('hidden');
-            document.getElementById('tab-' + target + '-btn').classList.add('active');
-            
-            if(target === 'users') renderMasterUserTable();
-            if(target === 'schedule') renderScheduleMatrix();
+        // ADMIN FUNCTIONS
+        function applyDiscount() {
+            const val = document.getElementById('promo-input').value;
+            currentDiscount = parseInt(val) || 0;
+            localStorage.setItem('discount', currentDiscount);
+            calcPrices();
+            alert(`Discount of ${currentDiscount}% Applied!`);
         }
 
-        function renderMasterUserTable() {
-            const data = JSON.parse(localStorage.getItem('users')).filter(u => u.username !== "Adrien");
-            const container = document.getElementById('master-user-table-body');
-            
-            container.innerHTML = data.map(u => `
-                <tr class="border-b border-slate-800/30 group hover:bg-white/[0.02] transition-all">
-                    <td class="py-10">
-                        <div class="flex items-center gap-5">
-                            <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
-                                <i class="fa-solid fa-user text-xs opacity-30"></i>
-                            </div>
-                            <div>
-                                <p class="font-black uppercase text-sm text-white">${u.username}</p>
-                                <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">${u.phone || 'NO PHONE ON FILE'}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="py-10">
-                        <button onclick="toggleGoldPrivilege('${u.username}')" class="uppercase font-black text-[10px] ${u.status === 'Monthly Member' ? 'status-gold' : 'status-member'}">
-                            ${u.status || 'Active Member'}
-                        </button>
-                    </td>
-                    <td class="py-10">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight max-w-[200px] truncate">${u.address || 'PENDING'}</p>
-                    </td>
-                    <td class="py-10 text-right">
-                        <button onclick="wipeUserRecord('${u.username}')" class="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 opacity-0 group-hover:opacity-100 transition-all">
-                            <i class="fa-solid fa-trash-can text-[10px]"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+        function resetDiscount() {
+            currentDiscount = 0;
+            localStorage.removeItem('discount');
+            calcPrices();
+            alert("Pricing Reset to Standard");
         }
 
-        function renderScheduleMatrix() {
-            const query = document.getElementById('schedule-search-input').value.toLowerCase();
-            const data = JSON.parse(localStorage.getItem('users')).filter(u => 
-                u.username !== "Adrien" && u.username.toLowerCase().includes(query)
-            );
-            const grid = document.getElementById('master-schedule-grid');
-            
-            grid.innerHTML = data.map(u => `
-                <div class="glass-card p-10 rounded-[3rem] border-l-8 border-l-emerald-500 relative overflow-hidden">
-                    <div class="absolute right-[-20px] top-[-20px] opacity-[0.03] text-8xl rotate-12">
-                        <i class="fa-solid fa-map-location-dot"></i>
+        function setBroadcast() {
+            const msg = document.getElementById('broadcast-msg').value;
+            localStorage.setItem('broadcast', msg);
+            location.reload();
+        }
+
+        function renderUsers() {
+            const container = document.getElementById('user-list-admin');
+            container.innerHTML = users.map(u => `
+                <div class="glass-panel p-6 rounded-2xl border-slate-800 flex justify-between items-center">
+                    <div>
+                        <p class="font-black text-white text-sm uppercase">${u.username}</p>
+                        <p class="text-[9px] font-bold text-emerald-500 uppercase">${u.phone}</p>
                     </div>
-                    <div class="flex flex-col gap-6 relative z-10">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h5 class="text-2xl font-black uppercase italic text-white mb-1">${u.username}</h5>
-                                <p class="text-[10px] text-emerald-500 font-black uppercase tracking-[0.2em] mb-4">${u.phone}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[8px] font-black uppercase opacity-30 mb-1">Current ETA</p>
-                                <p class="text-xs font-black text-emerald-400 uppercase tracking-tighter">${u.schedule || 'NOT DISPATCHED'}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <p class="text-[10px] text-slate-500 font-bold uppercase leading-relaxed bg-slate-950 p-4 rounded-2xl border border-slate-900">${u.address || 'ADDRESS DATA MISSING'}</p>
-                            <div class="flex gap-3">
-                                <input type="datetime-local" id="ts-picker-${u.username}" class="input-main text-xs py-3 rounded-xl flex-1">
-                                <button onclick="updateDispatchTime('${u.username}')" class="bg-emerald-500 text-white px-8 rounded-xl font-black uppercase text-[9px] tracking-widest shadow-lg shadow-emerald-500/20">Set</button>
-                            </div>
-                        </div>
+                    <div class="flex gap-4 items-center">
+                        <input type="text" placeholder="ETA (e.g. 2PM)" id="eta-${u.username}" class="bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-white w-24">
+                        <button onclick="updateETA('${u.username}')" class="bg-emerald-500 p-2 rounded-lg text-white"><i class="fa-solid fa-check"></i></button>
+                        <button onclick="deleteUser('${u.username}')" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function updateDispatchTime(targetUser) {
-            const raw = document.getElementById('ts-picker-' + targetUser).value;
-            if(!raw) return alert("System Error: No date/time selected.");
-            
-            const date = new Date(raw);
-            const timestamp = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + " @ " + 
-                              date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-            let db = JSON.parse(localStorage.getItem('users'));
-            let idx = db.findIndex(u => u.username === targetUser);
-            db[idx].schedule = timestamp;
-            localStorage.setItem('users', JSON.stringify(db));
-            renderScheduleMatrix();
-            alert("MATRIX UPDATED: Displacement timestamp synced for " + targetUser);
+        function updateETA(uName) {
+            const eta = document.getElementById(`eta-${uName}`).value;
+            const idx = users.findIndex(u => u.username === uName);
+            users[idx].eta = eta;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert("ETA Updated");
         }
 
-        function toggleGoldPrivilege(username) {
-            let db = JSON.parse(localStorage.getItem('users'));
-            let idx = db.findIndex(u => u.username === username);
-            db[idx].status = (db[idx].status === "Monthly Member") ? "Active Member" : "Monthly Member";
-            localStorage.setItem('users', JSON.stringify(db));
-            renderMasterUserTable();
+        function deleteUser(uName) {
+            if(!confirm("Delete user?")) return;
+            users = users.filter(u => u.username !== uName);
+            localStorage.setItem('users', JSON.stringify(users));
+            renderUsers();
         }
 
-        function wipeUserRecord(username) {
-            if(!confirm("CRITICAL ACTION: Wipe all data for " + username + "? This cannot be reversed.")) return;
-            let db = JSON.parse(localStorage.getItem('users'));
-            localStorage.setItem('users', JSON.stringify(db.filter(u => u.username !== username)));
-            renderMasterUserTable();
+        // UI HELPERS
+        function toggleDropdown() { document.getElementById('user-menu').classList.toggle('active'); }
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function toggleAuth() {
+            isRegister = !isRegister;
+            document.getElementById('auth-title').innerText = isRegister ? "Create Account" : "Access";
+            document.getElementById('reg-extra').classList.toggle('hidden', !isRegister);
+            document.getElementById('auth-toggle').innerText = isRegister ? "Have an account? Login" : "Need an account? Sign up";
+        }
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                t.classList.remove('text-emerald-500', 'active');
+                t.classList.add('text-slate-500');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('text-emerald-500', 'active');
         }
 
-        /* --- GLOBAL BROADCAST CONTROLS --- */
-        function publishGlobalAlert() {
-            const msg = document.getElementById('global-alert-input').value.trim();
-            if(!msg) return;
-            localStorage.setItem('globalAnn', msg);
-            location.reload();
+        window.onclick = function(e) {
+            if (e.target.classList.contains('fixed')) e.target.classList.add('hidden');
         }
 
-        function clearGlobalAlert() {
-            localStorage.removeItem('globalAnn');
-            location.reload();
-        }
-
-        /* --- UI UTILITIES --- */
-        function toggleUserDropdown() {
-            document.getElementById('user-context-menu').classList.toggle('show');
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-            if(id === 'founder-panel') switchAdminTab('users');
-            document.getElementById('user-context-menu').classList.remove('show');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        // Close on outside click
-        window.onclick = function(event) {
-            if (event.target.classList.contains('fixed')) {
-                event.target.classList.add('hidden');
-            }
-        }
-
-        /* --- SYSTEM KICKSTART --- */
-        document.addEventListener('DOMContentLoaded', systemBoot);
+        init();
     </script>
 </body>
 </html>
