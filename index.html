@@ -9,240 +9,206 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.2s; }
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
-        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2); z-index: 110; border: 1px solid #f1f5f9; }
+        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; width: 14rem; background: white; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 100; border: 1px solid #eee; }
         .show { display: block !important; }
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tab-btn.active { background: #10b981; color: white; }
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-slate-900">
 
-<nav class="bg-white border-b border-slate-100 sticky top-0 z-[100]">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <img src="https://i.imgur.com/syOOmTK.png" class="w-10 h-10">
-            <h1 class="text-xl font-black italic uppercase tracking-tighter">Trouvaille</h1>
-        </div>
+<nav class="bg-white border-b p-4 sticky top-0 z-[110]">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-black italic uppercase">Trouvaille</h1>
         <div class="relative">
-            <button onclick="toggleDrop()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white">
-                <div id="u-av" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">G</div>
-                <span id="u-nm" class="text-sm font-bold italic text-slate-700">Guest</span>
-                <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
+            <button onclick="toggleDrop()" class="flex items-center gap-2 border p-2 rounded-full px-4 bg-white">
+                <div id="u-av" class="w-6 h-6 rounded-full bg-slate-800 text-white text-[10px] flex items-center justify-center">G</div>
+                <span id="u-nm" class="text-xs font-bold uppercase italic">Guest</span>
             </button>
-            <div id="drop" class="dropdown-content overflow-hidden">
-                <button onclick="openM('owner-modal')" class="owner-only w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-black text-emerald-600 border-b">
-                    <i class="fa-solid fa-crown mr-2"></i> FOUNDER PANEL
-                </button>
-                <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left px-5 py-4 hover:bg-slate-50 text-sm font-bold text-slate-600 border-b">
-                    <i class="fa-solid fa-user mr-2"></i> MY PROFILE
-                </button>
-                <button id="lo-btn" onclick="logout()" class="hidden w-full text-left px-5 py-4 hover:bg-red-50 text-sm font-bold text-red-500">
-                    <i class="fa-solid fa-power-off mr-2"></i> SIGN OUT
-                </button>
-                <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
-                    <i class="fa-solid fa-circle-user mr-2"></i> SIGN IN
-                </button>
+            <div id="drop" class="dropdown-content mt-2 overflow-hidden">
+                <button onclick="openM('owner-modal')" class="owner-only w-full text-left p-4 hover:bg-emerald-50 text-xs font-black text-emerald-600 border-b">FOUNDER PANEL</button>
+                <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-slate-50 text-xs font-bold">MY PROFILE</button>
+                <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-50 text-xs font-bold text-red-500">SIGN OUT</button>
+                <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-50 text-xs font-bold">SIGN IN</button>
             </div>
         </div>
     </div>
 </nav>
 
-<section id="plans" class="py-20 max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-8">
-    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-2">Single Wash</h4>
-        <div id="s-prc" class="text-5xl font-black mb-4">$15</div>
-        <input type="range" id="slid" min="1" max="10" value="1" oninput="updPrc()" class="w-full mb-4">
-        <button onclick="book('Single Wash', true)" class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold">Book</button>
-    </div>
-    <div class="bg-slate-900 p-10 rounded-[3rem] shadow-2xl border-4 border-emerald-500 text-white">
-        <h4 class="text-[10px] font-black text-emerald-400 mb-2">Monthly Elite</h4>
-        <div class="text-6xl font-black mb-4">$20</div>
-        <button onclick="book('Monthly Elite', false)" class="w-full py-4 bg-emerald-500 rounded-xl font-bold">Subscribe</button>
-    </div>
-</section>
-
 <div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white rounded-[2.5rem] w-full max-w-5xl max-h-[85vh] flex flex-col overflow-hidden">
-        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <h2 class="font-black uppercase italic text-emerald-600">User Database</h2>
-            <button onclick="closeM('owner-modal')" class="text-slate-300 text-2xl">×</button>
+    <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden">
+        <div class="p-6 border-b flex justify-between items-center">
+            <div class="flex gap-2">
+                <button onclick="showTab('users-tab')" class="bg-emerald-500 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase">Users</button>
+                <button onclick="showTab('settings-tab')" class="bg-slate-100 px-4 py-2 rounded-lg text-[10px] font-black uppercase">Stats</button>
+            </div>
+            <button onclick="closeM('owner-modal')" class="text-2xl">×</button>
         </div>
-        <div class="flex-1 overflow-y-auto p-8">
-            <table class="w-full text-left">
-                <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
-                    <tr><th class="pb-4 pl-2">User</th><th class="pb-4">Email</th><th class="pb-4">Plan</th><th class="pb-4 text-right">Control</th></tr>
-                </thead>
-                <tbody id="db-list"></tbody>
-            </table>
+        <div class="p-6 overflow-y-auto">
+            <div id="users-tab" class="tab-content active">
+                <table class="w-full text-left text-xs">
+                    <thead class="uppercase opacity-50 font-black border-b">
+                        <tr><th class="pb-2">Name</th><th class="pb-2">Email</th><th class="pb-2">Plan</th><th class="pb-2 text-right">Action</th></tr>
+                    </thead>
+                    <tbody id="db-list"></tbody>
+                </table>
+            </div>
+            <div id="settings-tab" class="tab-content">
+                <p class="font-black italic">Account Stats Coming Soon...</p>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="book-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-10 rounded-[3rem] w-full max-w-md relative">
-        <h2 class="text-3xl font-black uppercase italic mb-2">Confirm</h2>
-        <p id="b-plan" class="text-emerald-600 font-black text-xs uppercase mb-8"></p>
-        <input id="b-addr" placeholder="Service Address" class="w-full bg-slate-50 p-5 rounded-2xl font-bold mb-4 outline-none">
-        <button id="b-sub" onclick="sendEmails()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit Order</button>
-        <button onclick="closeM('book-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl">×</button>
+    <div class="bg-white p-8 rounded-[2rem] w-full max-w-sm relative">
+        <h2 class="text-2xl font-black uppercase italic mb-4">Confirm Order</h2>
+        <p id="b-plan" class="text-emerald-600 font-black text-xs mb-4 uppercase"></p>
+        <input id="b-addr" placeholder="Address" class="w-full bg-slate-50 p-4 rounded-xl mb-4 font-bold outline-none border">
+        <button id="b-sub" onclick="send()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase">Submit</button>
+        <button onclick="closeM('book-modal')" class="absolute top-4 right-4">×</button>
     </div>
 </div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8">Sign In</h2>
+    <div class="bg-white p-8 rounded-[2rem] w-full max-w-sm relative">
+        <h2 id="a-tit" class="text-2xl font-black uppercase italic mb-6">Sign In</h2>
         <div class="space-y-4">
-            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
-            <input id="a-e" placeholder="Email" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none hidden">
-            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
-            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit</button>
+            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none">
+            <input id="a-e" placeholder="Email" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none hidden">
+            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none">
+            <button onclick="auth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase">Submit</button>
             <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4">Create Account</button>
         </div>
     </div>
 </div>
 
+<section class="hero-gradient p-20 text-center text-white">
+    <h1 class="text-4xl font-black uppercase italic mb-4">Trouvaille Elite</h1>
+    <p class="opacity-70 mb-10">Bin sanitization at its peak.</p>
+    <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div class="bg-white text-slate-900 p-8 rounded-3xl">
+            <h3 class="font-black text-xs uppercase opacity-50 mb-2">Single Wash</h3>
+            <p class="text-3xl font-black mb-4">$15</p>
+            <button onclick="book('Single Wash')" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold">Select</button>
+        </div>
+        <div class="bg-emerald-500 p-8 rounded-3xl">
+            <h3 class="font-black text-xs uppercase text-emerald-100 mb-2">Monthly</h3>
+            <p class="text-3xl font-black mb-4">$20</p>
+            <button onclick="book('Monthly Elite')" class="w-full bg-white text-emerald-600 py-3 rounded-xl font-bold">Select</button>
+        </div>
+    </div>
+</section>
+
 <script>
-    // --- YOUR SAVED CREDENTIALS ---
-    const EMAIL_PUB_KEY = "v-4sLf-EzCLBYcWe7";
-    const SERVICE_ID = "Service_6ymb279";
-    const TEMPLATE_OWNER = "template_pruo22c";
-    const TEMPLATE_CUST = "template_4hi1opb";
-    const ADRIEN_ID = "Adrien";
-    const ADRIEN_PW = "favela23";
+    // --- CREDENTIALS SWAP ---
+    const PUB_KEY = "Service_6ymb279"; // As you specified: Service ID is Public Key
+    const SERV_ID = "v-4sLf-EzCLBYcWe7"; 
+    const T_OWNER = "template_pruo22c";
+    const T_CUST = "template_4hi1opb";
 
-    let u = JSON.parse(localStorage.getItem('loggedUser')) || null;
-    let isLogin = true;
-    let curPlan = "";
+    let user = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let isLog = true;
+    let selPlan = "";
 
-    // --- INITIALIZE ---
     function boot() {
-        emailjs.init(EMAIL_PUB_KEY); // FIXED: Initializing immediately
-        if(u) {
-            document.getElementById('u-nm').innerText = u.username;
-            document.getElementById('u-av').innerText = u.username[0].toUpperCase();
-            document.getElementById('li-btn').classList.add('hidden');
-            document.getElementById('lo-btn').classList.remove('hidden');
-            document.getElementById('p-btn').classList.remove('hidden');
-            if(u.username === ADRIEN_ID) document.body.classList.add('is-owner');
+        emailjs.init(PUB_KEY);
+        if(user) {
+            document.getElementById('u-nm').innerText = user.username;
+            document.getElementById('u-av').innerText = user.username[0].toUpperCase();
+            document.getElementById('li-btn').style.display = 'none';
+            document.getElementById('lo-btn').style.display = 'block';
+            document.getElementById('p-btn').style.display = 'block';
+            if(user.username === "Adrien") document.body.classList.add('is-owner');
         }
     }
 
-    // --- EMAIL LOGIC ---
-    async function sendEmails() {
-        const addr = document.getElementById('b-addr').value;
-        const btn = document.getElementById('b-sub');
-        if(!addr) return alert("Address required");
-
-        btn.innerText = "PROCESSING...";
-        btn.disabled = true;
-
-        const params = {
-            user_name: u.username,
-            user_email: u.email,
-            plan_selected: curPlan,
-            address: addr,
-            to_email: "favela23@gmail.com" // Sending to you
-        };
-
-        try {
-            // 1. Send to Owner (You)
-            await emailjs.send(SERVICE_ID, TEMPLATE_OWNER, params);
-            // 2. Send to Customer
-            await emailjs.send(SERVICE_ID, TEMPLATE_CUST, params);
-            
-            alert("SUCCESS! Order sent to Adrien and confirmed to customer.");
-            location.reload();
-        } catch (err) {
-            alert("Email Error: " + JSON.stringify(err));
-            btn.innerText = "SUBMIT ORDER";
-            btn.disabled = false;
-        }
+    function showTab(id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'users-tab') render();
     }
 
-    // --- FOUNDER PANEL LOGIC ---
     function render() {
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        const body = document.getElementById('db-list');
-        
-        body.innerHTML = users.map(x => `
+        const list = document.getElementById('db-list');
+        list.innerHTML = users.length ? users.map(u => `
             <tr class="border-b">
-                <td class="py-4 pl-2 font-black uppercase text-xs">${x.username}</td>
-                <td class="py-4 text-slate-400 font-bold text-xs">${x.email}</td>
+                <td class="py-4 font-black uppercase">${u.username}</td>
+                <td class="py-4 opacity-60">${u.email}</td>
                 <td class="py-4">
-                    <select onchange="updSub('${x.username}', this.value)" class="text-[10px] font-black uppercase bg-emerald-50 p-1 rounded">
-                        <option value="None" ${x.plan==='None'?'selected':''}>None</option>
-                        <option value="Single" ${x.plan==='Single'?'selected':''}>Single</option>
-                        <option value="Monthly" ${x.plan==='Monthly'?'selected':''}>Monthly</option>
+                    <select onchange="updSub('${u.username}', this.value)" class="bg-emerald-50 p-1 rounded text-[10px] font-black uppercase">
+                        <option value="None" ${u.plan==='None'?'selected':''}>None</option>
+                        <option value="Single" ${u.plan==='Single'?'selected':''}>Single</option>
+                        <option value="Monthly" ${u.plan==='Monthly'?'selected':''}>Monthly</option>
                     </select>
                 </td>
-                <td class="py-4 text-right">
-                    <button onclick="wipeAcc('${x.username}')" class="text-red-500 font-black text-[10px] uppercase">Delete</button>
-                </td>
-            </tr>
-        `).join('');
+                <td class="py-4 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-black">DELETE</button></td>
+            </tr>`).join('') : '<tr><td colspan="4" class="py-10 text-center opacity-30 font-bold italic">DATABASE EMPTY</td></tr>';
     }
 
     function updSub(n, p) {
         let list = JSON.parse(localStorage.getItem('users')) || [];
-        const i = list.findIndex(x => x.username === n);
-        if(i !== -1) {
-            list[i].plan = p;
-            localStorage.setItem('users', JSON.stringify(list));
-        }
+        let i = list.findIndex(x => x.username === n);
+        if(i !== -1) { list[i].plan = p; localStorage.setItem('users', JSON.stringify(list)); }
     }
 
-    function wipeAcc(n) {
-        if(!confirm("Delete "+n+"?")) return;
+    function del(n) {
+        if(!confirm("Delete account?")) return;
         let list = JSON.parse(localStorage.getItem('users')) || [];
         localStorage.setItem('users', JSON.stringify(list.filter(x => x.username !== n)));
         render();
     }
 
-    // --- MODAL & AUTH HELPERS ---
-    function openM(id) { if(id === 'owner-modal') render(); document.getElementById(id).classList.remove('hidden'); }
-    function closeM(id) { document.getElementById(id).classList.add('hidden'); }
-    function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
-    function updPrc() {
-        const v = document.getElementById('slid').value;
-        document.getElementById('s-prc').innerText = "$" + (15 + (v-1)*10);
+    async function send() {
+        const ad = document.getElementById('b-addr').value;
+        if(!ad) return alert("Missing address");
+        const btn = document.getElementById('b-sub');
+        btn.innerText = "SENDING...";
+        btn.disabled = true;
+
+        const p = { user_name: user.username, user_email: user.email, plan_selected: selPlan, address: ad, to_email: "favela23@gmail.com" };
+
+        try {
+            await emailjs.send(SERV_ID, T_OWNER, p);
+            await emailjs.send(SERV_ID, T_CUST, p);
+            alert("Order Success!");
+            location.reload();
+        } catch (e) {
+            alert("Email Fail: Check IDs");
+            btn.innerText = "SUBMIT";
+            btn.disabled = false;
+        }
     }
-    function book(p, s) {
-        if(!u) return openM('auth-modal');
-        curPlan = s ? `Single Wash (${document.getElementById('slid').value} Bins)` : p;
-        document.getElementById('b-plan').innerText = curPlan;
-        openM('book-modal');
-    }
-    function tAuth() {
-        isLogin = !isLogin;
-        document.getElementById('a-tit').innerText = isLogin ? "Sign In" : "Register";
-        document.getElementById('a-e').classList.toggle('hidden', isLogin);
-    }
-    function handleAuth() {
-        const un = document.getElementById('a-u').value.trim();
-        const pw = document.getElementById('a-p').value.trim();
-        const em = document.getElementById('a-e').value.trim();
+
+    function tAuth() { isLog = !isLog; document.getElementById('a-tit').innerText = isLog ? "Sign In" : "Register"; document.getElementById('a-e').classList.toggle('hidden', isLog); }
+    function auth() {
+        const u = document.getElementById('a-u').value.trim();
+        const p = document.getElementById('a-p').value.trim();
+        const e = document.getElementById('a-e').value.trim();
         let list = JSON.parse(localStorage.getItem('users')) || [];
 
-        if(isLogin) {
-            if(un === ADRIEN_ID && pw === ADRIEN_PW) login({username:un, email:"founder@trouvaille.com", isOwner:true});
-            else {
-                const f = list.find(x => x.username === un && x.password === pw);
-                if(f) login(f); else alert("Login failed");
-            }
+        if(isLog) {
+            if(u === "Adrien" && p === "favela23") login({username:u, email:"founder@trouvaille.com"});
+            else { const f = list.find(x => x.username === u && x.password === p); if(f) login(f); else alert("Wrong Login"); }
         } else {
-            const n = {username:un, password:pw, email:em, plan:"None"};
+            const n = {username:u, password:p, email:e, plan:"None"};
             list.push(n);
             localStorage.setItem('users', JSON.stringify(list));
             login(n);
         }
     }
-    function login(obj) { localStorage.setItem('loggedUser', JSON.stringify(obj)); location.reload(); }
+
+    function login(o) { localStorage.setItem('loggedUser', JSON.stringify(o)); location.reload(); }
     function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
+    function openM(id) { if(id==='owner-modal') render(); document.getElementById(id).classList.remove('hidden'); }
+    function closeM(id) { document.getElementById(id).classList.add('hidden'); }
+    function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
+    function book(p) { if(!user) return openM('auth-modal'); selPlan = p; document.getElementById('b-plan').innerText = p; openM('book-modal'); }
 
     boot();
 </script>
