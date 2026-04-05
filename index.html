@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Elite | Management Suite</title>
+    <title>Trouvaille Elite | Founder Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s ease-in-out; }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
         .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2); z-index: 110; border: 1px solid #f1f5f9; }
         .show { display: block !important; }
@@ -29,7 +29,7 @@
             <h1 class="text-xl font-black italic uppercase tracking-tighter">Trouvaille</h1>
         </div>
         <div class="relative">
-            <button onclick="toggleDrop()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500">
+            <button onclick="toggleDrop()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white">
                 <div id="u-av" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">G</div>
                 <span id="u-nm" class="text-sm font-bold italic text-slate-700">Guest</span>
                 <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
@@ -52,45 +52,44 @@
     </div>
 </nav>
 
-<div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white rounded-[2.5rem] w-full max-w-5xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
-        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <div class="flex gap-2">
-                <button onclick="switchTab('tab-users')" id="btn-tab-users" class="tab-btn active px-6 py-2 rounded-full font-black text-xs uppercase italic">User Database</button>
-                <button onclick="switchTab('tab-stats')" id="btn-tab-stats" class="tab-btn px-6 py-2 rounded-full font-black text-xs uppercase italic bg-slate-200 text-slate-500">Overview</button>
-            </div>
-            <button onclick="closeM('owner-modal')" class="text-slate-300 hover:text-red-500 text-2xl">×</button>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto p-8">
-            <div id="tab-users" class="tab-content active">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-black uppercase italic text-lg text-emerald-600">Active Accounts</h3>
-                    <input type="text" id="db-search" oninput="render()" placeholder="Search users..." class="bg-slate-100 px-4 py-2 rounded-lg text-sm font-bold outline-none border-2 border-transparent focus:border-emerald-500">
-                </div>
-                <table class="w-full text-left">
-                    <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
-                        <tr>
-                            <th class="pb-4 pl-2">User</th>
-                            <th class="pb-4">Email</th>
-                            <th class="pb-4">Current Plan</th>
-                            <th class="pb-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="db-list">
-                        </tbody>
-                </table>
-            </div>
+<section id="plans" class="py-20 max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-8">
+    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
+        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-2">Single Wash</h4>
+        <div id="s-prc" class="text-5xl font-black mb-4">$15</div>
+        <input type="range" id="slid" min="1" max="10" value="1" oninput="updPrc()" class="w-full mb-4">
+        <button onclick="book('Single Wash', true)" class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold">Book</button>
+    </div>
+    <div class="bg-slate-900 p-10 rounded-[3rem] shadow-2xl border-4 border-emerald-500 text-white">
+        <h4 class="text-[10px] font-black text-emerald-400 mb-2">Monthly Elite</h4>
+        <div class="text-6xl font-black mb-4">$20</div>
+        <button onclick="book('Monthly Elite', false)" class="w-full py-4 bg-emerald-500 rounded-xl font-bold">Subscribe</button>
+    </div>
+</section>
 
-            <div id="tab-stats" class="tab-content">
-                <div class="grid grid-cols-3 gap-6">
-                    <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100">
-                        <p class="text-[10px] font-black text-emerald-600 uppercase">Total Users</p>
-                        <h4 id="stat-total" class="text-4xl font-black italic">0</h4>
-                    </div>
-                </div>
-            </div>
+<div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
+    <div class="bg-white rounded-[2.5rem] w-full max-w-5xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
+            <h2 class="font-black uppercase italic text-emerald-600">User Database</h2>
+            <button onclick="closeM('owner-modal')" class="text-slate-300 text-2xl">×</button>
         </div>
+        <div class="flex-1 overflow-y-auto p-8">
+            <table class="w-full text-left">
+                <thead class="text-[10px] uppercase font-black text-slate-400 border-b">
+                    <tr><th class="pb-4 pl-2">User</th><th class="pb-4">Email</th><th class="pb-4">Plan</th><th class="pb-4 text-right">Control</th></tr>
+                </thead>
+                <tbody id="db-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="book-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
+    <div class="bg-white p-10 rounded-[3rem] w-full max-w-md relative">
+        <h2 class="text-3xl font-black uppercase italic mb-2">Confirm</h2>
+        <p id="b-plan" class="text-emerald-600 font-black text-xs uppercase mb-8"></p>
+        <input id="b-addr" placeholder="Service Address" class="w-full bg-slate-50 p-5 rounded-2xl font-bold mb-4 outline-none">
+        <button id="b-sub" onclick="sendEmails()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit Order</button>
+        <button onclick="closeM('book-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl">×</button>
     </div>
 </div>
 
@@ -98,147 +97,152 @@
     <div class="bg-white p-10 rounded-[3rem] w-full max-w-sm relative">
         <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8">Sign In</h2>
         <div class="space-y-4">
-            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
+            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
             <input id="a-e" placeholder="Email" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none hidden">
-            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
-            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic shadow-lg">Submit</button>
-            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4 hover:text-emerald-500">Create Account</button>
+            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
+            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit</button>
+            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4">Create Account</button>
         </div>
-        <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 text-slate-300 text-2xl hover:text-red-500">×</button>
     </div>
 </div>
 
 <script>
+    // --- YOUR SAVED CREDENTIALS ---
+    const EMAIL_PUB_KEY = "v-4sLf-EzCLBYcWe7";
+    const SERVICE_ID = "Service_6ymb279";
+    const TEMPLATE_OWNER = "template_pruo22c";
+    const TEMPLATE_CUST = "template_4hi1opb";
     const ADRIEN_ID = "Adrien";
     const ADRIEN_PW = "favela23";
 
-    let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let u = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isLogin = true;
+    let curPlan = "";
 
-    // --- Core UI Functions ---
-    function get(id) { return document.getElementById(id); }
-    function openM(id) { if(id === 'owner-modal') render(); get(id).classList.remove('hidden'); }
-    function closeM(id) { get(id).classList.add('hidden'); }
-    function toggleDrop() { get('drop').classList.toggle('show'); }
-
-    // --- Tab Management ---
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => {
-            b.classList.remove('active', 'bg-emerald-600', 'text-white');
-            b.classList.add('bg-slate-200', 'text-slate-500');
-        });
-        get(tabId).classList.add('active');
-        const activeBtn = get('btn-' + tabId);
-        activeBtn.classList.add('active', 'bg-emerald-600', 'text-white');
-        activeBtn.classList.remove('bg-slate-200', 'text-slate-500');
-    }
-
-    // --- Authentication ---
-    function tAuth() {
-        isLogin = !isLogin;
-        get('a-tit').innerText = isLogin ? "Sign In" : "Register";
-        get('a-e').classList.toggle('hidden', isLogin);
-    }
-
-    function handleAuth() {
-        const u = get('a-u').value.trim();
-        const p = get('a-p').value.trim();
-        const e = get('a-e').value.trim();
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        if(isLogin) {
-            if(u === ADRIEN_ID && p === ADRIEN_PW) {
-                return login({ username: u, email: "founder@trouvaille.com", isOwner: true });
-            }
-            const found = users.find(x => x.username === u && x.password === p);
-            if(found) login(found); else alert("Invalid Login");
-        } else {
-            if(!u || !p || !e) return alert("Fill everything!");
-            if(users.find(x => x.username === u)) return alert("Username exists!");
-            const newUser = { username: u, password: p, email: e, plan: "None" };
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            login(newUser);
+    // --- INITIALIZE ---
+    function boot() {
+        emailjs.init(EMAIL_PUB_KEY); // FIXED: Initializing immediately
+        if(u) {
+            document.getElementById('u-nm').innerText = u.username;
+            document.getElementById('u-av').innerText = u.username[0].toUpperCase();
+            document.getElementById('li-btn').classList.add('hidden');
+            document.getElementById('lo-btn').classList.remove('hidden');
+            document.getElementById('p-btn').classList.remove('hidden');
+            if(u.username === ADRIEN_ID) document.body.classList.add('is-owner');
         }
     }
 
-    function login(obj) {
-        localStorage.setItem('loggedUser', JSON.stringify(obj));
-        location.reload();
+    // --- EMAIL LOGIC ---
+    async function sendEmails() {
+        const addr = document.getElementById('b-addr').value;
+        const btn = document.getElementById('b-sub');
+        if(!addr) return alert("Address required");
+
+        btn.innerText = "PROCESSING...";
+        btn.disabled = true;
+
+        const params = {
+            user_name: u.username,
+            user_email: u.email,
+            plan_selected: curPlan,
+            address: addr,
+            to_email: "favela23@gmail.com" // Sending to you
+        };
+
+        try {
+            // 1. Send to Owner (You)
+            await emailjs.send(SERVICE_ID, TEMPLATE_OWNER, params);
+            // 2. Send to Customer
+            await emailjs.send(SERVICE_ID, TEMPLATE_CUST, params);
+            
+            alert("SUCCESS! Order sent to Adrien and confirmed to customer.");
+            location.reload();
+        } catch (err) {
+            alert("Email Error: " + JSON.stringify(err));
+            btn.innerText = "SUBMIT ORDER";
+            btn.disabled = false;
+        }
     }
 
-    function logout() {
-        localStorage.removeItem('loggedUser');
-        location.reload();
-    }
-
-    // --- Founder Database Logic ---
+    // --- FOUNDER PANEL LOGIC ---
     function render() {
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        const search = get('db-search').value.toLowerCase();
-        const list = get('db-list');
+        const body = document.getElementById('db-list');
         
-        get('stat-total').innerText = users.length;
-
-        const filtered = users.filter(u => u.username.toLowerCase().includes(search));
-
-        list.innerHTML = filtered.length ? filtered.map(u => `
-            <tr class="border-b hover:bg-slate-50">
-                <td class="py-4 pl-2 font-black uppercase text-xs">${u.username}</td>
-                <td class="py-4 text-slate-400 font-bold text-xs">${u.email}</td>
+        body.innerHTML = users.map(x => `
+            <tr class="border-b">
+                <td class="py-4 pl-2 font-black uppercase text-xs">${x.username}</td>
+                <td class="py-4 text-slate-400 font-bold text-xs">${x.email}</td>
                 <td class="py-4">
-                    <select onchange="updateSub('${u.username}', this.value)" class="bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase p-1 rounded-md outline-none border border-emerald-200">
-                        <option value="None" ${u.plan === 'None' ? 'selected' : ''}>No Plan</option>
-                        <option value="Single Wash" ${u.plan === 'Single Wash' ? 'selected' : ''}>Single</option>
-                        <option value="Monthly" ${u.plan === 'Monthly' ? 'selected' : ''}>Monthly</option>
-                        <option value="Bi-Monthly" ${u.plan === 'Bi-Monthly' ? 'selected' : ''}>Bi-Monthly</option>
+                    <select onchange="updSub('${x.username}', this.value)" class="text-[10px] font-black uppercase bg-emerald-50 p-1 rounded">
+                        <option value="None" ${x.plan==='None'?'selected':''}>None</option>
+                        <option value="Single" ${x.plan==='Single'?'selected':''}>Single</option>
+                        <option value="Monthly" ${x.plan==='Monthly'?'selected':''}>Monthly</option>
                     </select>
                 </td>
                 <td class="py-4 text-right">
-                    <button onclick="wipeAcc('${u.username}')" class="text-red-500 font-black text-[10px] uppercase hover:underline">
-                        <i class="fa-solid fa-trash-can mr-1"></i> Delete
-                    </button>
+                    <button onclick="wipeAcc('${x.username}')" class="text-red-500 font-black text-[10px] uppercase">Delete</button>
                 </td>
             </tr>
-        `).join('') : '<tr><td colspan="4" class="py-10 text-center font-bold text-slate-300 italic uppercase">No users found</td></tr>';
+        `).join('');
     }
 
-    function updateSub(username, newPlan) {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        const idx = users.findIndex(x => x.username === username);
-        if(idx !== -1) {
-            users[idx].plan = newPlan;
-            localStorage.setItem('users', JSON.stringify(users));
-            alert(`Updated ${username} to ${newPlan}`);
+    function updSub(n, p) {
+        let list = JSON.parse(localStorage.getItem('users')) || [];
+        const i = list.findIndex(x => x.username === n);
+        if(i !== -1) {
+            list[i].plan = p;
+            localStorage.setItem('users', JSON.stringify(list));
         }
     }
 
-    function wipeAcc(username) {
-        if(!confirm(`Are you sure you want to delete ${username}?`)) return;
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        const updated = users.filter(x => x.username !== username);
-        localStorage.setItem('users', JSON.stringify(updated));
+    function wipeAcc(n) {
+        if(!confirm("Delete "+n+"?")) return;
+        let list = JSON.parse(localStorage.getItem('users')) || [];
+        localStorage.setItem('users', JSON.stringify(list.filter(x => x.username !== n)));
         render();
     }
 
-    // --- Init ---
-    function boot() {
-        if(currentUser) {
-            get('u-nm').innerText = currentUser.username;
-            get('u-av').innerText = currentUser.username[0].toUpperCase();
-            get('li-btn').classList.add('hidden');
-            get('lo-btn').classList.remove('hidden');
-            get('p-btn').classList.remove('hidden');
-            if(currentUser.username === ADRIEN_ID || currentUser.isOwner) {
-                document.body.classList.add('is-owner');
+    // --- MODAL & AUTH HELPERS ---
+    function openM(id) { if(id === 'owner-modal') render(); document.getElementById(id).classList.remove('hidden'); }
+    function closeM(id) { document.getElementById(id).classList.add('hidden'); }
+    function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
+    function updPrc() {
+        const v = document.getElementById('slid').value;
+        document.getElementById('s-prc').innerText = "$" + (15 + (v-1)*10);
+    }
+    function book(p, s) {
+        if(!u) return openM('auth-modal');
+        curPlan = s ? `Single Wash (${document.getElementById('slid').value} Bins)` : p;
+        document.getElementById('b-plan').innerText = curPlan;
+        openM('book-modal');
+    }
+    function tAuth() {
+        isLogin = !isLogin;
+        document.getElementById('a-tit').innerText = isLogin ? "Sign In" : "Register";
+        document.getElementById('a-e').classList.toggle('hidden', isLogin);
+    }
+    function handleAuth() {
+        const un = document.getElementById('a-u').value.trim();
+        const pw = document.getElementById('a-p').value.trim();
+        const em = document.getElementById('a-e').value.trim();
+        let list = JSON.parse(localStorage.getItem('users')) || [];
+
+        if(isLogin) {
+            if(un === ADRIEN_ID && pw === ADRIEN_PW) login({username:un, email:"founder@trouvaille.com", isOwner:true});
+            else {
+                const f = list.find(x => x.username === un && x.password === pw);
+                if(f) login(f); else alert("Login failed");
             }
+        } else {
+            const n = {username:un, password:pw, email:em, plan:"None"};
+            list.push(n);
+            localStorage.setItem('users', JSON.stringify(list));
+            login(n);
         }
     }
-
-    window.onclick = (e) => {
-        if(!e.target.closest('.relative')) get('drop').classList.remove('show');
-    };
+    function login(obj) { localStorage.setItem('loggedUser', JSON.stringify(obj)); location.reload(); }
+    function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
 
     boot();
 </script>
