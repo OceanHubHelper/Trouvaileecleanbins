@@ -13,7 +13,19 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         .tail-container * { font-family: 'Plus Jakarta Sans', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
-        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.75rem; width: 15rem; background: white; border: 1px solid #f1f5f9; border-radius: 1.25rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); z-index: 110; }
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            right: 0; 
+            top: 100%; 
+            margin-top: 0.75rem; 
+            width: 15rem; 
+            background: white; 
+            border: 1px solid #f1f5f9; 
+            border-radius: 1.25rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            z-index: 110; 
+        }
         .show { display: block !important; }
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
@@ -54,12 +66,15 @@
                 <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-black text-emerald-600 border-b">
                     <i class="fa-solid fa-crown mr-2"></i> FOUNDER PANEL
                 </button>
-                <button onclick="openModal('profile-modal')" class="logged-in-only hidden w-full text-left px-5 py-4 hover:bg-slate-50 text-sm font-bold text-slate-600 border-b">
+                
+                <button id="nav-profile-btn" onclick="openModal('profile-modal')" class="hidden w-full text-left px-5 py-4 hover:bg-slate-50 text-sm font-bold text-slate-600 border-b">
                     <i class="fa-solid fa-id-card mr-2"></i> My Profile
                 </button>
+                
                 <button id="logout-btn" onclick="logout()" class="hidden w-full text-left px-5 py-4 hover:bg-red-50 text-sm font-bold text-red-500">
                     <i class="fa-solid fa-power-off mr-2"></i> Sign Out
                 </button>
+                
                 <button id="login-btn" onclick="openAuthModal()" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
                     <i class="fa-solid fa-circle-user mr-2"></i> Login / Register
                 </button>
@@ -98,29 +113,6 @@
     </div>
 </section>
 
-<section class="py-24 bg-white border-y border-slate-100">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-12 text-center">Customer Reviews</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-slate-50 p-8 rounded-3xl">
-                <div class="flex text-emerald-500 gap-1 mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="text-sm font-bold text-slate-600 italic mb-4">"My trash bins used to smell like a landfill. After one wash from Trouvaille, they look and smell brand new. Highly recommend!"</p>
-                <span class="text-[10px] font-black uppercase text-slate-400">— Sarah J.</span>
-            </div>
-            <div class="bg-slate-50 p-8 rounded-3xl">
-                <div class="flex text-emerald-500 gap-1 mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="text-sm font-bold text-slate-600 italic mb-4">"Best service in the area. They return the bins to my garage too. Elite service as advertised."</p>
-                <span class="text-[10px] font-black uppercase text-slate-400">— Mike D.</span>
-            </div>
-            <div class="bg-slate-50 p-8 rounded-3xl">
-                <div class="flex text-emerald-500 gap-1 mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="text-sm font-bold text-slate-600 italic mb-4">"Signing up for the Monthly Elite plan was the best choice. No more fruit flies in the summer!"</p>
-                <span class="text-[10px] font-black uppercase text-slate-400">— Jessica L.</span>
-            </div>
-        </div>
-    </div>
-</section>
-
 <div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4">
     <div class="bg-white rounded-[3rem] max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
         <div class="p-8 border-b flex justify-between items-center bg-slate-50">
@@ -130,12 +122,11 @@
             </div>
             <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
         </div>
-
         <div class="flex-1 overflow-y-auto p-8">
             <div id="user-tab" class="tab-content active">
                 <div class="mb-6 relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                    <input type="text" id="user-search" oninput="renderOwnerList()" placeholder="Search customers by username..." class="w-full pl-12 pr-6 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold">
+                    <input type="text" id="user-search" oninput="renderOwnerList()" placeholder="Search customers..." class="w-full pl-12 pr-6 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
                 </div>
                 <table class="w-full text-left">
                     <thead class="bg-slate-100 text-[10px] uppercase font-black text-slate-400">
@@ -144,20 +135,19 @@
                     <tbody id="owner-user-list"></tbody>
                 </table>
             </div>
-
             <div id="ann-tab" class="tab-content">
                 <div class="max-w-md mx-auto py-10">
                     <h3 class="text-xl font-black uppercase italic mb-6">Broadcast Message</h3>
-                    <textarea id="ann-input" placeholder="What do you want to say?" class="w-full p-5 bg-slate-50 rounded-2xl mb-4 h-32 outline-none font-bold border-2 border-transparent focus:border-emerald-500"></textarea>
+                    <textarea id="ann-input" placeholder="Announcement text..." class="w-full p-5 bg-slate-50 rounded-2xl mb-4 h-32 outline-none font-bold border-2 border-transparent focus:border-emerald-500"></textarea>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <select id="ann-duration" class="p-4 bg-slate-50 rounded-xl font-bold outline-none">
-                            <option value="infinite">Infinite (Permanent)</option>
+                            <option value="infinite">Infinite</option>
                             <option value="3600">1 Hour</option>
                             <option value="86400">24 Hours</option>
                         </select>
                         <button onclick="saveAnnouncement()" class="bg-emerald-600 text-white font-black uppercase rounded-xl">Launch</button>
                     </div>
-                    <button onclick="deleteAnnouncement()" class="w-full py-4 text-red-500 font-black uppercase text-xs border-2 border-red-50 border-dashed rounded-xl hover:bg-red-50">Delete Current Announcement</button>
+                    <button onclick="deleteAnnouncement()" class="w-full py-4 text-red-500 font-black uppercase text-xs border-2 border-red-50 border-dashed rounded-xl">Delete Announcement</button>
                 </div>
             </div>
         </div>
@@ -169,12 +159,12 @@
         <h2 class="text-3xl font-black mb-8 italic uppercase italic">My Profile</h2>
         <div class="space-y-4">
             <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Update Username</label>
-                <input id="profile-user" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none">
+                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Username</label>
+                <input id="profile-user" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
             </div>
             <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Update Email</label>
-                <input id="profile-email" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none">
+                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Email</label>
+                <input id="profile-email" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
             </div>
             <button onclick="saveProfile()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase italic shadow-lg">Save Changes</button>
         </div>
@@ -202,47 +192,13 @@
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isLoginMode = true;
 
-    // --- ANNOUNCEMENT ENGINE ---
-    function saveAnnouncement() {
-        const text = document.getElementById('ann-input').value;
-        const duration = document.getElementById('ann-duration').value;
-        const expiry = duration === 'infinite' ? 'infinite' : Date.now() + (duration * 1000);
-        const ann = { text, expiry };
-        localStorage.setItem('announcement', JSON.stringify(ann));
-        checkAnnouncement();
-        alert("Broadcast sent!");
-    }
-
-    function deleteAnnouncement() {
-        localStorage.removeItem('announcement');
-        checkAnnouncement();
-        alert("Broadcast deleted.");
-    }
-
-    function checkAnnouncement() {
-        const ann = JSON.parse(localStorage.getItem('announcement'));
-        const bar = document.getElementById('announcement-bar');
-        const text = document.getElementById('announcement-text');
-        
-        if (ann) {
-            if (ann.expiry === 'infinite' || Date.now() < ann.expiry) {
-                bar.classList.add('active');
-                text.innerText = ann.text;
-                return;
-            }
-        }
-        bar.classList.remove('active');
-    }
-
-    function closeAnnouncement() { document.getElementById('announcement-bar').classList.remove('active'); }
-
-    // --- USER ENGINE ---
+    // --- GENERAL UI ---
     function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
     window.onclick = (e) => { if (!e.target.closest('.relative')) document.getElementById("profileDropdown").classList.remove('show'); }
 
     function openModal(id) { 
         if (id === 'owner-panel') renderOwnerList();
-        if (id === 'profile-modal') {
+        if (id === 'profile-modal' && currentUser) {
             document.getElementById('profile-user').value = currentUser.username;
             document.getElementById('profile-email').value = currentUser.email || "";
         }
@@ -250,6 +206,7 @@
     }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
+    // --- AUTH ---
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById('auth-title').innerText = isLoginMode ? "Member Login" : "Create Profile";
@@ -267,7 +224,7 @@
             if (userIn === OWNER_DATA.user && passIn === OWNER_DATA.pass) return successLogin({ username: userIn, isOwner: true });
             const found = users.find(u => u.username === userIn && u.password === passIn);
             if (found) {
-                if (found.banned) alert("Banned by Founder.");
+                if (found.banned) alert("Account Banned.");
                 else successLogin(found);
             } else alert("Account does not exist.");
         } else {
@@ -281,12 +238,21 @@
     function successLogin(u) { localStorage.setItem('loggedUser', JSON.stringify(u)); location.reload(); }
     function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
 
+    // --- PROFILE SAVE (FIXED) ---
     function saveProfile() {
         let users = JSON.parse(localStorage.getItem('users')) || [];
+        const newName = document.getElementById('profile-user').value.trim();
+        const newEmail = document.getElementById('profile-email').value.trim();
+
+        if (currentUser.isOwner) {
+            alert("Founder accounts are hardcoded and cannot be edited here.");
+            return;
+        }
+
         const idx = users.findIndex(u => u.username === currentUser.username);
         if (idx !== -1) {
-            users[idx].username = document.getElementById('profile-user').value;
-            users[idx].email = document.getElementById('profile-email').value;
+            users[idx].username = newName;
+            users[idx].email = newEmail;
             localStorage.setItem('users', JSON.stringify(users));
             currentUser = users[idx];
             localStorage.setItem('loggedUser', JSON.stringify(currentUser));
@@ -295,7 +261,7 @@
         }
     }
 
-    // --- OWNER PANEL LOGIC ---
+    // --- OWNER PANEL ---
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
@@ -307,12 +273,11 @@
         const query = document.getElementById('user-search').value.toLowerCase();
         const list = document.getElementById('owner-user-list');
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        
         list.innerHTML = users.filter(u => u.username.toLowerCase().includes(query)).map(u => `
-            <tr class="border-b transition-all ${u.banned ? 'bg-red-50' : 'hover:bg-slate-50'}">
+            <tr class="border-b ${u.banned ? 'bg-red-50' : ''}">
                 <td class="p-5 font-black uppercase text-xs">${u.username}</td>
                 <td class="p-5">
-                    <select onchange="manualPlan('${u.username}', this.value)" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase cursor-pointer outline-none">
+                    <select onchange="manualPlan('${u.username}', this.value)" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase cursor-pointer">
                         <option value="Single Wash" ${u.plan === 'Single Wash' ? 'selected' : ''}>Single Wash</option>
                         <option value="Monthly Elite" ${u.plan === 'Monthly Elite' ? 'selected' : ''}>Monthly Elite</option>
                         <option value="Bi-Monthly Elite" ${u.plan === 'Bi-Monthly Elite' ? 'selected' : ''}>Bi-Monthly Elite</option>
@@ -328,7 +293,7 @@
     function manualPlan(user, plan) {
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const i = users.findIndex(u => u.username === user);
-        if (i !== -1) { users[i].plan = plan; localStorage.setItem('users', JSON.stringify(users)); alert(`Plan updated for ${user}`); }
+        if (i !== -1) { users[i].plan = plan; localStorage.setItem('users', JSON.stringify(users)); alert(`Updated ${user} to ${plan}`); }
     }
 
     function toggleBan(u) {
@@ -339,7 +304,27 @@
         renderOwnerList();
     }
 
-    // --- APP INIT ---
+    // --- ANNOUNCEMENT ---
+    function saveAnnouncement() {
+        const text = document.getElementById('ann-input').value;
+        const duration = document.getElementById('ann-duration').value;
+        const expiry = duration === 'infinite' ? 'infinite' : Date.now() + (duration * 1000);
+        localStorage.setItem('announcement', JSON.stringify({ text, expiry }));
+        checkAnnouncement();
+        alert("Announcement launched!");
+    }
+    function deleteAnnouncement() { localStorage.removeItem('announcement'); checkAnnouncement(); }
+    function checkAnnouncement() {
+        const ann = JSON.parse(localStorage.getItem('announcement'));
+        const bar = document.getElementById('announcement-bar');
+        if (ann && (ann.expiry === 'infinite' || Date.now() < ann.expiry)) {
+            bar.classList.add('active');
+            document.getElementById('announcement-text').innerText = ann.text;
+        } else bar.classList.remove('active');
+    }
+    function closeAnnouncement() { document.getElementById('announcement-bar').classList.remove('active'); }
+
+    // --- INIT ---
     function updateSinglePrice() { 
         const bins = document.getElementById('bin-slider').value; 
         document.getElementById('single-price-display').innerText = "$" + (15 + (bins-1)*10);
@@ -352,8 +337,8 @@
             document.getElementById('nav-avatar').innerText = currentUser.username[0];
             document.getElementById('login-btn').classList.add('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
-            document.querySelectorAll('.logged-in-only').forEach(el => el.classList.remove('hidden'));
-            if (currentUser.username === OWNER_DATA.user) document.body.classList.add('is-owner');
+            document.getElementById('nav-profile-btn').classList.remove('hidden');
+            if (currentUser.username === OWNER_DATA.user || currentUser.isOwner) document.body.classList.add('is-owner');
         }
     }
 
