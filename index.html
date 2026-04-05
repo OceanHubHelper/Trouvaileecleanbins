@@ -51,34 +51,6 @@
         </div>
     </nav>
 
-    <header class="max-w-4xl mx-auto px-6 py-24 text-center">
-        <h2 class="text-8xl font-black uppercase italic mb-6 leading-[0.8] tracking-tighter">Clean <br><span class="text-emerald-500">Bins.</span></h2>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#pricing" class="btn-tap bg-emerald-500 text-white px-12 py-6 rounded-3xl text-xs">View Plans</a>
-        </div>
-    </header>
-
-    <section id="pricing" class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 py-10">
-        <div class="glass p-12 border-slate-800">
-            <h4 class="text-2xl font-black uppercase italic mb-8 text-emerald-500">One-Time</h4>
-            <div class="flex justify-between items-end mb-8">
-                <span id="bin_display" class="text-4xl font-black">1 Bin</span>
-                <span id="cost_display" class="text-4xl font-black">$15</span>
-            </div>
-            <input type="range" id="bin_slider" min="1" max="10" value="1" oninput="syncPricing()" class="mb-10 accent-emerald-500">
-            <button onclick="bookService('One-Time')" class="btn-tap w-full bg-white text-black py-6 rounded-2xl text-xs">Order Now</button>
-        </div>
-        <div class="glass p-12 border-emerald-500/20">
-            <h4 class="text-2xl font-black uppercase italic mb-2 text-emerald-400">Monthly Plan</h4>
-            <p class="text-[10px] text-slate-500 mb-8 font-bold uppercase">6 Bins Total • 3-Week Cycle</p>
-            <div class="mb-10">
-                <span class="text-7xl font-black">$45</span>
-                <span class="text-slate-500 font-bold uppercase text-sm">/ Mo</span>
-            </div>
-            <button onclick="bookService('Monthly Plan')" class="btn-tap w-full bg-emerald-500 text-white py-6 rounded-2xl text-xs">Get Monthly</button>
-        </div>
-    </section>
-
     <div id="owner-panel" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] p-4 flex items-center justify-center">
         <div class="glass w-full max-w-6xl h-[85vh] flex flex-col overflow-hidden">
             <div class="p-8 border-b border-slate-800 flex justify-between items-center">
@@ -146,7 +118,6 @@
                     <div>
                         <p class="font-black text-sm uppercase">${u.username} <span class="text-emerald-500 text-[10px]">(${u.plan})</span></p>
                         <p class="text-[10px] font-bold text-slate-500">${u.name} • ${u.number}</p>
-                        ${u.expiry ? `<p class="text-[8px] text-red-500 font-black uppercase mt-1">Ends: ${u.expiry}</p>` : ''}
                     </div>
                     <div class="flex gap-3 items-center ml-auto">
                         ${u.plan === 'Monthly Plan' 
@@ -154,10 +125,19 @@
                             : `<button onclick="upgradeToMonthly('${u.username}')" class="bg-blue-600/20 text-blue-400 p-3 rounded-xl text-[9px] font-black uppercase">Upgrade</button>`
                         }
                         <input type="datetime-local" id="date-for-${u.username}" class="w-32 py-1 px-2 text-[10px]">
-                        <button onclick="pushDate('${u.username}')" class="bg-emerald-500 p-3 rounded-xl"><i class="fa-solid fa-plus"></i></button>
+                        <button onclick="pushDate('${u.username}')" class="bg-emerald-500 p-3 rounded-xl"><i class="fa-solid fa-plus text-white"></i></button>
+                        <button onclick="deleteUser('${u.username}')" class="bg-red-600/10 text-red-500 p-3 rounded-xl hover:bg-red-600 hover:text-white transition-all"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function deleteUser(un) {
+            if (confirm("Permanently delete " + un + "? This cannot be undone.")) {
+                users = users.filter(u => u.username !== un);
+                localStorage.setItem('users', JSON.stringify(users));
+                refreshRegistry();
+            }
         }
 
         function upgradeToMonthly(un) {
@@ -180,6 +160,7 @@
 
         function pushDate(un) {
             const val = document.getElementById(`date-for-${un}`).value;
+            if (!val) return alert("Select a date!");
             const i = users.findIndex(u => u.username === un);
             users[i].dates = users[i].dates || [];
             users[i].dates.push(val);
@@ -188,26 +169,18 @@
             alert("Schedule Added!");
         }
 
-        function syncPricing() {
-            const val = document.getElementById('bin_slider').value;
-            document.getElementById('bin_display').innerText = val + (val > 1 ? " Bins" : " Bin");
-            document.getElementById('cost_display').innerText = "$" + (15 + (val - 1) * 10);
-        }
-
         function handleAuth() {
             const u = document.getElementById('form-user').value.trim();
             const p = document.getElementById('form-pass').value.trim();
             if(!isSignup) {
                 if (u === "Adrien" && p === "favela23") { localStorage.setItem('session', JSON.stringify({username: "Adrien"})); location.reload(); }
+                const match = users.find(x => x.username === u && x.password === p);
+                if (match) { localStorage.setItem('session', JSON.stringify(match)); location.reload(); }
             } else {
                 users.push({username: u, password: p, name: document.getElementById('form-name').value, number: document.getElementById('form-number').value, plan: "One-Time", dates: []});
                 localStorage.setItem('users', JSON.stringify(users));
                 location.reload();
             }
-        }
-
-        function bookService(tier) {
-            alert("Request Sent!");
         }
 
         function toggleAuthMode() { isSignup = !isSignup; document.getElementById('signup-fields').classList.toggle('hidden'); }
