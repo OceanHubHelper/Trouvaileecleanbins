@@ -4,237 +4,412 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trouvaille Clean Bins | Elite Sanitization</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        .tail-container * { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
-        .dropdown-content { display: none; }
-        .show { display: block !important; }
         
-        /* Strict Owner Control */
-        .owner-only { display: none !important; }
-        body.is-owner .owner-only { display: block !important; }
+        .tail-container * { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+
+        .hero-gradient { 
+            background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); 
+        }
+
+        /* Dropdown Styling */
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            right: 0; 
+            top: 100%; 
+            margin-top: 0.75rem; 
+            width: 15rem; 
+            background: white; 
+            border: 1px solid #f1f5f9; 
+            border-radius: 1.25rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            z-index: 110; 
+        }
+
+        .show { 
+            display: block !important; 
+        }
+
+        /* Owner Visibility Logic */
+        .owner-only { 
+            display: none !important; 
+        }
         
-        input[type=range] { -webkit-appearance: none; background: #e2e8f0; border-radius: 99px; height: 8px; }
+        body.is-owner .owner-only { 
+            display: block !important; 
+        }
+
+        /* Custom Range Slider */
+        input[type=range] { 
+            -webkit-appearance: none; 
+            background: #e2e8f0; 
+            border-radius: 99px; 
+            height: 10px; 
+        }
+
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
-            background: #10b981; cursor: pointer; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            -webkit-appearance: none; 
+            height: 26px; 
+            width: 26px; 
+            border-radius: 50%;
+            background: #10b981; 
+            cursor: pointer; 
+            border: 4px solid white; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 
 <body class="tail-container bg-[#F8FAFC] text-slate-900 scroll-smooth">
 
-<nav class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
+<nav class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        
         <div class="flex items-center gap-4">
             <img src="https://i.imgur.com/syOOmTK.png" alt="Logo" class="w-10 h-10">
-            <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase">Trouvaille</h1>
+            <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase italic">Trouvaille</h1>
         </div>
 
         <div class="relative">
-            <button onclick="toggleDropdown()" class="flex items-center gap-2 p-1 pr-3 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
-                <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">G</div>
-                <span id="nav-user-name" class="text-sm font-bold text-slate-600">Guest</span>
-                <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-30"></i>
+            <button onclick="toggleDropdown()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
+                <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-extrabold text-xs">G</div>
+                <span id="nav-user-name" class="text-sm font-bold text-slate-700">Guest Account</span>
+                <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
             </button>
             
-            <div id="profileDropdown" class="dropdown-content absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-2xl py-2 z-[110]">
-                <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-4 py-3 hover:bg-emerald-50 text-sm font-black text-emerald-600 italic border-b border-slate-50">
-                    <i class="fa-solid fa-crown mr-2"></i> FOUNDER PANEL
+            <div id="profileDropdown" class="dropdown-content overflow-hidden">
+                <button onclick="openModal('owner-panel')" class="owner-only w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-black text-emerald-600 border-b border-slate-50">
+                    <i class="fa-solid fa-crown mr-2"></i> FOUNDER DASHBOARD
                 </button>
                 
-                <button id="logout-btn" onclick="logout()" class="hidden w-full text-left px-4 py-3 hover:bg-red-50 text-sm font-bold text-red-500">
-                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Sign Out
+                <button id="logout-btn" onclick="logout()" class="hidden w-full text-left px-5 py-4 hover:bg-red-50 text-sm font-bold text-red-500">
+                    <i class="fa-solid fa-power-off mr-2"></i> Sign Out
                 </button>
                 
-                <button id="login-btn" onclick="openAuthModal()" class="w-full text-left px-4 py-3 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
-                    <i class="fa-solid fa-user-plus mr-2"></i> Sign In / Sign Up
+                <button id="login-btn" onclick="openAuthModal()" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
+                    <i class="fa-solid fa-circle-user mr-2"></i> Login / Register
                 </button>
             </div>
         </div>
     </div>
 </nav>
 
-<section class="hero-gradient pt-32 pb-40 text-center text-white px-6">
-    <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter uppercase italic">Bins So Clean</h1>
-    <p class="text-lg opacity-70 mb-12 max-w-2xl mx-auto italic">High-pressure steam sanitization delivered to your curb.</p>
-    <button onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})" class="bg-emerald-500 hover:bg-emerald-400 text-white px-12 py-5 rounded-2xl font-black shadow-xl transition-all">Book Service</button>
-</section>
-
-<section id="plans" class="py-20 max-w-6xl mx-auto px-6">
-    <div class="grid md:grid-cols-3 gap-8 items-start">
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
-            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 italic">Single Wash</h4>
-            <div id="single-price-display" class="text-4xl font-black mb-6">$15</div>
-            <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updateSinglePrice()" class="w-full mb-4">
-            <p id="bin-count-label" class="text-center text-sm font-bold text-emerald-600 mb-6 italic">1 Bin Selected</p>
-            <button onclick="openBookingForm('Single Wash', true)" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black">Select One-Time</button>
-        </div>
-
-        <div class="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border-4 border-emerald-500 relative transform md:scale-110">
-            <h4 class="font-bold text-emerald-400 uppercase text-[10px] mb-2 italic">Monthly Elite</h4>
-            <div class="text-5xl font-black text-white mb-6">$20</div>
-            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black">Subscribe Now</button>
-        </div>
-
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
-            <h4 class="font-bold text-slate-400 uppercase text-[10px] mb-2 italic">Bi-Monthly</h4>
-            <div class="text-4xl font-black mb-6">$55</div>
-            <button onclick="openBookingForm('Bi-Monthly Elite', false, 55)" class="w-full py-4 bg-slate-100 rounded-2xl font-bold">Select Bi-Monthly</button>
+<section class="hero-gradient pt-28 pb-40 text-center text-white px-6">
+    <div class="max-w-4xl mx-auto">
+        <span class="bg-emerald-500/20 text-emerald-400 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-500/30 mb-8 inline-block">Professional Curbside Sanitization</span>
+        <h1 class="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase italic">
+            Elite Bin <br> <span class="text-emerald-400">Cleaning</span>
+        </h1>
+        <p class="text-lg text-slate-300 mb-12 max-w-xl mx-auto font-medium">
+            We use 200° high-pressure steam to kill 99.9% of bacteria. 
+            No more smells. No more grime. Just pure Trouvaille clean.
+        </p>
+        <div class="flex flex-wrap justify-center gap-6">
+            <button onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})" class="bg-emerald-500 hover:bg-emerald-400 text-white px-14 py-5 rounded-2xl font-black shadow-2xl transition-all hover:scale-105 active:scale-95">
+                SECURE BOOKING
+            </button>
         </div>
     </div>
 </section>
 
-<div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-xl flex items-center justify-center z-[200] p-4">
-    <div class="bg-white rounded-[3rem] max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl">
-        <div class="p-8 border-b flex justify-between items-center bg-slate-50">
-            <h2 class="text-2xl font-black text-slate-900 italic uppercase">Founder Dashboard</h2>
-            <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
+<section id="plans" class="py-24 max-w-7xl mx-auto px-6 -mt-32">
+    <div class="grid lg:grid-cols-3 gap-10 items-start">
+        
+        <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col">
+            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-widest mb-4">On-Demand</h4>
+            <h3 class="text-2xl font-black mb-2 italic">Single Wash</h3>
+            <div id="single-price-display" class="text-5xl font-black text-slate-900 mb-8">$15</div>
+            
+            <div class="mb-10 bg-slate-50 p-6 rounded-3xl">
+                <label class="text-[10px] font-black text-slate-400 uppercase block mb-4 italic">Bin Adjustment</label>
+                <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updateSinglePrice()" class="w-full mb-4">
+                <p id="bin-count-label" class="text-center text-sm font-black text-emerald-600 italic">1 Bin Selected</p>
+            </div>
+
+            <button onclick="openBookingForm('Single Wash', true)" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black hover:bg-emerald-600 transition-all shadow-lg">
+                Book Single
+            </button>
         </div>
-        <div class="flex-1 overflow-y-auto p-8">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-slate-100 text-slate-500 font-bold text-[10px] uppercase">
-                    <tr><th class="p-4">User</th><th class="p-4">Latest Plan</th><th class="p-4 text-right">Actions</th></tr>
+
+        <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-2xl border-4 border-emerald-500 relative transform lg:scale-110 z-10">
+            <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">
+                Most Popular
+            </div>
+            <h4 class="text-emerald-400 font-bold uppercase text-[10px] tracking-widest mb-4 italic">Monthly Elite</h4>
+            <h3 class="text-3xl font-black text-white mb-2 italic">Subscriber Plan</h3>
+            <div class="text-6xl font-black text-white mb-10">$20<span class="text-lg text-slate-500 font-bold">/mo</span></div>
+            
+            <ul class="text-slate-400 text-sm space-y-4 mb-10 font-bold">
+                <li><i class="fa-solid fa-check text-emerald-500 mr-3"></i> 1 Deep Clean Monthly</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-3"></i> 200° Steam Sanitization</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-3"></i> Priority Scheduling</li>
+            </ul>
+
+            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black hover:bg-emerald-400 transition-all shadow-xl">
+                Join The Elite
+            </button>
+        </div>
+
+        <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 flex flex-col">
+            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-widest mb-4 italic">The Heavy Plan</h4>
+            <h3 class="text-2xl font-black mb-2 italic">Bi-Monthly</h3>
+            <div class="text-5xl font-black text-slate-900 mb-2 font-black">$55</div>
+            <p class="text-[10px] font-black text-slate-400 uppercase mb-10 italic">3 Month Cycle | Total 9 Washes</p>
+            
+            <button onclick="openBookingForm('Bi-Monthly Elite', false, 55)" class="w-full py-5 bg-slate-100 text-slate-900 rounded-2xl font-black hover:bg-slate-900 hover:text-white transition-all">
+                Select Plan
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[200] p-4">
+    <div class="bg-white p-10 rounded-[3rem] max-w-sm w-full relative shadow-2xl">
+        <h2 id="auth-title" class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Member Login</h2>
+        
+        <div class="space-y-4">
+            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all font-bold">
+            
+            <input id="auth-email" placeholder="Email Address" class="w-full bg-slate-50 p-5 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all font-bold hidden">
+            
+            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all font-bold">
+            
+            <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic shadow-lg hover:bg-emerald-700 transition-all">
+                Access Profile
+            </button>
+            
+            <button id="auth-toggle-btn" onclick="toggleAuthMode()" class="w-full text-slate-400 text-[11px] font-black uppercase tracking-[0.15em] mt-6">
+                No Account? Create Profile
+            </button>
+        </div>
+
+        <button onclick="closeModal('auth-modal')" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-all">
+            <i class="fa-solid fa-circle-xmark text-2xl"></i>
+        </button>
+    </div>
+</div>
+
+<div id="owner-panel" class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4">
+    <div class="bg-white rounded-[3rem] max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+        
+        <div class="p-8 border-b flex justify-between items-center bg-slate-50/50">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h2 class="text-2xl font-black uppercase italic tracking-tighter">Founder Dashboard</h2>
+            </div>
+            <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900 transition-all">
+                <i class="fa-solid fa-circle-xmark text-2xl"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-10">
+            <table class="w-full text-left">
+                <thead class="bg-slate-100 text-[10px] uppercase font-black text-slate-400 tracking-widest">
+                    <tr>
+                        <th class="p-5">Customer Profile</th>
+                        <th class="p-5">Subscription Tier</th>
+                        <th class="p-5 text-right">Access Control</th>
+                    </tr>
                 </thead>
-                <tbody id="owner-user-list"></tbody>
+                <tbody id="owner-user-list">
+                    </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
-    <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full shadow-2xl relative">
-        <h2 id="auth-title" class="text-2xl font-black mb-6 italic uppercase">Sign In</h2>
-        <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-emerald-500 transition-all">
-        <input id="auth-email" placeholder="Email (New Users Only)" class="w-full bg-slate-50 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-emerald-500 transition-all hidden">
-        <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl mb-6 outline-none border border-transparent focus:border-emerald-500 transition-all">
-        <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold uppercase italic">Continue</button>
-        <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 mt-6 text-[10px] font-bold uppercase text-center block">New User? Create Profile</button>
-        <button onclick="closeModal('auth-modal')" class="absolute top-6 right-6 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-xmark text-xl"></i></button>
-    </div>
-</div>
-
 <div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
     <div class="bg-white p-10 rounded-[3rem] max-w-md w-full relative shadow-2xl text-center">
-        <h2 class="text-2xl font-black mb-2 italic uppercase">Confirm Order</h2>
-        <p id="plan-label" class="text-emerald-600 font-bold text-xs mb-8 uppercase tracking-widest"></p>
+        <h2 class="text-3xl font-black mb-2 italic uppercase">Confirm Order</h2>
+        <p id="plan-label" class="text-emerald-600 font-black text-xs mb-8 uppercase tracking-widest"></p>
+        
         <form onsubmit="sendBooking(event)" class="space-y-4 text-left">
-            <input id="form-name" required placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
-            <input id="form-address" required placeholder="Service Address" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
-            <input id="form-phone" required placeholder="Phone Number" class="w-full p-4 bg-slate-50 rounded-xl outline-none">
-            <div class="bg-slate-900 p-8 rounded-3xl text-center">
-                <p id="modal-total" class="text-5xl font-black text-white">$15</p>
-                <p class="text-emerald-400 text-[10px] font-bold mt-2 uppercase tracking-widest">Pay on Service Day</p>
+            <input id="form-name" required placeholder="Full Name" class="w-full p-5 bg-slate-50 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all">
+            <input id="form-address" required placeholder="Service Address" class="w-full p-5 bg-slate-50 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all">
+            <input id="form-phone" required placeholder="Phone Number" class="w-full p-5 bg-slate-50 rounded-2xl outline-none border-2 border-transparent focus:border-emerald-500 transition-all">
+            
+            <div class="bg-slate-900 p-8 rounded-[2rem] text-center my-6">
+                <p id="modal-total" class="text-6xl font-black text-white">$15</p>
+                <p class="text-emerald-400 text-[10px] font-black mt-3 uppercase tracking-widest">Payable via Cash / Zelle</p>
             </div>
-            <button class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Book Mission 🧼</button>
+
+            <button class="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black uppercase italic shadow-2xl hover:bg-emerald-700 transition-all">
+                CONFIRM MISSION 🧼
+            </button>
         </form>
-        <button onclick="closeModal('booking-modal')" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-xmark text-xl"></i></button>
+
+        <button onclick="closeModal('booking-modal')" class="absolute top-10 right-10 text-slate-300 hover:text-slate-900">
+            <i class="fa-solid fa-circle-xmark text-2xl"></i>
+        </button>
     </div>
 </div>
 
 <script>
+    // Initialize EmailJS
     emailjs.init("v-4sLf-EzCLBYcWe7"); 
 
-    const OWNER_USERNAME = "owner"; 
+    // SECURE OWNER CREDENTIALS
+    const OWNER_DATA = { 
+        user: "Adrien", 
+        pass: "favela23" 
+    };
+    
+    // Persistent Application State
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let isLoginMode = true;
     let currentSelectedPlan = "";
     let currentTotal = 15;
 
-    function updateSinglePrice() {
-        const bins = document.getElementById('bin-slider').value;
-        const price = 15 + (bins - 1) * 10;
-        document.getElementById('single-price-display').innerText = "$" + price;
-        document.getElementById('bin-count-label').innerText = bins + (bins == 1 ? " Bin Selected" : " Bins Selected");
-        currentTotal = price;
+    // --- NAVIGATION LOGIC ---
+    function toggleDropdown() { 
+        document.getElementById("profileDropdown").classList.toggle("show"); 
     }
 
-    function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
+    // Close dropdown on outside click
+    window.onclick = function(event) {
+        if (!event.target.closest('.relative')) {
+            document.getElementById("profileDropdown").classList.remove('show');
+        }
+    }
+
+    // --- MODAL CONTROLS ---
     function openModal(id) { 
         if (id === 'owner-panel') renderOwnerList();
         document.getElementById(id).classList.remove('hidden'); 
     }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    function openAuthModal() { openModal('auth-modal'); }
+    function closeModal(id) { 
+        document.getElementById(id).classList.add('hidden'); 
+    }
+
+    // --- AUTHENTICATION LOGIC ---
+    function openAuthModal() { 
+        isLoginMode = true;
+        updateAuthUI();
+        openModal('auth-modal'); 
+    }
 
     function toggleAuthMode() {
-        const emailField = document.getElementById('auth-email');
+        isLoginMode = !isLoginMode;
+        updateAuthUI();
+    }
+
+    function updateAuthUI() {
         const title = document.getElementById('auth-title');
-        const isHidden = emailField.classList.toggle('hidden');
-        title.innerText = isHidden ? "Sign In" : "Create Profile";
-        document.getElementById('auth-toggle-btn').innerText = isHidden ? "New User? Create Profile" : "Back to Sign In";
+        const email = document.getElementById('auth-email');
+        const btn = document.getElementById('auth-toggle-btn');
+        
+        title.innerText = isLoginMode ? "Member Login" : "Create Profile";
+        email.classList.toggle('hidden', isLoginMode);
+        btn.innerText = isLoginMode ? "No Account? Create Profile" : "Back to Sign In";
     }
 
     function handleAuth() {
-        const user = document.getElementById('auth-user').value.toLowerCase();
-        if (!user) return;
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        const found = users.find(u => u.username === user);
+        const userIn = document.getElementById('auth-user').value.trim();
+        const passIn = document.getElementById('auth-pass').value.trim();
+        const emailIn = document.getElementById('auth-email').value.trim();
         
-        if (found && found.banned) return alert("Account Locked.");
-        
-        currentUser = found || { username: user, email: document.getElementById('auth-email').value, plan: "New" };
-        if (!found) { users.push(currentUser); localStorage.setItem('users', JSON.stringify(users)); }
-        
-        localStorage.setItem('loggedUser', JSON.stringify(currentUser));
-        closeModal('auth-modal');
-        updateUI();
+        let localUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+        if (isLoginMode) {
+            // Check hardcoded Founder
+            if (userIn === OWNER_DATA.user && passIn === OWNER_DATA.pass) {
+                processLogin({ username: userIn, isOwner: true });
+                return;
+            }
+
+            // Check dynamic users
+            const foundUser = localUsers.find(u => u.username === userIn && u.password === passIn);
+            if (foundUser) {
+                if (foundUser.banned) {
+                    alert("This account has been locked by the Founder.");
+                } else {
+                    processLogin(foundUser);
+                }
+            } else {
+                alert("Account does not exist. Check your credentials or Sign Up.");
+            }
+        } else {
+            // Sign Up Mode
+            if (!userIn || !passIn) return alert("Fields cannot be empty.");
+            if (userIn === OWNER_DATA.user || localUsers.find(u => u.username === userIn)) {
+                return alert("Username already taken.");
+            }
+
+            const newUser = { 
+                username: userIn, 
+                password: passIn, 
+                email: emailIn, 
+                plan: "New Profile" 
+            };
+            
+            localUsers.push(newUser);
+            localStorage.setItem('users', JSON.stringify(localUsers));
+            processLogin(newUser);
+        }
+    }
+
+    function processLogin(userObj) {
+        localStorage.setItem('loggedUser', JSON.stringify(userObj));
+        location.reload(); 
     }
 
     function logout() {
         localStorage.removeItem('loggedUser');
-        currentUser = null;
-        document.body.classList.remove('is-owner');
-        updateUI();
         location.reload();
     }
 
-    function updateUI() {
-        const navName = document.getElementById('nav-user-name');
-        const avatar = document.getElementById('nav-avatar');
-        const loginBtn = document.getElementById('login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-
-        if (currentUser) {
-            navName.innerText = currentUser.username;
-            avatar.innerText = currentUser.username.charAt(0).toUpperCase();
-            loginBtn.classList.add('hidden');
-            logoutBtn.classList.remove('hidden');
-            
-            if (currentUser.username === OWNER_USERNAME) {
-                document.body.classList.add('is-owner');
-            }
-        } else {
-            navName.innerText = "Guest";
-            avatar.innerText = "G";
-            loginBtn.classList.remove('hidden');
-            logoutBtn.classList.add('hidden');
-            document.body.classList.remove('is-owner');
-        }
+    // --- PRICING ENGINE ---
+    function updateSinglePrice() {
+        const binCount = document.getElementById('bin-slider').value;
+        const total = 15 + (binCount - 1) * 10;
+        
+        document.getElementById('single-price-display').innerText = "$" + total;
+        document.getElementById('bin-count-label').innerText = binCount + " Bin" + (binCount > 1 ? "s" : "") + " Selected";
+        
+        currentTotal = total;
     }
 
-    function openBookingForm(plan, isSingle, fixedPrice) {
+    function openBookingForm(planName, isSingle, fixedPrice) {
         if (isSingle) {
             updateSinglePrice();
             const bins = document.getElementById('bin-slider').value;
             currentSelectedPlan = `Single Wash (${bins} Bins)`;
         } else {
             currentTotal = fixedPrice;
-            currentSelectedPlan = plan;
+            currentSelectedPlan = planName;
         }
+
         document.getElementById('plan-label').innerText = currentSelectedPlan;
         document.getElementById('modal-total').innerText = "$" + currentTotal;
-        if (currentUser) document.getElementById('form-name').value = currentUser.username;
+        
+        if (currentUser) {
+            document.getElementById('form-name').value = currentUser.username;
+        }
+        
         openModal('booking-modal');
     }
 
+    // --- EMAIL DISPATCH ---
     async function sendBooking(e) {
         e.preventDefault();
+        
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerText;
+        btn.innerText = "TRANSMITTING...";
+        
         const params = {
             name: document.getElementById('form-name').value,
             address: document.getElementById('form-address').value,
@@ -246,41 +421,92 @@
 
         try {
             await emailjs.send("service_6ymb279", "template_pruo22c", params);
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            const idx = users.findIndex(u => u.username === (currentUser ? currentUser.username : params.name));
-            if (idx !== -1) { users[idx].plan = currentSelectedPlan; localStorage.setItem('users', JSON.stringify(users)); }
-            alert("Booking Sent!");
+            
+            // Log purchase to Founder Dashboard
+            let localUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const idx = localUsers.findIndex(u => u.username === (currentUser ? currentUser.username : params.name));
+            if (idx !== -1) {
+                localUsers[idx].plan = currentSelectedPlan;
+                localStorage.setItem('users', JSON.stringify(localUsers));
+            }
+
+            alert("Mission Confirmed! We will see you on service day.");
             closeModal('booking-modal');
-        } catch (err) { alert("Error sending order."); }
+        } catch (err) {
+            alert("Connection Error. Please check your data.");
+        } finally {
+            btn.innerText = originalText;
+        }
     }
 
+    // --- FOUNDER DASHBOARD LOGIC ---
     function renderOwnerList() {
-        const list = document.getElementById('owner-user-list');
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        list.innerHTML = "";
-        users.forEach(u => {
-            if (u.username === OWNER_USERNAME) return;
-            list.innerHTML += `
-                <tr class="border-t ${u.banned ? 'bg-red-50' : ''}">
-                    <td class="p-4 font-bold text-xs uppercase">${u.username}</td>
-                    <td class="p-4 text-xs font-bold text-emerald-600 italic">${u.plan || 'No History'}</td>
-                    <td class="p-4 text-right">
-                        <button onclick="adminAction('${u.username}', 'ban')" class="text-red-500 font-black text-[10px] uppercase hover:underline">${u.banned ? 'Unban' : 'Ban'}</button>
+        const listContainer = document.getElementById('owner-user-list');
+        const localUsers = JSON.parse(localStorage.getItem('users')) || [];
+        
+        listContainer.innerHTML = "";
+        
+        if (localUsers.length === 0) {
+            listContainer.innerHTML = "<tr><td colspan='3' class='p-10 text-center font-bold text-slate-300'>No users registered yet.</td></tr>";
+            return;
+        }
+
+        localUsers.forEach(u => {
+            listContainer.innerHTML += `
+                <tr class="border-b border-slate-50 transition-all ${u.banned ? 'bg-red-50' : 'hover:bg-slate-50'}">
+                    <td class="p-5">
+                        <div class="font-black text-slate-900 uppercase text-xs">${u.username}</div>
+                        <div class="text-[10px] text-slate-400 font-bold">${u.email || 'No email provided'}</div>
+                    </td>
+                    <td class="p-5">
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase">
+                            ${u.plan || 'Free Member'}
+                        </span>
+                    </td>
+                    <td class="p-5 text-right">
+                        <button onclick="toggleBan('${u.username}')" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase transition-all 
+                            ${u.banned ? 'bg-slate-900 text-white' : 'bg-red-100 text-red-600 hover:bg-red-600 hover:text-white'}">
+                            ${u.banned ? 'Unban User' : 'Ban User'}
+                        </button>
                     </td>
                 </tr>
             `;
         });
     }
 
-    function adminAction(username, type) {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        const idx = users.findIndex(u => u.username === username);
-        if (idx !== -1 && type === 'ban') users[idx].banned = !users[idx].banned;
-        localStorage.setItem('users', JSON.stringify(users));
-        renderOwnerList();
+    function toggleBan(targetName) {
+        let localUsers = JSON.parse(localStorage.getItem('users')) || [];
+        const index = localUsers.findIndex(u => u.username === targetName);
+        
+        if (index !== -1) {
+            localUsers[index].banned = !localUsers[index].banned;
+            localStorage.setItem('users', JSON.stringify(localUsers));
+            renderOwnerList();
+        }
     }
 
-    updateUI();
+    // --- INITIALIZE UI ---
+    function initApp() {
+        const navName = document.getElementById('nav-user-name');
+        const navAvatar = document.getElementById('nav-avatar');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (currentUser) {
+            navName.innerText = currentUser.username;
+            navAvatar.innerText = currentUser.username.charAt(0).toUpperCase();
+            loginBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            
+            // Check if the current user is Adrien
+            if (currentUser.username === OWNER_DATA.user) {
+                document.body.classList.add('is-owner');
+            }
+        }
+    }
+
+    initApp();
 </script>
+
 </body>
 </html>
