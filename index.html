@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Bins | Professional Sanitation & Logistics</title>
+    <title>Trouvaille Bins | Professional Logistics & Sanitation Enterprise</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        /* --- BRAND DESIGN SYSTEM --- */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
             --bg: #020617;
@@ -18,8 +19,9 @@
             --border: #1e293b;
             --emerald: #10b981;
             --gold: #fbbf24;
-            --gold-glow: rgba(251, 191, 36, 0.3);
-            --emerald-glow: rgba(16, 185, 129, 0.3);
+            --gold-glow: rgba(251, 191, 36, 0.5);
+            --emerald-glow: rgba(16, 185, 129, 0.4);
+            --glass: rgba(15, 23, 42, 0.8);
         }
 
         * {
@@ -34,506 +36,732 @@
             background-color: var(--bg);
             color: #f8fafc;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* --- STATUS GLOW EFFECTS --- */
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--emerald); }
+
+        /* --- ADVANCED STATUS ENGINE --- */
         .status-founder { 
             color: var(--emerald) !important; 
-            text-shadow: 0 0 12px var(--emerald-glow);
+            text-shadow: 0 0 20px var(--emerald-glow);
             font-weight: 800;
+            letter-spacing: -0.02em;
         }
         
         .status-gold { 
-            color: var(--gold) !important; 
-            text-shadow: 0 0 15px var(--gold-glow);
-            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px var(--gold-glow));
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
         .status-member { 
-            color: #94a3b8; 
-            font-weight: 600;
+            color: #64748b; 
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 9px;
         }
 
-        /* --- UI COMPONENTS --- */
+        /* --- UI ARCHITECTURE --- */
         .glass-card {
-            background: var(--card);
+            background: var(--glass);
             border: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+            transform: translateY(-8px);
+        }
+
+        .nav-blur {
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        /* --- DROPDOWN LOGIC --- */
         .dropdown {
             display: none;
             position: absolute;
             right: 0;
-            top: 115%;
-            width: 16rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1.5rem;
-            z-index: 2000;
-            padding: 0.75rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            top: 120%;
+            width: 20rem;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 2rem;
+            z-index: 9999;
+            padding: 1.25rem;
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+            transform-origin: top right;
         }
-        .dropdown.show { display: block; animation: pop 0.2s ease-out; }
+        .dropdown.show { display: block; animation: ultraPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        @keyframes pop {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes ultraPop {
+            from { transform: scale(0.8) translateY(-20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
 
+        /* --- COMPONENTS --- */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
 
-        input[type="datetime-local"] {
-            background: #1e293b;
+        .btn-primary {
+            background: var(--emerald);
             color: white;
-            border: 1px solid #334155;
-            padding: 12px;
-            border-radius: 14px;
-            outline: none;
-            width: 100%;
+            padding: 1.25rem 2.5rem;
+            border-radius: 1.25rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6);
+            filter: brightness(1.1);
         }
 
-        .tab-btn {
-            position: relative;
-            padding-bottom: 8px;
-            opacity: 0.4;
+        .input-main {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            color: white;
+            padding: 1.25rem;
+            border-radius: 1.25rem;
+            width: 100%;
+            outline: none;
             transition: 0.3s;
         }
-        .tab-btn.active {
-            opacity: 1;
+        .input-main:focus { border-color: var(--emerald); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+
+        /* --- TABS --- */
+        .tab-trigger {
+            padding: 1rem 0;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+        .tab-trigger.active {
             color: var(--emerald);
+            border-bottom-color: var(--emerald);
+            text-shadow: 0 0 10px var(--emerald-glow);
         }
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--emerald);
-            border-radius: 10px;
+
+        /* --- ANIMATIONS --- */
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 5px var(--emerald-glow); }
+            50% { box-shadow: 0 0 20px var(--emerald-glow); }
+            100% { box-shadow: 0 0 5px var(--emerald-glow); }
         }
+        .live-indicator { width: 8px; height: 8px; background: var(--emerald); border-radius: 50%; display: inline-block; animation: glowPulse 2s infinite; }
     </style>
 </head>
 <body>
 
-    <div id="ann-banner" class="hidden bg-emerald-600 text-white py-3 px-4 text-center text-[11px] font-black uppercase tracking-[0.3em] sticky top-0 z-[3000]">
-        <span id="ann-text"></span>
+    <div id="global-announcer" class="hidden bg-emerald-600 text-white py-4 px-6 text-center sticky top-0 z-[10000] border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <i class="fa-solid fa-satellite-dish animate-pulse"></i>
+            <span id="announcement-content" class="text-[11px] font-black uppercase tracking-[0.4em]"></span>
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
     </div>
 
-    <nav class="p-5 border-b border-slate-800 flex justify-between items-center sticky top-0 bg-slate-950/80 backdrop-blur-xl z-[1000]">
-        <h1 class="font-black italic uppercase tracking-tighter text-2xl">Trouvaille <span class="text-emerald-500">Bins</span></h1>
-        
-        <div class="relative">
-            <button onclick="document.getElementById('user-drop').classList.toggle('show')" class="glass-card pl-5 pr-2 py-2 rounded-full flex items-center gap-4 hover:border-emerald-500/50">
-                <div class="text-right">
-                    <p id="nav-name" class="text-[10px] font-black uppercase tracking-tighter">Guest</p>
-                    <p id="nav-status" class="text-[8px] font-extrabold uppercase">Offline</p>
+    <nav class="nav-blur p-6 sticky top-0 z-[9000]">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4 group cursor-pointer">
+                <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform group-hover:rotate-12">
+                    <i class="fa-solid fa-wind text-xl"></i>
                 </div>
-                <img id="nav-avatar" src="https://ui-avatars.com/api/?name=?&background=1e293b&color=fff" class="w-10 h-10 rounded-full border-2 border-slate-700">
-            </button>
+                <div>
+                    <h1 class="text-2xl font-black italic uppercase tracking-tighter leading-none">Trouvaille <span class="text-emerald-500">Bins</span></h1>
+                    <p class="text-[8px] font-bold uppercase tracking-widest text-slate-500 mt-1">Industrial Grade Hygiene</p>
+                </div>
+            </div>
 
-            <div id="user-drop" class="dropdown">
-                <div id="logged-in-tools" class="hidden">
-                    <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center gap-3 transition-all mb-1">
-                        <i class="fa-solid fa-crown"></i>
-                        <span class="text-[11px] font-black uppercase">Founder Panel</span>
-                    </button>
-                    <button onclick="openM('user-schedule-modal')" class="w-full text-left p-4 hover:bg-slate-800 rounded-xl flex items-center gap-3">
-                        <i class="fa-solid fa-calendar-check opacity-50"></i>
-                        <span class="text-[11px] font-black uppercase">My Schedule</span>
-                    </button>
-                    <button onclick="logout()" class="w-full text-left p-4 hover:bg-red-500/10 text-red-500 rounded-xl flex items-center gap-3 mt-1">
-                        <i class="fa-solid fa-power-off"></i>
-                        <span class="text-[11px] font-black uppercase">Sign Out</span>
-                    </button>
-                </div>
-                <div id="logged-out-tools">
-                    <button onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center gap-3">
-                        <i class="fa-solid fa-user-plus"></i>
-                        <span class="text-[11px] font-black uppercase">Login / Sign Up</span>
-                    </button>
+            <div class="relative">
+                <button onclick="toggleUserDropdown()" class="glass-card flex items-center gap-5 pl-6 pr-2 py-2 rounded-full border-slate-800 hover:border-emerald-500/50">
+                    <div class="text-right">
+                        <p id="nav-display-name" class="text-[10px] font-black uppercase tracking-tight">Guest User</p>
+                        <p id="nav-display-status" class="text-[8px] font-bold uppercase opacity-40">System Offline</p>
+                    </div>
+                    <img id="nav-display-avatar" src="https://ui-avatars.com/api/?name=?&background=0f172a&color=fff" class="w-11 h-11 rounded-full border-2 border-slate-700 object-cover">
+                </button>
+
+                <div id="user-context-menu" class="dropdown">
+                    <div id="auth-state-active" class="hidden space-y-2">
+                        <div class="p-4 bg-slate-900/50 rounded-2xl mb-4 border border-slate-800">
+                            <p class="text-[8px] font-black uppercase text-slate-500 mb-1">Account Connected</p>
+                            <p id="drop-legal-name" class="text-xs font-bold text-white">Full Identity Loaded</p>
+                        </div>
+                        
+                        <button onclick="openModal('founder-panel')" class="owner-only w-full flex items-center gap-4 p-4 hover:bg-emerald-500/10 text-emerald-500 rounded-2xl transition-all border border-emerald-500/10">
+                            <i class="fa-solid fa-shield-crown"></i>
+                            <span class="text-[10px] font-black uppercase">Founder Dashboard</span>
+                        </button>
+                        
+                        <button onclick="openModal('schedule-view-modal')" class="w-full flex items-center gap-4 p-4 hover:bg-slate-800 rounded-2xl transition-all">
+                            <i class="fa-solid fa-calendar-day opacity-40"></i>
+                            <span class="text-[10px] font-black uppercase">My Arrival Time</span>
+                        </button>
+
+                        <div class="h-[1px] bg-slate-800 my-4 mx-2"></div>
+                        
+                        <button onclick="executeLogout()" class="w-full flex items-center gap-4 p-4 hover:bg-red-500/10 text-red-500 rounded-2xl transition-all">
+                            <i class="fa-solid fa-power-off"></i>
+                            <span class="text-[10px] font-black uppercase">Terminate Session</span>
+                        </button>
+                    </div>
+
+                    <div id="auth-state-guest">
+                        <div class="text-center p-6 mb-4">
+                            <i class="fa-solid fa-user-lock text-3xl text-slate-700 mb-4"></i>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sign in to book service</p>
+                        </div>
+                        <button onclick="openModal('gatekeeper-modal')" class="w-full bg-emerald-500 text-white p-5 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-emerald-500/20">
+                            Login / Register
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="py-24 px-6 text-center max-w-5xl mx-auto">
-        <h2 class="text-6xl md:text-8xl font-black uppercase italic tracking-tighter mb-6">Clean Bins. <br><span class="text-emerald-500">Zero Odor.</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto mb-12">Experience the ultimate high-pressure steam sanitation service for your trash and recycling bins.</p>
+    <section class="max-w-7xl mx-auto px-6 pt-32 pb-48 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none"></div>
         
-        <div class="grid md:grid-cols-3 gap-8 text-left mt-20">
-            <div class="glass-card p-8 rounded-[2.5rem]">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl mb-6 flex items-center justify-center text-xl"><i class="fa-solid fa-1"></i></div>
-                <h4 class="font-black uppercase italic mb-2">Book Service</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">Choose a single wash or monthly subscription. We handle the rest.</p>
+        <div class="text-center relative z-10">
+            <div class="inline-flex items-center gap-3 bg-slate-900 border border-slate-800 px-6 py-3 rounded-full mb-12">
+                <span class="live-indicator"></span>
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500">Service Area Active</span>
             </div>
-            <div class="glass-card p-8 rounded-[2.5rem] border-emerald-500/30">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl mb-6 flex items-center justify-center text-xl"><i class="fa-solid fa-2"></i></div>
-                <h4 class="font-black uppercase italic mb-2">The Wash</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">Our team arrives and uses 200°F steam to blast away 99.9% of bacteria.</p>
-            </div>
-            <div class="glass-card p-8 rounded-[2.5rem]">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl mb-6 flex items-center justify-center text-xl"><i class="fa-solid fa-3"></i></div>
-                <h4 class="font-black uppercase italic mb-2">Fresh Finish</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">We deodorize and return your bins to your driveway, sparkling clean.</p>
-            </div>
-        </div>
-    </header>
+            
+            <h2 class="text-7xl md:text-[11rem] font-black uppercase italic tracking-tighter leading-[0.8] mb-12">
+                Pure <br><span class="text-emerald-500">Sanitation.</span>
+            </h2>
+            
+            <p class="text-slate-400 text-xl max-w-3xl mx-auto font-medium leading-relaxed mb-16">
+                Revolutionizing curbside bin hygiene with 200°F high-pressure steam. 
+                Eliminate 99.9% of bacteria, odors, and pests instantly.
+            </p>
 
-    <section class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-        <div class="glass-card p-12 rounded-[4rem]">
-            <h4 class="text-2xl font-black uppercase italic mb-10">Single Wash</h4>
-            <div class="space-y-8 mb-12">
-                <div class="flex justify-between items-end">
-                    <span id="bin-display" class="text-4xl font-black italic">1 Bin</span>
-                    <span id="price-display" class="text-4xl font-black text-emerald-500">$15</span>
-                </div>
-                <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updatePricingUI()" class="w-full">
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#plans" class="btn-primary">View Logistics Plans</a>
+                <button onclick="openModal('gatekeeper-modal')" class="glass-card px-12 py-6 rounded-2xl font-black uppercase text-xs hover:bg-slate-800">System Access</button>
             </div>
-            <button onclick="initiateBooking('Single Wash')" class="w-full bg-emerald-500 py-6 rounded-2xl font-black uppercase text-xs hover:scale-[1.02]">Order Now</button>
-        </div>
-
-        <div class="bg-emerald-600 p-12 rounded-[4rem] text-white shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
-            <h4 class="text-2xl font-black uppercase italic mb-2">Monthly Subscription</h4>
-            <p class="text-[10px] font-bold uppercase opacity-60 mb-10 tracking-widest">Premium Care Plan</p>
-            <p class="text-7xl font-black mb-10 tracking-tighter">$20<span class="text-xl font-medium opacity-50">/mo</span></p>
-            <ul class="space-y-4 mb-12 text-sm font-bold uppercase opacity-90">
-                <li><i class="fa-solid fa-check mr-3"></i> Priority Scheduling</li>
-                <li><i class="fa-solid fa-check mr-3"></i> Free Deodorizing Scent</li>
-                <li><i class="fa-solid fa-check mr-3"></i> Cancel Anytime</li>
-            </ul>
-            <button onclick="initiateBooking('Monthly Subscription')" class="w-full bg-white text-emerald-600 py-6 rounded-2xl font-black uppercase text-xs hover:bg-slate-100">Subscribe Today</button>
         </div>
     </section>
 
-    <div id="owner-panel" class="hidden fixed inset-0 bg-slate-950 z-[5000] flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-6xl h-[85vh] rounded-[3rem] flex flex-col overflow-hidden">
-            <div class="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
-                <div class="flex gap-10">
-                    <button onclick="setTab('users')" id="btn-tab-users" class="tab-btn active text-[11px] font-black uppercase tracking-[0.2em]">User Management</button>
-                    <button onclick="setTab('ann')" id="btn-tab-ann" class="tab-btn text-[11px] font-black uppercase tracking-[0.2em]">Announcements</button>
-                    <button onclick="setTab('sch')" id="btn-tab-sch" class="tab-btn text-[11px] font-black uppercase tracking-[0.2em]">Scheduling</button>
+    <section id="plans" class="max-w-7xl mx-auto px-6 pb-48">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div class="glass-card p-16 rounded-[4rem] flex flex-col justify-between group">
+                <div>
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <h4 class="text-4xl font-black uppercase italic mb-2">On-Demand</h4>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em]">Single Deep Sanitation</p>
+                        </div>
+                        <div class="w-16 h-16 bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-800">
+                            <i class="fa-solid fa-bolt-lightning text-emerald-500"></i>
+                        </div>
+                    </div>
+
+                    <div class="mb-16">
+                        <div class="flex justify-between items-end mb-8">
+                            <span id="label-bins" class="text-6xl font-black italic text-white">1 Bin</span>
+                            <span id="label-price" class="text-6xl font-black text-emerald-500">$15</span>
+                        </div>
+                        <input type="range" id="slider-bins" min="1" max="10" value="1" oninput="syncPricingEngine()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                    </div>
+
+                    <ul class="space-y-6 mb-16 text-xs font-black uppercase tracking-widest text-slate-400">
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> High-Pressure Steam Blast</li>
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> Eco-Friendly Deodorizer</li>
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-circle-check text-emerald-500"></i> No Subscription Required</li>
+                    </ul>
                 </div>
-                <button onclick="closeM('owner-panel')" class="text-2xl opacity-50">&times;</button>
+                <button onclick="initiateServiceRequest('On-Demand')" class="w-full bg-slate-900 border border-slate-700 py-8 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-emerald-500 hover:border-emerald-500 transition-all">Execute Booking</button>
             </div>
 
-            <div id="tab-users" class="tab-content flex-1 overflow-auto p-10">
-                <table class="w-full text-left">
-                    <thead class="text-[10px] font-black uppercase text-slate-500 border-b border-slate-800">
-                        <tr>
-                            <th class="pb-6">User</th>
-                            <th class="pb-6">Account Type</th>
-                            <th class="pb-6">Address</th>
-                            <th class="pb-6 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-user-list"></tbody>
-                </table>
+            <div class="bg-emerald-600 p-16 rounded-[4rem] text-white shadow-2xl shadow-emerald-500/20 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-20 -bottom-20 text-[20rem] font-black text-white/5 italic -rotate-12 pointer-events-none">GOLD</div>
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <h4 class="text-4xl font-black uppercase italic mb-2">Monthly Gold</h4>
+                            <p class="text-[10px] font-bold text-white/60 uppercase tracking-[0.3em]">Full Maintenance Plan</p>
+                        </div>
+                        <div class="bg-white/20 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Most Popular</div>
+                    </div>
+
+                    <div class="mb-16">
+                        <p class="text-[10rem] font-black leading-none tracking-tighter mb-4">$20<span class="text-2xl font-bold opacity-40 italic">/mo</span></p>
+                    </div>
+
+                    <ul class="space-y-6 mb-16 text-xs font-black uppercase tracking-widest">
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Priority Response Time</li>
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Monthly Schedule Slot</li>
+                        <li class="flex items-center gap-4"><i class="fa-solid fa-star"></i> Premium Gold Status Icon</li>
+                    </ul>
+                </div>
+                <button onclick="initiateServiceRequest('Monthly Subscription')" class="relative z-10 w-full bg-white text-emerald-600 py-8 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.2em] shadow-xl hover:bg-slate-100 transition-all">Unlock Gold Status</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="founder-panel" class="hidden fixed inset-0 bg-slate-950/95 z-[10000] p-4 flex items-center justify-center backdrop-blur-3xl">
+        <div class="glass-card w-full max-w-7xl h-[90vh] rounded-[4rem] overflow-hidden flex flex-col border-slate-800">
+            <div class="p-10 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+                <div class="flex gap-12">
+                    <button onclick="switchAdminTab('users')" id="tab-users-btn" class="tab-trigger active">Client Database</button>
+                    <button onclick="switchAdminTab('schedule')" id="tab-schedule-btn" class="tab-trigger">Master Schedule</button>
+                    <button onclick="switchAdminTab('alerts')" id="tab-alerts-btn" class="tab-trigger">Global Alerts</button>
+                </div>
+                <button onclick="closeModal('founder-panel')" class="w-14 h-14 rounded-full border border-slate-800 flex items-center justify-center text-2xl hover:bg-red-500/10 hover:text-red-500 transition-all">&times;</button>
             </div>
 
-            <div id="tab-ann" class="tab-content hidden flex-1 p-20 text-center">
-                <h3 class="text-3xl font-black uppercase italic mb-8">Set Global Banner</h3>
-                <textarea id="ann-input-field" class="w-full max-w-xl bg-slate-900 border border-slate-800 p-8 rounded-3xl outline-none focus:border-emerald-500 h-40 mb-8 text-center text-lg" placeholder="Enter message for all users..."></textarea>
-                <div class="flex justify-center gap-4">
-                    <button onclick="saveGlobalAnn()" class="bg-emerald-500 px-12 py-5 rounded-2xl font-black uppercase text-xs">Publish Message</button>
-                    <button onclick="clearGlobalAnn()" class="bg-red-500/10 text-red-500 px-12 py-5 rounded-2xl font-black uppercase text-xs">Clear Banner</button>
+            <div class="flex-1 overflow-auto p-12">
+                <div id="admin-view-users" class="admin-view">
+                    <table class="w-full text-left">
+                        <thead class="text-[10px] font-black uppercase text-slate-500 border-b border-slate-800/50">
+                            <tr>
+                                <th class="pb-8">Client Information</th>
+                                <th class="pb-8">Membership</th>
+                                <th class="pb-8">Location Data</th>
+                                <th class="pb-8 text-right">System Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="master-user-table-body">
+                            </tbody>
+                    </table>
                 </div>
-            </div>
 
-            <div id="tab-sch" class="tab-content hidden flex-1 p-10 flex flex-col">
-                <div class="mb-10">
-                    <input type="text" id="admin-sch-search" oninput="renderAdminSchedule()" placeholder="Search users by name..." class="w-full bg-slate-900 border border-slate-800 p-6 rounded-2xl outline-none focus:border-emerald-500">
+                <div id="admin-view-schedule" class="admin-view hidden space-y-8">
+                    <div class="flex gap-6 mb-12">
+                        <input type="text" id="schedule-search-input" oninput="renderScheduleMatrix()" placeholder="Filter clients by name..." class="input-main">
+                        <div class="glass-card px-10 flex items-center rounded-2xl">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Live Queue</span>
+                        </div>
+                    </div>
+                    <div id="master-schedule-grid" class="grid md:grid-cols-2 gap-8">
+                        </div>
                 </div>
-                <div id="admin-sch-list" class="space-y-4 overflow-auto flex-1"></div>
+
+                <div id="admin-view-alerts" class="admin-view hidden">
+                    <div class="max-w-2xl mx-auto text-center py-20">
+                        <div class="w-24 h-24 bg-emerald-500/10 text-emerald-500 rounded-[2.5rem] flex items-center justify-center text-4xl mx-auto mb-10">
+                            <i class="fa-solid fa-message-captions"></i>
+                        </div>
+                        <h3 class="text-3xl font-black uppercase italic mb-6">Global Site Banner</h3>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-12">Broadcast updates to all users instantly</p>
+                        
+                        <textarea id="global-alert-input" class="input-main h-48 mb-8 text-center text-xl" placeholder="E.g. SPRING WASH SPECIAL: 20% OFF!"></textarea>
+                        
+                        <div class="flex gap-4">
+                            <button onclick="publishGlobalAlert()" class="btn-primary flex-1">Push Broadcast</button>
+                            <button onclick="clearGlobalAlert()" class="px-10 bg-red-500/10 text-red-500 rounded-2xl font-black uppercase text-[10px]">Clear</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="user-schedule-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[4000] flex items-center justify-center p-6">
-        <div class="glass-card w-full max-w-sm p-10 rounded-[3rem] text-center">
-            <div class="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-8 border border-emerald-500/20">
-                <i class="fa-solid fa-truck-ramp-box"></i>
+    <div id="schedule-view-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[10001] flex items-center justify-center p-6 backdrop-blur-2xl">
+        <div class="glass-card w-full max-w-sm p-12 rounded-[4rem] text-center border-emerald-500/20">
+            <div class="w-28 h-28 bg-emerald-500/10 text-emerald-500 rounded-[3rem] flex items-center justify-center text-5xl mx-auto mb-10 border border-emerald-500/10">
+                <i class="fa-solid fa-truck-clock"></i>
             </div>
-            <h3 class="text-2xl font-black uppercase italic mb-2">My Schedule</h3>
-            <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 mt-6">
-                <p id="my-arrival-time" class="text-xl font-black text-emerald-400 italic">Not Scheduled Yet</p>
+            <h3 class="text-3xl font-black uppercase italic mb-2">Truck Dispatch</h3>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-12">Arrival Estimation</p>
+            
+            <div class="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] shadow-inner mb-12">
+                <p id="arrival-display-time" class="text-2xl font-black text-emerald-400 italic tracking-tight">System Updating...</p>
             </div>
-            <button onclick="closeM('user-schedule-modal')" class="mt-10 text-[10px] font-black uppercase tracking-widest opacity-30 hover:opacity-100">Close</button>
+            
+            <button onclick="closeModal('schedule-view-modal')" class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30 hover:opacity-100 transition-all">Dismiss Dashboard</button>
         </div>
     </div>
 
-    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[5000] flex items-center justify-center p-6">
-        <div class="glass-card w-full max-w-md p-12 rounded-[3.5rem] text-center">
-            <h2 id="auth-title" class="text-4xl font-black uppercase italic mb-10">Sign In</h2>
+    <div id="gatekeeper-modal" class="hidden fixed inset-0 bg-slate-950/99 z-[11000] flex items-center justify-center p-6">
+        <div class="glass-card w-full max-w-md p-14 rounded-[4.5rem] text-center border-slate-800 shadow-[0_0_100px_rgba(16,185,129,0.05)]">
+            <div class="w-20 h-20 bg-emerald-500 rounded-3xl flex items-center justify-center text-white text-3xl mx-auto mb-10 shadow-2xl shadow-emerald-500/20">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+            
+            <h2 id="gatekeeper-title" class="text-4xl font-black uppercase italic mb-10">Access Portal</h2>
+            
             <div class="space-y-4">
-                <div id="signup-only" class="hidden space-y-4">
-                    <input id="auth-legal" type="text" placeholder="Full Legal Name" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
-                    <input id="auth-phone" type="text" placeholder="Phone Number" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
+                <div id="reg-fields-group" class="hidden space-y-4">
+                    <input id="reg-input-legal" type="text" placeholder="Full Legal Name" class="input-main font-bold">
+                    <input id="reg-input-phone" type="tel" placeholder="Mobile Phone (Required)" class="input-main font-bold">
                 </div>
-                <input id="auth-user" type="text" placeholder="Username" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
-                <input id="auth-pass" type="password" placeholder="Passcode" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
-                <button onclick="handleAuth()" class="w-full bg-emerald-500 py-6 rounded-2xl font-black uppercase text-xs mt-4 shadow-lg shadow-emerald-500/20">Continue</button>
+                
+                <input id="gate-input-user" type="text" placeholder="Username" class="input-main font-bold">
+                <input id="gate-input-pass" type="password" placeholder="System Passcode" class="input-main font-bold">
+                
+                <button onclick="processGatekeeperRequest()" class="w-full btn-primary py-7 rounded-3xl text-sm mt-6">Authorize Identity</button>
             </div>
-            <p onclick="toggleAuth()" id="auth-toggle" class="text-[10px] font-black uppercase text-slate-500 mt-10 cursor-pointer">Need an account? Join Now</p>
+            
+            <p onclick="toggleGatekeeperMode()" id="gate-toggle-text" class="text-[10px] font-black uppercase text-slate-500 mt-12 cursor-pointer hover:text-emerald-500 transition-all">No account? Secure your spot now</p>
         </div>
     </div>
 
     <script>
-        // --- SYSTEM CONFIG ---
-        const EMAILJS_PUBLIC = "Or10zkajJK3CNcnic";
-        const EMAILJS_SERVICE = "service_6ymb279";
-        const EMAILJS_TEMPLATE = "template_pruo22c";
-        const OWNER_EMAIL = "favela23@gmail.com";
+        /* --- GLOBAL SYSTEM CONFIGURATION --- */
+        const APP_VERSION = "4.0.0-PRO";
+        const SYSTEM_KEY = "Or10zkajJK3CNcnic";
+        const SERVICE_HANDLE = "service_6ymb279";
+        const TEMPLATE_HANDLE = "template_pruo22c";
+        const FOUNDER_CONTACT = "favela23@gmail.com";
 
-        emailjs.init(EMAILJS_PUBLIC);
+        emailjs.init(SYSTEM_KEY);
 
-        let userSession = JSON.parse(localStorage.getItem('loggedUser')) || null;
-        let isSignup = false;
-        let bookingType = '';
-        let bookingPrice = '$15';
-        let bookingBins = '1';
+        let activeSession = JSON.parse(localStorage.getItem('loggedUser')) || null;
+        let isRegistrationMode = false;
+        let currentRequestTier = '';
+        let currentRequestPrice = '$15';
+        let currentRequestBins = '1';
 
-        // --- CORE ENGINE ---
-        function boot() {
-            if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
+        /* --- SYSTEM KERNEL --- */
+        function systemBoot() {
+            console.log("Trouvaille Bins Kernel Loading...");
             
-            // Sync UI State
-            if(userSession) {
-                document.getElementById('logged-in-tools').classList.remove('hidden');
-                document.getElementById('logged-out-tools').classList.add('hidden');
-                document.getElementById('nav-name').innerText = userSession.username;
+            // Database Initialization
+            if(!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([]));
+            }
+            
+            // Session Verification
+            if(activeSession) {
+                document.getElementById('auth-state-active').classList.remove('hidden');
+                document.getElementById('auth-state-guest').classList.add('hidden');
+                document.getElementById('nav-display-name').innerText = activeSession.username;
                 
-                // Load fresh data from DB
                 const db = JSON.parse(localStorage.getItem('users'));
-                const me = db.find(u => u.username === userSession.username) || userSession;
+                const identity = db.find(u => u.username === activeSession.username) || activeSession;
                 
-                const statLabel = document.getElementById('nav-status');
+                const statusTag = document.getElementById('nav-display-status');
+                const avatar = document.getElementById('nav-display-avatar');
                 
-                if(userSession.username === "Adrien") {
+                // Owner Privilege Check
+                if(activeSession.username === "Adrien") {
                     document.body.classList.add('is-owner');
-                    statLabel.innerText = "Founder";
-                    statLabel.className = "text-[8px] font-extrabold uppercase status-founder";
-                } else if(me.status === "Monthly Member") {
-                    statLabel.innerText = "Monthly Member";
-                    statLabel.className = "text-[8px] font-extrabold uppercase status-gold";
+                    statusTag.innerText = "System Founder";
+                    statusTag.className = "text-[8px] font-bold uppercase status-founder";
+                } else if(identity.status === "Monthly Member") {
+                    statusTag.innerText = "Gold Member";
+                    statusTag.className = "text-[8px] font-bold uppercase status-gold";
                 } else {
-                    statLabel.innerText = me.status || "Active Member";
-                    statLabel.className = "text-[8px] font-extrabold uppercase status-member";
+                    statusTag.innerText = identity.status || "Active Member";
+                    statusTag.className = "text-[8px] font-bold uppercase status-member";
                 }
 
-                if(me.schedule) document.getElementById('my-arrival-time').innerText = me.schedule;
-                document.getElementById('nav-avatar').src = `https://ui-avatars.com/api/?name=${userSession.username}&background=10b981&color=fff&bold=true`;
+                // Data Injection
+                document.getElementById('drop-legal-name').innerText = identity.legalName || "Standard User Profile";
+                if(identity.schedule) {
+                    document.getElementById('arrival-display-time').innerText = identity.schedule;
+                }
+                avatar.src = `https://ui-avatars.com/api/?name=${activeSession.username}&background=10b981&color=fff&bold=true`;
             }
 
-            // Load Global Announcement
-            const ann = localStorage.getItem('globalAnn');
-            if(ann) {
-                document.getElementById('ann-banner').classList.remove('hidden');
-                document.getElementById('ann-text').innerText = ann;
+            // Global Alert Sync
+            const alertMsg = localStorage.getItem('globalAnn');
+            if(alertMsg) {
+                document.getElementById('global-announcer').classList.remove('hidden');
+                document.getElementById('announcement-content').innerText = alertMsg;
             }
         }
 
-        // --- AUTH LOGIC ---
-        function handleAuth() {
-            const u = document.getElementById('auth-user').value.trim();
-            const p = document.getElementById('auth-pass').value;
-            let db = JSON.parse(localStorage.getItem('users'));
+        /* --- AUTHENTICATION ENGINE --- */
+        function processGatekeeperRequest() {
+            const username = document.getElementById('gate-input-user').value.trim();
+            const passcode = document.getElementById('gate-input-pass').value;
+            let database = JSON.parse(localStorage.getItem('users'));
 
-            if(!isSignup) {
-                if(u === "Adrien" && p === "favela23") {
-                    saveLogin({username: "Adrien", status: "Founder"});
+            if(!isRegistrationMode) {
+                // Founder Bypass
+                if(username === "Adrien" && passcode === "favela23") {
+                    return commitSession({username: "Adrien", status: "Founder"});
+                }
+                
+                // Standard Login
+                const userRecord = database.find(u => u.username === username && u.password === passcode);
+                if(userRecord) {
+                    commitSession(userRecord);
                 } else {
-                    const match = db.find(x => x.username === u && x.password === p);
-                    if(match) saveLogin(match);
-                    else alert("Access Denied: Invalid Credentials.");
+                    alert("IDENTITY REJECTED: Credentials do not match our secure records.");
                 }
             } else {
-                if(db.some(x => x.username === u)) return alert("Error: Username exists.");
-                const newUser = {
-                    username: u, password: p,
-                    legalName: document.getElementById('auth-legal').value,
-                    phone: document.getElementById('auth-phone').value,
-                    status: "Active Member", address: "", schedule: ""
+                // Registration Logic
+                const legalName = document.getElementById('reg-input-legal').value.trim();
+                const phone = document.getElementById('reg-input-phone').value.trim();
+
+                if(!username || !passcode || !legalName || !phone) {
+                    return alert("DATA ERROR: All registration fields must be completed.");
+                }
+
+                if(database.some(u => u.username === username)) {
+                    return alert("COLLISION ERROR: That username is already secured by another member.");
+                }
+
+                const newUserProfile = {
+                    username: username,
+                    password: passcode,
+                    legalName: legalName,
+                    phone: phone,
+                    status: "Active Member",
+                    address: "Not Provided",
+                    schedule: "Pending Dispatch"
                 };
-                db.push(newUser);
-                localStorage.setItem('users', JSON.stringify(db));
-                saveLogin(newUser);
+
+                database.push(newUserProfile);
+                localStorage.setItem('users', JSON.stringify(database));
+                commitSession(newUserProfile);
             }
         }
 
-        function saveLogin(obj) {
-            localStorage.setItem('loggedUser', JSON.stringify(obj));
+        function commitSession(userObject) {
+            localStorage.setItem('loggedUser', JSON.stringify(userObject));
             location.reload();
         }
 
-        function logout() {
+        function executeLogout() {
             localStorage.removeItem('loggedUser');
             location.reload();
         }
 
-        function toggleAuth() {
-            isSignup = !isSignup;
-            document.getElementById('auth-title').innerText = isSignup ? "Create Account" : "Sign In";
-            document.getElementById('signup-only').classList.toggle('hidden', !isSignup);
-            document.getElementById('auth-toggle').innerText = isSignup ? "Already a member? Sign In" : "Need an account? Join Now";
+        function toggleGatekeeperMode() {
+            isRegistrationMode = !isRegistrationMode;
+            document.getElementById('gatekeeper-title').innerText = isRegistrationMode ? "Member Signup" : "Access Portal";
+            document.getElementById('reg-fields-group').classList.toggle('hidden', !isRegistrationMode);
+            document.getElementById('gate-toggle-text').innerText = isRegistrationMode ? "Already a member? Secure Login" : "No account? Secure your spot now";
         }
 
-        // --- PRICING ---
-        function updatePricingUI() {
-            const val = document.getElementById('bin-slider').value;
-            bookingBins = val;
-            bookingPrice = "$" + (15 + (val - 1) * 10);
-            document.getElementById('bin-display').innerText = val + (val > 1 ? " Bins" : " Bin");
-            document.getElementById('price-display').innerText = bookingPrice;
-        }
-
-        async function initiateBooking(plan) {
-            if(!userSession) return openM('auth-modal');
+        /* --- PRICING & LOGISTICS ENGINE --- */
+        function syncPricingEngine() {
+            const count = document.getElementById('slider-bins').value;
+            currentRequestBins = count;
+            currentRequestPrice = "$" + (15 + (count - 1) * 10);
             
-            bookingType = plan;
-            if(plan === "Monthly Subscription") {
-                bookingPrice = "$20";
-                bookingBins = "Monthly Plan";
+            document.getElementById('label-bins').innerText = count + (count > 1 ? " Bins" : " Bin");
+            document.getElementById('label-price').innerText = currentRequestPrice;
+        }
+
+        async function initiateServiceRequest(tier) {
+            if(!activeSession) return openModal('gatekeeper-modal');
+            
+            currentRequestTier = tier;
+            if(tier === "Monthly Subscription") {
+                currentRequestPrice = "$20";
+                currentRequestBins = "Full Site Plan";
             }
 
-            const addr = prompt("Confirm Service Address:");
-            if(!addr) return;
+            const targetAddress = prompt("Confirm your precise service address (Street, City, Zip):");
+            if(!targetAddress) return;
 
-            const params = {
-                to_email: OWNER_EMAIL,
-                user_name: userSession.username,
-                legal_name: userSession.legalName || userSession.username,
-                address: addr,
-                plan: bookingType,
-                bin_count: bookingBins,
-                price: bookingPrice
+            // CRITICAL DATA LOOKUP: Get phone number from DB
+            const db = JSON.parse(localStorage.getItem('users'));
+            const fullProfile = db.find(u => u.username === activeSession.username) || activeSession;
+
+            const dispatchParams = {
+                to_email: FOUNDER_CONTACT,
+                user_name: activeSession.username,
+                legal_name: fullProfile.legalName || activeSession.username,
+                user_phone: fullProfile.phone || "UNAVAILABLE", // THE FIX
+                address: targetAddress,
+                plan_tier: currentRequestTier,
+                bin_quantity: currentRequestBins,
+                total_cost: currentRequestPrice
             };
 
             try {
-                await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, params);
-                let db = JSON.parse(localStorage.getItem('users'));
-                let idx = db.findIndex(u => u.username === userSession.username);
-                if(idx !== -1) {
-                    db[idx].status = "Booked: " + bookingType;
-                    db[idx].address = addr;
-                    localStorage.setItem('users', JSON.stringify(db));
+                // EmailJS API Handshake
+                await emailjs.send(SERVICE_HANDLE, TEMPLATE_HANDLE, dispatchParams);
+                
+                // Update User Profile in DB
+                let masterDb = JSON.parse(localStorage.getItem('users'));
+                let userIdx = masterDb.findIndex(u => u.username === activeSession.username);
+                
+                if(userIdx !== -1) {
+                    masterDb[userIdx].status = tier === "Monthly Subscription" ? "Monthly Member" : "Booked: " + tier;
+                    masterDb[userIdx].address = targetAddress;
+                    localStorage.setItem('users', JSON.stringify(masterDb));
                 }
-                alert("Thanks for booking! Our team will contact you soon to schedule the best time.");
+                
+                alert("LOGISTICS DISPATCHED: Your booking and contact information have been sent to the Founder.");
                 location.reload();
-            } catch (e) {
-                alert("Booking System Offline.");
+            } catch (err) {
+                console.error("System Malfunction:", err);
+                alert("CRITICAL ERROR: The dispatch system is currently overloaded. Please try again later.");
             }
         }
 
-        // --- FOUNDER PANEL CORE ---
-        function setTab(name) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + name).classList.remove('hidden');
-            document.getElementById('btn-tab-' + name).classList.add('active');
-            if(name === 'users') renderAdminUsers();
-            if(name === 'sch') renderAdminSchedule();
+        /* --- ADMINISTRATIVE CONTROL MATRIX --- */
+        function switchAdminTab(target) {
+            document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById('admin-view-' + target).classList.remove('hidden');
+            document.getElementById('tab-' + target + '-btn').classList.add('active');
+            
+            if(target === 'users') renderMasterUserTable();
+            if(target === 'schedule') renderScheduleMatrix();
         }
 
-        function renderAdminUsers() {
-            const users = JSON.parse(localStorage.getItem('users')).filter(u => u.username !== "Adrien");
-            document.getElementById('admin-user-list').innerHTML = users.map(u => `
-                <tr class="border-b border-slate-800/40">
-                    <td class="py-6 font-black uppercase text-sm text-white">${u.username}</td>
-                    <td class="py-6">
-                        <button onclick="toggleGoldStatus('${u.username}')" class="uppercase font-black text-[10px] ${u.status === 'Monthly Member' ? 'status-gold' : 'status-member'}">
+        function renderMasterUserTable() {
+            const data = JSON.parse(localStorage.getItem('users')).filter(u => u.username !== "Adrien");
+            const container = document.getElementById('master-user-table-body');
+            
+            container.innerHTML = data.map(u => `
+                <tr class="border-b border-slate-800/30 group hover:bg-white/[0.02] transition-all">
+                    <td class="py-10">
+                        <div class="flex items-center gap-5">
+                            <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+                                <i class="fa-solid fa-user text-xs opacity-30"></i>
+                            </div>
+                            <div>
+                                <p class="font-black uppercase text-sm text-white">${u.username}</p>
+                                <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">${u.phone || 'NO PHONE ON FILE'}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-10">
+                        <button onclick="toggleGoldPrivilege('${u.username}')" class="uppercase font-black text-[10px] ${u.status === 'Monthly Member' ? 'status-gold' : 'status-member'}">
                             ${u.status || 'Active Member'}
                         </button>
                     </td>
-                    <td class="py-6 text-[10px] opacity-40 uppercase font-bold italic">${u.address || 'No Address'}</td>
-                    <td class="py-6 text-right">
-                        <button onclick="deleteClient('${u.username}')" class="text-red-500 opacity-20 hover:opacity-100"><i class="fa-solid fa-trash"></i></button>
+                    <td class="py-10">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight max-w-[200px] truncate">${u.address || 'PENDING'}</p>
+                    </td>
+                    <td class="py-10 text-right">
+                        <button onclick="wipeUserRecord('${u.username}')" class="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 opacity-0 group-hover:opacity-100 transition-all">
+                            <i class="fa-solid fa-trash-can text-[10px]"></i>
+                        </button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function toggleGoldStatus(name) {
-            let db = JSON.parse(localStorage.getItem('users'));
-            let idx = db.findIndex(u => u.username === name);
-            db[idx].status = (db[idx].status === "Monthly Member") ? "Active Member" : "Monthly Member";
-            localStorage.setItem('users', JSON.stringify(db));
-            renderAdminUsers();
-        }
-
-        function deleteClient(name) {
-            if(!confirm("Perm-Delete " + name + "?")) return;
-            let db = JSON.parse(localStorage.getItem('users'));
-            localStorage.setItem('users', JSON.stringify(db.filter(u => u.username !== name)));
-            renderAdminUsers();
-        }
-
-        // --- DYNAMIC SCHEDULING ---
-        function renderAdminSchedule() {
-            const query = document.getElementById('admin-sch-search').value.toLowerCase();
-            const users = JSON.parse(localStorage.getItem('users')).filter(u => 
+        function renderScheduleMatrix() {
+            const query = document.getElementById('schedule-search-input').value.toLowerCase();
+            const data = JSON.parse(localStorage.getItem('users')).filter(u => 
                 u.username !== "Adrien" && u.username.toLowerCase().includes(query)
             );
+            const grid = document.getElementById('master-schedule-grid');
             
-            document.getElementById('admin-sch-list').innerHTML = users.map(u => `
-                <div class="glass-card p-8 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-6 border-l-4 border-l-emerald-500">
-                    <div class="text-center md:text-left">
-                        <h5 class="text-white font-black uppercase italic text-xl">${u.username}</h5>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">${u.address || 'MISSING ADDRESS'}</p>
+            grid.innerHTML = data.map(u => `
+                <div class="glass-card p-10 rounded-[3rem] border-l-8 border-l-emerald-500 relative overflow-hidden">
+                    <div class="absolute right-[-20px] top-[-20px] opacity-[0.03] text-8xl rotate-12">
+                        <i class="fa-solid fa-map-location-dot"></i>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="text-right mr-4">
-                            <p class="text-[9px] font-black uppercase opacity-30 mb-1">Last Scheduled</p>
-                            <p class="text-xs font-black text-emerald-400">${u.schedule || 'NOT SET'}</p>
+                    <div class="flex flex-col gap-6 relative z-10">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h5 class="text-2xl font-black uppercase italic text-white mb-1">${u.username}</h5>
+                                <p class="text-[10px] text-emerald-500 font-black uppercase tracking-[0.2em] mb-4">${u.phone}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[8px] font-black uppercase opacity-30 mb-1">Current ETA</p>
+                                <p class="text-xs font-black text-emerald-400 uppercase tracking-tighter">${u.schedule || 'NOT DISPATCHED'}</p>
+                            </div>
                         </div>
-                        <input type="datetime-local" id="picker-${u.username}">
-                        <button onclick="applyNewSchedule('${u.username}')" class="bg-emerald-500 px-6 py-4 rounded-xl text-[10px] font-black uppercase">Apply</button>
+                        
+                        <div class="space-y-4">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase leading-relaxed bg-slate-950 p-4 rounded-2xl border border-slate-900">${u.address || 'ADDRESS DATA MISSING'}</p>
+                            <div class="flex gap-3">
+                                <input type="datetime-local" id="ts-picker-${u.username}" class="input-main text-xs py-3 rounded-xl flex-1">
+                                <button onclick="updateDispatchTime('${u.username}')" class="bg-emerald-500 text-white px-8 rounded-xl font-black uppercase text-[9px] tracking-widest shadow-lg shadow-emerald-500/20">Set</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function applyNewSchedule(name) {
-            const rawVal = document.getElementById('picker-' + name).value;
-            if(!rawVal) return alert("Select Date & Time");
+        function updateDispatchTime(targetUser) {
+            const raw = document.getElementById('ts-picker-' + targetUser).value;
+            if(!raw) return alert("System Error: No date/time selected.");
             
-            const d = new Date(rawVal);
-            const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + " @ " + 
-                              d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const date = new Date(raw);
+            const timestamp = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + " @ " + 
+                              date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             let db = JSON.parse(localStorage.getItem('users'));
-            let idx = db.findIndex(u => u.username === name);
-            db[idx].schedule = formatted;
+            let idx = db.findIndex(u => u.username === targetUser);
+            db[idx].schedule = timestamp;
             localStorage.setItem('users', JSON.stringify(db));
-            renderAdminSchedule();
-            alert("Schedule Synchronized for " + name);
+            renderScheduleMatrix();
+            alert("MATRIX UPDATED: Displacement timestamp synced for " + targetUser);
         }
 
-        // --- ANNOUNCEMENTS ---
-        function saveGlobalAnn() {
-            const val = document.getElementById('ann-input-field').value.trim();
-            if(!val) return;
-            localStorage.setItem('globalAnn', val);
+        function toggleGoldPrivilege(username) {
+            let db = JSON.parse(localStorage.getItem('users'));
+            let idx = db.findIndex(u => u.username === username);
+            db[idx].status = (db[idx].status === "Monthly Member") ? "Active Member" : "Monthly Member";
+            localStorage.setItem('users', JSON.stringify(db));
+            renderMasterUserTable();
+        }
+
+        function wipeUserRecord(username) {
+            if(!confirm("CRITICAL ACTION: Wipe all data for " + username + "? This cannot be reversed.")) return;
+            let db = JSON.parse(localStorage.getItem('users'));
+            localStorage.setItem('users', JSON.stringify(db.filter(u => u.username !== username)));
+            renderMasterUserTable();
+        }
+
+        /* --- GLOBAL BROADCAST CONTROLS --- */
+        function publishGlobalAlert() {
+            const msg = document.getElementById('global-alert-input').value.trim();
+            if(!msg) return;
+            localStorage.setItem('globalAnn', msg);
             location.reload();
         }
 
-        function clearGlobalAnn() {
+        function clearGlobalAlert() {
             localStorage.removeItem('globalAnn');
             location.reload();
         }
 
-        // --- HELPERS ---
-        function openM(id) {
-            document.getElementById(id).classList.remove('hidden');
-            if(id === 'owner-panel') setTab('users');
-            document.getElementById('user-drop').classList.remove('show');
+        /* --- UI UTILITIES --- */
+        function toggleUserDropdown() {
+            document.getElementById('user-context-menu').classList.toggle('show');
         }
-        function closeM(id) { document.getElementById(id).classList.add('hidden'); }
 
-        boot();
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'founder-panel') switchAdminTab('users');
+            document.getElementById('user-context-menu').classList.remove('show');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Close on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('fixed')) {
+                event.target.classList.add('hidden');
+            }
+        }
+
+        /* --- SYSTEM KICKSTART --- */
+        document.addEventListener('DOMContentLoaded', systemBoot);
     </script>
 </body>
 </html>
