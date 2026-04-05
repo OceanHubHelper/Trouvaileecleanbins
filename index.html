@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Bins | Professional Logistics OS</title>
+    <title>Trouvaille Bins | Command Center</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -11,330 +11,518 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        :root { --bg: #020617; --emerald: #10b981; --border: #1e293b; }
-        * { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: #f8fafc; overflow-x: hidden; }
-        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid var(--border); }
-        .btn-tap { transition: all 0.1s ease; cursor: pointer; user-select: none; }
-        .btn-tap:active { transform: scale(0.95); opacity: 0.8; }
-        .strike { text-decoration: line-through; opacity: 0.3; font-size: 0.6em; margin-right: 5px; }
         
-        /* Founder Panel Visibility */
+        :root {
+            --bg: #020617;
+            --emerald: #10b981;
+            --slate: #1e293b;
+            --glass: rgba(15, 23, 42, 0.8);
+        }
+
+        * { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background: var(--bg); 
+            color: #f8fafc; 
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #020617 80%);
+            min-height: 100vh;
+        }
+
+        /* High-End Glassmorphism */
+        .glass { 
+            background: var(--glass); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button Animations */
+        .btn-tap { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .btn-tap:active { transform: scale(0.92); filter: brightness(1.2); }
+
+        /* Owner Logic Visibility */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Apple-Style Datetime Picker Styling */
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        /* Apple Datetime Picker UI */
         input[type="datetime-local"] {
             color-scheme: dark;
             background: #1e293b;
             border: 1px solid #334155;
             padding: 10px;
-            border-radius: 12px;
+            border-radius: 14px;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
         }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.4s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Status Badges */
+        .badge-standard { background: rgba(255,255,255,0.1); color: white; }
+        .badge-monthly { background: rgba(16, 185, 129, 0.2); color: #10b981; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-32">
 
-    <div id="top-banner" class="hidden bg-emerald-600 text-white py-3 text-center text-[10px] font-black uppercase tracking-[0.2em] sticky top-0 z-[10000]">
-        <span id="banner-text">System Active</span>
+    <div id="top-banner" class="hidden bg-emerald-600 text-white py-4 text-center sticky top-0 z-[10000] shadow-2xl border-b border-emerald-400/30">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-100"></span>
+                </span>
+                <p id="banner-text" class="text-[10px] font-black uppercase tracking-[0.25em]">System Live</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
     </div>
 
-    <nav class="p-6 glass sticky top-0 z-[9000] border-b border-slate-800">
+    <nav class="p-6 glass sticky top-0 z-[9000] border-b border-white/5">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-black italic uppercase">Trouvaille <span class="text-emerald-500">Bins</span></h1>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center rotate-3">
+                    <i class="fa-solid fa-trash-can text-white text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-black italic uppercase tracking-tighter">Trouvaille <span class="text-emerald-500">Bins</span></h1>
+            </div>
             
-            <div class="relative">
-                <button onclick="toggleMenu()" class="btn-tap glass px-5 py-2 rounded-full border-slate-800 flex items-center gap-3">
-                    <p id="u-name" class="text-[10px] font-black uppercase tracking-widest">Guest</p>
-                    <div id="u-avatar" class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-[10px]"></i>
+            <div class="relative group">
+                <button onclick="toggleMenu()" class="btn-tap glass px-6 py-3 rounded-2xl flex items-center gap-4 border-slate-700 hover:border-emerald-500/50">
+                    <div class="text-right">
+                        <p id="u-name" class="text-[9px] font-black uppercase tracking-widest text-slate-400">Identity: Guest</p>
+                        <p id="u-status" class="text-[10px] font-black uppercase text-white">Guest Access</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border-2 border-slate-700 overflow-hidden">
+                        <i class="fa-solid fa-circle-user text-xl text-slate-500"></i>
                     </div>
                 </button>
                 
-                <div id="u-menu" class="hidden absolute right-0 mt-4 w-64 glass p-4 rounded-3xl shadow-2xl">
-                    <div id="logged-in-area" class="hidden">
-                        <button onclick="openModal('founder-panel')" class="owner-only w-full p-4 hover:bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px] font-black uppercase mb-2">Founder Command</button>
-                        <button onclick="openModal('eta-modal')" class="w-full p-4 hover:bg-slate-800 rounded-xl text-white text-[10px] font-black uppercase mb-2">My Schedule</button>
-                        <button onclick="logout()" class="w-full p-4 text-red-500 text-[10px] font-black uppercase">Logout</button>
+                <div id="u-menu" class="hidden absolute right-0 mt-4 w-72 glass p-5 rounded-[2rem] shadow-2xl border-white/10">
+                    <div id="logged-in-area" class="hidden space-y-2">
+                        <div class="p-4 bg-slate-900/50 rounded-2xl mb-4">
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Authenticated As</p>
+                            <p id="u-full-name" class="text-sm font-bold text-white">Full Name</p>
+                        </div>
+                        <button onclick="openModal('founder-panel')" class="owner-only w-full p-4 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl text-emerald-500 text-[10px] font-black uppercase transition-all">Founder Command</button>
+                        <button onclick="openModal('eta-modal')" class="w-full p-4 bg-white/5 hover:bg-white/10 rounded-xl text-white text-[10px] font-black uppercase transition-all">Track Dispatch</button>
+                        <button onclick="logout()" class="w-full p-4 text-red-500 text-[10px] font-black uppercase hover:bg-red-500/5 rounded-xl transition-all">Terminate Session</button>
                     </div>
                     <div id="guest-area">
-                        <button onclick="openModal('auth-modal')" class="btn-tap w-full bg-emerald-500 py-4 rounded-xl text-white text-[10px] font-black">Initialize Access</button>
+                        <button onclick="openModal('auth-modal')" class="w-full bg-emerald-500 py-5 rounded-2xl text-white text-[10px] font-black uppercase shadow-lg shadow-emerald-500/20">Secure Login</button>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="max-w-4xl mx-auto text-center py-24 px-6">
-        <h2 class="text-7xl font-black uppercase italic mb-6 leading-none tracking-tighter">Pure <br><span class="text-emerald-500">Logistics.</span></h2>
-        <div class="flex justify-center gap-4">
-            <a href="#logistics" class="btn-tap bg-emerald-500 text-white px-10 py-5 rounded-2xl font-black uppercase text-[10px]">View Logistics</a>
-            <button id="hero-login" onclick="openModal('auth-modal')" class="btn-tap glass px-10 py-5 rounded-2xl font-black uppercase text-[10px]">System Access</button>
+    <header class="max-w-5xl mx-auto px-6 py-24 text-center">
+        <div class="inline-block px-4 py-2 bg-emerald-500/10 rounded-full border border-emerald-500/20 mb-8">
+            <p class="text-emerald-500 text-[9px] font-black uppercase tracking-[0.3em]">Operational Excellence 2026</p>
+        </div>
+        <h2 class="text-8xl font-black uppercase italic mb-8 tracking-tighter leading-[0.85]">Sanitation <br><span class="text-emerald-500">Logistics.</span></h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm font-medium mb-12 leading-relaxed">
+            Automated dispatching and recurring maintenance for residential sanitation assets. 
+            Select your protocol below to initialize service.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#pricing" class="btn-tap bg-emerald-500 text-white px-12 py-6 rounded-[2rem] font-black uppercase text-[10px] shadow-xl shadow-emerald-500/20">View Protocols</a>
+            <button onclick="openModal('auth-modal')" class="btn-tap glass text-white px-12 py-6 rounded-[2rem] font-black uppercase text-[10px] border-white/10">Client Access</button>
         </div>
     </header>
 
-    <section id="logistics" class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
-        <div class="glass p-10 rounded-[3rem]">
-            <h4 class="text-2xl font-black italic mb-6 uppercase">Standard Protocol</h4>
-            <div class="flex justify-between items-end mb-8">
-                <span id="bin-count" class="text-4xl font-black">1 Bin</span>
-                <div>
-                    <span id="old-p1" class="strike hidden">$15</span>
-                    <span id="new-p1" class="text-4xl font-black text-emerald-500">$15</span>
-                </div>
+    <section id="pricing" class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 py-10">
+        <div class="glass p-12 rounded-[4rem] border-white/5 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity">
+                <i class="fa-solid fa-bolt text-9xl"></i>
             </div>
-            <input type="range" id="r1" min="1" max="10" value="1" oninput="runPricing()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none accent-emerald-500 cursor-pointer">
-            <button onclick="book('Standard')" class="btn-tap w-full bg-white text-black py-6 rounded-2xl font-black uppercase text-[10px] mt-10">Request Service</button>
+            <h4 class="text-3xl font-black italic mb-8 uppercase tracking-tighter">Standard <span class="text-emerald-500">Wash</span></h4>
+            <div class="space-y-6 mb-12">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Selected Capacity</p>
+                        <span id="bin-label" class="text-4xl font-black">1 Bin</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Service Fee</p>
+                        <span id="price-label" class="text-4xl font-black text-emerald-500">$15</span>
+                    </div>
+                </div>
+                <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updatePricing()" class="w-full h-3 bg-slate-800 rounded-full appearance-none accent-emerald-500 cursor-pointer">
+            </div>
+            <button onclick="book('Standard')" class="btn-tap w-full bg-white text-black py-7 rounded-[2rem] font-black uppercase text-[11px] hover:bg-emerald-500 hover:text-white transition-all">Initialize Request</button>
         </div>
 
-        <div class="glass p-10 rounded-[3rem] border-emerald-500/30">
-            <h4 class="text-2xl font-black italic mb-6 uppercase text-emerald-400">Elite Gold</h4>
-            <span id="old-pg" class="strike hidden">$45</span>
-            <p id="new-pg" class="text-8xl font-black leading-none">$45</p>
-            <button onclick="book('Elite Gold')" class="btn-tap w-full bg-emerald-500 text-white py-6 rounded-2xl font-black uppercase text-[10px] mt-10">Enroll Now</button>
+        <div class="glass p-12 rounded-[4rem] border-emerald-500/30 relative overflow-hidden bg-gradient-to-br from-emerald-950/20 to-transparent group">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 blur-[80px]"></div>
+            <div class="flex justify-between items-start mb-8">
+                <h4 class="text-3xl font-black italic uppercase tracking-tighter text-emerald-400">Monthly <span class="text-white">Plan</span></h4>
+                <div class="px-4 py-1 bg-emerald-500 rounded-full text-[8px] font-black uppercase text-white">Best Value</div>
+            </div>
+            <div class="mb-12">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Recurring Subscription</p>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-8xl font-black tracking-tighter">$45</span>
+                    <span class="text-slate-500 font-bold uppercase text-xs">/ Month</span>
+                </div>
+            </div>
+            <ul class="space-y-4 mb-12">
+                <li class="flex items-center gap-3 text-xs font-medium text-slate-300">
+                    <i class="fa-solid fa-check text-emerald-500"></i> Scheduled Monthly Sanitization
+                </li>
+                <li class="flex items-center gap-3 text-xs font-medium text-slate-300">
+                    <i class="fa-solid fa-check text-emerald-500"></i> Odor Neutralization Treatment
+                </li>
+                <li class="flex items-center gap-3 text-xs font-medium text-slate-300">
+                    <i class="fa-solid fa-check text-emerald-500"></i> Priority Dispatch Queue
+                </li>
+            </ul>
+            <button onclick="book('Monthly Plan')" class="btn-tap w-full bg-emerald-500 text-white py-7 rounded-[2rem] font-black uppercase text-[11px] shadow-2xl shadow-emerald-500/40">Enroll Operative</button>
         </div>
     </section>
 
     <div id="founder-panel" class="hidden fixed inset-0 bg-slate-950/98 z-[11000] p-4 flex items-center justify-center">
-        <div class="glass w-full max-w-5xl h-[85vh] rounded-[3rem] flex flex-col overflow-hidden">
-            <div class="p-8 border-b border-slate-800 flex gap-10">
-                <button onclick="setTab('tab-users')" class="tab-btn text-[10px] font-black uppercase text-emerald-500">Registry</button>
-                <button onclick="setTab('tab-promo')" class="tab-btn text-[10px] font-black uppercase text-slate-500">Command Controls</button>
-                <button onclick="closeModal('founder-panel')" class="ml-auto text-slate-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div class="glass w-full max-w-6xl h-[90vh] rounded-[3.5rem] flex flex-col overflow-hidden border-emerald-500/20 shadow-[0_0_100px_rgba(16,185,129,0.1)]">
+            
+            <div class="p-8 border-b border-white/5 flex flex-wrap justify-between items-center bg-slate-900/40 gap-6">
+                <div>
+                    <h3 class="text-xl font-black uppercase italic tracking-tighter">Founder <span class="text-emerald-500">Command</span></h3>
+                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-[0.4em] mt-1">Operational Oversight v14.0</p>
+                </div>
+                <div class="flex bg-slate-950/50 p-1.5 rounded-2xl border border-white/5">
+                    <button onclick="setTab('tab-users')" class="tab-trigger px-6 py-3 rounded-xl text-[9px] font-black uppercase transition-all bg-emerald-500 text-white" id="btn-tab-users">Registry</button>
+                    <button onclick="setTab('tab-stats')" class="tab-trigger px-6 py-3 rounded-xl text-[9px] font-black uppercase transition-all text-slate-500" id="btn-tab-stats">Analytics</button>
+                    <button onclick="setTab('tab-broadcast')" class="tab-trigger px-6 py-3 rounded-xl text-[9px] font-black uppercase transition-all text-slate-500" id="btn-tab-broadcast">Broadcast</button>
+                </div>
+                <button onclick="closeModal('founder-panel')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-10 bg-slate-900/20">
-                <div id="tab-users" class="tab-content active">
-                    <h3 class="text-xs font-black uppercase text-slate-500 mb-6 tracking-widest">Active Client Database</h3>
-                    <div id="registry-grid" class="space-y-4">
+            <div class="flex-1 overflow-y-auto p-10">
+                
+                <div id="tab-users" class="tab-content active space-y-6">
+                    <div class="flex justify-between items-center mb-8">
+                        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Active Operative Database</h4>
+                        <button onclick="exportData()" class="text-[9px] font-black uppercase text-emerald-500 hover:underline">Export CSV</button>
+                    </div>
+                    <div id="registry-grid" class="grid gap-4">
                         </div>
                 </div>
 
-                <div id="tab-promo" class="tab-content">
-                    <div class="max-w-md mx-auto space-y-8">
-                        <div class="glass p-8 rounded-3xl border-slate-800">
-                            <h5 class="text-[10px] font-black uppercase text-emerald-500 mb-6">Price Discount Engine (%)</h5>
-                            <input type="number" id="promo-in" class="w-full bg-slate-900 p-5 rounded-2xl mb-4 text-2xl font-black text-white" placeholder="0">
-                            <div class="flex gap-3">
-                                <button onclick="applyP()" class="btn-tap flex-1 bg-emerald-500 py-4 rounded-xl text-[10px] font-black">Apply</button>
-                                <button onclick="killP()" class="btn-tap flex-1 bg-red-600 py-4 rounded-xl text-[10px] font-black">Turn Off</button>
-                            </div>
+                <div id="tab-stats" class="tab-content space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass p-8 rounded-[2.5rem] border-white/5">
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Managed Users</p>
+                            <p id="stat-users" class="text-4xl font-black">0</p>
                         </div>
-                        <div class="glass p-8 rounded-3xl border-slate-800">
-                            <h5 class="text-[10px] font-black uppercase text-emerald-500 mb-6">Global Broadcast Banner</h5>
-                            <textarea id="msg-in" class="w-full bg-slate-900 p-5 rounded-2xl mb-4 h-32 text-white text-sm" placeholder="Type message..."></textarea>
-                            <div class="flex gap-3">
-                                <button onclick="applyB()" class="btn-tap flex-1 bg-emerald-500 py-4 rounded-xl text-[10px] font-black">Broadcast</button>
-                                <button onclick="killB()" class="btn-tap flex-1 bg-red-600 py-4 rounded-xl text-[10px] font-black">Turn Off</button>
-                            </div>
+                        <div class="glass p-8 rounded-[2.5rem] border-white/5">
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Active Monthly Subscriptions</p>
+                            <p id="stat-subs" class="text-4xl font-black text-emerald-500">0</p>
+                        </div>
+                        <div class="glass p-8 rounded-[2.5rem] border-white/5">
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">System Uptime</p>
+                            <p class="text-4xl font-black">99.9%</p>
                         </div>
                     </div>
                 </div>
+
+                <div id="tab-broadcast" class="tab-content">
+                    <div class="max-w-2xl mx-auto glass p-10 rounded-[3rem] border-emerald-500/20">
+                        <h4 class="text-sm font-black uppercase mb-6 text-center italic">Global Emergency Broadcast</h4>
+                        <textarea id="broadcast-input" class="w-full bg-slate-950 p-6 rounded-2xl border border-white/5 text-white text-sm mb-6 h-40 focus:border-emerald-500/50 outline-none" placeholder="Enter message to display to all users..."></textarea>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="deployBroadcast()" class="btn-tap bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase text-[10px]">Deploy Systemwide</button>
+                            <button onclick="terminateBroadcast()" class="btn-tap bg-red-600/20 text-red-500 py-5 rounded-2xl font-black uppercase text-[10px] hover:bg-red-600 hover:text-white">Kill Signal</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6 backdrop-blur-md">
+    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6 backdrop-blur-xl">
         <div class="glass w-full max-w-sm p-12 rounded-[4rem] relative">
-            <button onclick="closeModal('auth-modal')" class="btn-tap absolute top-10 right-12 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 id="auth-title" class="text-3xl text-center font-black uppercase italic mb-10">Access</h3>
+            <button onclick="closeModal('auth-modal')" class="absolute top-10 right-12 text-slate-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-10">
+                <h3 id="auth-title" class="text-3xl font-black uppercase italic tracking-tighter">Access</h3>
+                <p id="auth-subtitle" class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mt-2">Identification Required</p>
+            </div>
+            
             <div class="space-y-4">
                 <div id="reg-fields" class="hidden space-y-4">
-                    <input id="in-n" type="text" placeholder="Full Name" class="w-full bg-slate-900 p-4 rounded-2xl">
-                    <input id="in-ph" type="tel" placeholder="Phone" class="w-full bg-slate-900 p-4 rounded-2xl">
+                    <div class="relative">
+                        <i class="fa-solid fa-id-card absolute left-5 top-5 text-slate-600"></i>
+                        <input id="reg-full-name" type="text" placeholder="Legal Name" class="w-full bg-slate-900/50 p-5 pl-14 rounded-2xl border border-white/5 outline-none focus:border-emerald-500/50">
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-phone absolute left-5 top-5 text-slate-600"></i>
+                        <input id="reg-phone" type="tel" placeholder="Mobile Contact" class="w-full bg-slate-900/50 p-5 pl-14 rounded-2xl border border-white/5 outline-none focus:border-emerald-500/50">
+                    </div>
                 </div>
-                <input id="in-u" type="text" placeholder="Username" class="w-full bg-slate-900 p-4 rounded-2xl">
-                <input id="in-p" type="password" placeholder="Passcode" class="w-full bg-slate-900 p-4 rounded-2xl">
-                <button onclick="handleAuth()" class="btn-tap w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase text-[10px] shadow-lg shadow-emerald-500/20 mt-4">Authorize</button>
-                <p onclick="toggleA()" id="switch-btn" class="text-center text-[9px] font-black text-slate-500 cursor-pointer mt-6 uppercase tracking-widest">New? Initialize Profile</p>
+                
+                <div class="relative">
+                    <i class="fa-solid fa-user-secret absolute left-5 top-5 text-slate-600"></i>
+                    <input id="auth-user" type="text" placeholder="Username" class="w-full bg-slate-900/50 p-5 pl-14 rounded-2xl border border-white/5 outline-none focus:border-emerald-500/50">
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-key absolute left-5 top-5 text-slate-600"></i>
+                    <input id="auth-pass" type="password" placeholder="Passcode" class="w-full bg-slate-900/50 p-5 pl-14 rounded-2xl border border-white/5 outline-none focus:border-emerald-500/50">
+                </div>
+
+                <button onclick="executeAuth()" class="btn-tap w-full bg-emerald-500 py-6 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-emerald-500/20 mt-4">Initialize Session</button>
+                <button onclick="toggleAuthMode()" id="auth-switch" class="w-full py-4 text-[9px] font-black text-slate-500 uppercase tracking-widest hover:text-emerald-500 transition-colors">New Client? Register Profile</button>
             </div>
         </div>
     </div>
 
     <div id="eta-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-6">
-        <div class="glass p-12 rounded-[4rem] text-center w-full max-w-xs">
-            <h3 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-[0.3em]">Dispatch Timing</h3>
-            <div class="bg-slate-900 py-8 rounded-[2.5rem] border border-slate-800">
-                <p id="eta-val" class="text-2xl font-black text-emerald-400 italic">Not Assigned</p>
+        <div class="glass p-12 rounded-[4rem] text-center w-full max-w-sm border-emerald-500/20">
+            <h3 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-[0.4em]">Current Dispatch Status</h3>
+            <div class="py-12 bg-slate-900/50 rounded-[3rem] border border-white/5 mb-10">
+                <p id="eta-display" class="text-3xl font-black text-emerald-400 italic">Standby...</p>
             </div>
-            <button onclick="closeModal('eta-modal')" class="btn-tap mt-10 text-[9px] font-black uppercase opacity-30 hover:opacity-100">Close</button>
+            <button onclick="closeModal('eta-modal')" class="btn-tap text-[10px] font-black uppercase text-slate-500 hover:text-white">Exit Interface</button>
         </div>
     </div>
 
     <script>
-        const API = { s: "service_6ymb279", t: "template_pruo22c", k: "Or10zkajJK3CNcnic", a: "favela23@gmail.com" };
-        emailjs.init(API.k);
+        // CORE CONFIGURATION
+        const CONFIG = {
+            serviceID: "service_6ymb279",
+            templateID: "template_pruo22c",
+            publicKey: "Or10zkajJK3CNcnic",
+            ownerEmail: "favela23@gmail.com"
+        };
 
+        emailjs.init(CONFIG.publicKey);
+
+        // DATA PERSISTENCE
         let users = JSON.parse(localStorage.getItem('users')) || [];
         let session = JSON.parse(localStorage.getItem('session')) || null;
-        let pRate = parseInt(localStorage.getItem('pRate')) || 0;
-        let isReg = false;
+        let isSignupMode = false;
 
-        function start() {
-            if(session) {
-                document.getElementById('u-name').innerText = session.username;
-                document.getElementById('hero-login').classList.add('hidden');
+        // INITIALIZATION
+        function bootSystem() {
+            if (session) {
+                document.getElementById('u-name').innerText = `Identity: ${session.username}`;
+                document.getElementById('u-status').innerText = session.username === "Adrien" ? "System Founder" : "Active Client";
+                document.getElementById('u-full-name').innerText = session.name || "Access Denied";
+                
                 document.getElementById('guest-area').classList.add('hidden');
                 document.getElementById('logged-in-area').classList.remove('hidden');
                 
-                if(session.username === "Adrien") document.body.classList.add('is-owner');
-                
-                const me = users.find(u => u.username === session.username) || session;
-                document.getElementById('eta-val').innerText = me.eta || "Not Assigned";
+                if (session.username === "Adrien") {
+                    document.body.classList.add('is-owner');
+                }
+
+                const myProfile = users.find(u => u.username === session.username) || session;
+                document.getElementById('eta-display').innerText = myProfile.eta || "Standby Mode";
             }
-            
-            const bMsg = localStorage.getItem('globalMsg');
-            if(bMsg) {
+
+            const activeBroadcast = localStorage.getItem('global_broadcast');
+            if (activeBroadcast) {
                 document.getElementById('top-banner').classList.remove('hidden');
-                document.getElementById('banner-text').innerText = bMsg;
+                document.getElementById('banner-text').innerText = activeBroadcast;
             }
-            runPricing();
-            renderUsers();
+
+            updatePricing();
+            renderRegistry();
+            updateStats();
         }
 
-        // PRICING MATRIX
-        function runPricing() {
-            const count = document.getElementById('r1').value;
-            const b1 = 15 + (count - 1) * 10;
-            const bg = 45;
-            const f1 = pRate > 0 ? (b1 * (1 - pRate/100)) : b1;
-            const fg = pRate > 0 ? (bg * (1 - pRate/100)) : bg;
-
-            document.getElementById('bin-count').innerText = `${count} Bin${count > 1 ? 's' : ''}`;
-            if(pRate > 0) {
-                document.getElementById('old-p1').innerText = `$${b1}`;
-                document.getElementById('old-p1').classList.remove('hidden');
-                document.getElementById('old-pg').innerText = `$${bg}`;
-                document.getElementById('old-pg').classList.remove('hidden');
-            } else {
-                document.getElementById('old-p1').classList.add('hidden');
-                document.getElementById('old-pg').classList.add('hidden');
-            }
-            document.getElementById('new-p1').innerText = `$${f1.toFixed(2)}`;
-            document.getElementById('new-pg').innerText = `$${fg.toFixed(0)}`;
+        // PRICING ENGINE
+        function updatePricing() {
+            const count = document.getElementById('bin-slider').value;
+            const price = 15 + (count - 1) * 10;
+            document.getElementById('bin-label').innerText = `${count} Bin${count > 1 ? 's' : ''}`;
+            document.getElementById('price-label').innerText = `$${price}`;
         }
 
-        // AUTH SYSTEM
-        function handleAuth() {
-            const u = document.getElementById('in-u').value.trim();
-            const p = document.getElementById('in-p').value.trim();
-            if(!isReg) {
-                if(u === "Adrien" && p === "favela23") return login({username: "Adrien", role: "Owner"});
-                const found = users.find(x => x.username === u && x.password === p);
-                if(found) login(found); else alert("Access Denied");
+        // AUTHENTICATION LOGIC
+        function toggleAuthMode() {
+            isSignupMode = !isSignupMode;
+            document.getElementById('auth-title').innerText = isSignupMode ? "Register" : "Access";
+            document.getElementById('reg-fields').classList.toggle('hidden', !isSignupMode);
+            document.getElementById('auth-switch').innerText = isSignupMode ? "Back to Access" : "New Client? Register Profile";
+        }
+
+        function executeAuth() {
+            const u = document.getElementById('auth-user').value.trim();
+            const p = document.getElementById('auth-pass').value.trim();
+
+            if (!isSignupMode) {
+                // Login
+                if (u === "Adrien" && p === "favela23") return authorizeSession({username: "Adrien", name: "Founder", role: "Owner"});
+                const user = users.find(x => x.username === u && x.password === p);
+                if (user) authorizeSession(user); else alert("Identity Verification Failed");
             } else {
-                const n = document.getElementById('in-n').value;
-                const ph = document.getElementById('in-ph').value;
-                if(!u || !p || !n) return alert("Full Data Required");
-                const newUser = { username: u, password: p, name: n, phone: ph, plan: "Standard", eta: "Not Assigned" };
+                // Register
+                const name = document.getElementById('reg-full-name').value.trim();
+                const phone = document.getElementById('reg-phone').value.trim();
+                if (!u || !p || !name) return alert("All Identification Fields Required");
+                
+                const newUser = { username: u, password: p, name: name, phone: phone, plan: "Standard", eta: "Standby" };
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
-                login(newUser);
+                authorizeSession(newUser);
             }
         }
 
-        function login(o) { localStorage.setItem('session', JSON.stringify(o)); location.reload(); }
-        function logout() { localStorage.removeItem('session'); location.reload(); }
-
-        // BOOKING CALL
-        async function book(tier) {
-            if(!session) return openModal('auth-modal');
-            const addr = prompt("Verify Address:");
-            if(!addr) return;
-            const uData = users.find(u => u.username === session.username) || session;
-            const pr = tier === "Elite Gold" ? document.getElementById('new-pg').innerText : document.getElementById('new-p1').innerText;
-            try {
-                await emailjs.send(API.s, API.t, {
-                    to_email: API.a, user_name: session.username, legal_name: uData.name, 
-                    user_phone: uData.phone, address: addr, plan: tier, price: pr, bins: document.getElementById('r1').value
-                });
-                alert("Request Transmitted to Founder.");
-            } catch(e) { alert("Comms Error"); }
+        function authorizeSession(obj) {
+            localStorage.setItem('session', JSON.stringify(obj));
+            location.reload();
         }
 
-        // COMMAND TOOLS (KILL SWITCHES)
-        function applyP() { pRate = parseInt(document.getElementById('promo-in').value) || 0; localStorage.setItem('pRate', pRate); location.reload(); }
-        function killP() { pRate = 0; localStorage.removeItem('pRate'); location.reload(); }
-        function applyB() { const m = document.getElementById('msg-in').value; localStorage.setItem('globalMsg', m); location.reload(); }
-        function killB() { localStorage.removeItem('globalMsg'); location.reload(); }
+        function logout() {
+            localStorage.removeItem('session');
+            location.reload();
+        }
 
-        // REGISTRY RENDERER (FIXED)
-        function renderUsers() {
+        // BOOKING SYSTEM
+        async function book(tier) {
+            if (!session) return openModal('auth-modal');
+            const address = prompt("Provide Service Location:");
+            if (!address) return;
+
+            const profile = users.find(u => u.username === session.username) || session;
+            const finalPrice = tier === "Monthly Plan" ? "$45" : document.getElementById('price-label').innerText;
+            const bins = tier === "Monthly Plan" ? "Subscription" : document.getElementById('bin-slider').value;
+
+            try {
+                await emailjs.send(CONFIG.serviceID, CONFIG.templateID, {
+                    to_email: CONFIG.ownerEmail,
+                    legal_name: profile.name,
+                    user_phone: profile.phone,
+                    user_name: session.username,
+                    address: address,
+                    plan: tier,
+                    price: finalPrice,
+                    bins: bins,
+                    eta_request: "Awaiting Schedule"
+                });
+                alert("Transmission Successful. Adrien has been notified.");
+            } catch (err) {
+                alert("Communication Error. Check Network.");
+            }
+        }
+
+        // FOUNDER COMMANDS
+        function renderRegistry() {
             const grid = document.getElementById('registry-grid');
-            if(!grid) return;
-            if(users.length === 0) { grid.innerHTML = "<p class='text-slate-600 text-[10px] font-black uppercase text-center py-10'>No Registered Operatives</p>"; return; }
-            
+            if (!grid) return;
+            if (users.length === 0) {
+                grid.innerHTML = `<p class="text-center py-20 text-slate-600 text-xs font-black uppercase tracking-[0.4em]">Empty Registry</p>`;
+                return;
+            }
+
             grid.innerHTML = users.map(u => `
-                <div class="glass p-6 rounded-3xl flex flex-wrap justify-between items-center gap-6 border-slate-800">
-                    <div>
-                        <p class="font-black text-white uppercase text-sm">${u.username}</p>
-                        <p class="text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em]">${u.plan}</p>
-                        <p class="text-[9px] text-slate-500 mt-1">${u.phone || 'No Phone'}</p>
+                <div class="glass p-8 rounded-[2.5rem] flex flex-wrap justify-between items-center gap-6 border-white/5 hover:border-emerald-500/20 transition-all">
+                    <div class="flex items-center gap-6">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center border border-white/5 text-emerald-500 font-black">
+                            ${u.username.substring(0,2).toUpperCase()}
+                        </div>
+                        <div>
+                            <p class="font-black text-white uppercase text-sm tracking-tighter">${u.username}</p>
+                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">${u.name} • ${u.phone}</p>
+                            <span class="inline-block mt-2 px-3 py-1 rounded-full text-[7px] font-black uppercase ${u.plan === 'Monthly Plan' ? 'badge-monthly' : 'badge-standard'}">
+                                ${u.plan}
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex gap-3 items-center flex-1 justify-end">
-                        <button onclick="swapPlan('${u.username}')" class="btn-tap bg-slate-800 px-4 py-3 rounded-xl text-[9px] font-black uppercase text-white">Toggle Plan</button>
-                        
-                        <input type="datetime-local" id="dt-${u.username}" class="btn-tap">
-                        
-                        <button onclick="saveETA('${u.username}')" class="btn-tap bg-emerald-500 px-5 py-3 rounded-xl text-white"><i class="fa-solid fa-check"></i></button>
-                        <button onclick="trash('${u.username}')" class="text-red-500 px-2 btn-tap"><i class="fa-solid fa-trash"></i></button>
+                    <div class="flex flex-wrap gap-3 items-center ml-auto">
+                        <input type="datetime-local" id="dt-${u.username}" class="glass">
+                        <button onclick="commitETA('${u.username}')" class="btn-tap bg-emerald-500 p-4 rounded-xl text-white shadow-lg shadow-emerald-500/20">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </button>
+                        <button onclick="deleteUser('${u.username}')" class="btn-tap w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function swapPlan(un) {
-            const i = users.findIndex(u => u.username === un);
-            users[i].plan = users[i].plan === "Elite Gold" ? "Standard" : "Elite Gold";
-            localStorage.setItem('users', JSON.stringify(users));
-            renderUsers();
-        }
-
-        function saveETA(un) {
+        function commitETA(un) {
             const raw = document.getElementById(`dt-${un}`).value;
-            if(!raw) return alert("Select Date & Time");
+            if (!raw) return alert("Select Date/Time");
             
-            const date = new Date(raw);
-            const formatted = date.toLocaleDateString([], {month:'short', day:'numeric'}) + " @ " + date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            const d = new Date(raw);
+            const formatted = d.toLocaleDateString([], {month:'short', day:'numeric'}) + " @ " + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
             
             const i = users.findIndex(u => u.username === un);
             users[i].eta = formatted;
             localStorage.setItem('users', JSON.stringify(users));
-            renderUsers();
-            alert("ETA Updated for " + un);
+            renderRegistry();
+            alert(`Dispatch set for ${un}: ${formatted}`);
         }
 
-        function trash(un) { if(confirm("Erase User?")) { users = users.filter(u => u.username !== un); localStorage.setItem('users', JSON.stringify(users)); renderUsers(); } }
-
-        // UI CORE
-        function toggleMenu() { document.getElementById('u-menu').classList.toggle('hidden'); }
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function toggleA() { 
-            isReg = !isReg; 
-            document.getElementById('auth-title').innerText = isReg ? "Initialize" : "Access"; 
-            document.getElementById('reg-fields').classList.toggle('hidden', !isReg);
-            document.getElementById('switch-btn').innerText = isReg ? "Login to Profile" : "New? Initialize Profile";
+        function deployBroadcast() {
+            const msg = document.getElementById('broadcast-input').value;
+            if (!msg) return;
+            localStorage.setItem('global_broadcast', msg);
+            location.reload();
         }
+
+        function terminateBroadcast() {
+            localStorage.removeItem('global_broadcast');
+            location.reload();
+        }
+
+        function updateStats() {
+            if(document.getElementById('stat-users')) {
+                document.getElementById('stat-users').innerText = users.length;
+                document.getElementById('stat-subs').innerText = users.filter(u => u.plan === "Monthly Plan").length;
+            }
+        }
+
         function setTab(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('text-emerald-500');
+            document.querySelectorAll('.tab-trigger').forEach(b => {
+                b.classList.remove('bg-emerald-500', 'text-white');
                 b.classList.add('text-slate-500');
             });
             document.getElementById(id).classList.add('active');
-            event.target.classList.add('text-emerald-500');
-            event.target.classList.remove('text-slate-500');
+            document.getElementById('btn-' + id).classList.add('bg-emerald-500', 'text-white');
+            document.getElementById('btn-' + id).classList.remove('text-slate-500');
         }
 
-        start();
+        function deleteUser(un) {
+            if (confirm(`Erase ${un} from database?`)) {
+                users = users.filter(u => u.username !== un);
+                localStorage.setItem('users', JSON.stringify(users));
+                renderRegistry();
+                updateStats();
+            }
+        }
+
+        // UTILITIES
+        function toggleMenu() { document.getElementById('u-menu').classList.toggle('hidden'); }
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        
+        bootSystem();
     </script>
 </body>
 </html>
