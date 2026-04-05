@@ -3,152 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Elite | Founder Edition</title>
+    <title>Trouvaille Elite | Professional Bin Sanitization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.2s; }
-        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
-        .dropdown-content { display: none; position: absolute; right: 0; top: 100%; width: 14rem; background: white; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 100; border: 1px solid #eee; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        * { font-family: 'Inter', sans-serif; transition: all 0.2s ease-in-out; }
+        
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hero-bg { background: radial-gradient(circle at top right, #064e3b, #020617, #020617); }
+        
+        .dropdown-menu { display: none; position: absolute; right: 0; top: 110%; width: 16rem; background: #1e293b; border-radius: 1rem; border: 1px solid #334155; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); z-index: 100; }
         .show { display: block !important; }
+        
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-[#F8FAFC] text-slate-900">
+<body class="bg-[#020617] text-slate-100 selection:bg-emerald-500 selection:text-white">
 
-<nav class="bg-white border-b p-4 sticky top-0 z-[110]">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-black italic uppercase">Trouvaille</h1>
+<nav class="sticky top-0 z-[110] border-b border-slate-800 bg-[#020617]/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                <i class="fa-solid fa-droplet text-white"></i>
+            </div>
+            <h1 class="text-xl font-extrabold tracking-tighter uppercase italic text-white">Trouvaille <span class="text-emerald-500">Elite</span></h1>
+        </div>
+
         <div class="relative">
-            <button onclick="toggleDrop()" class="flex items-center gap-2 border p-2 rounded-full px-4 bg-white">
-                <div id="u-av" class="w-6 h-6 rounded-full bg-slate-800 text-white text-[10px] flex items-center justify-center">G</div>
-                <span id="u-nm" class="text-xs font-bold uppercase italic">Guest</span>
+            <button onclick="toggleDrop()" class="flex items-center gap-3 bg-slate-900 border border-slate-700 p-2 pl-4 rounded-full hover:border-emerald-500">
+                <span id="u-nm" class="text-xs font-bold uppercase tracking-widest text-slate-400">Guest User</span>
+                <div id="u-av" class="w-8 h-8 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center text-xs shadow-lg">?</div>
             </button>
-            <div id="drop" class="dropdown-content mt-2 overflow-hidden">
-                <button onclick="openM('owner-modal')" class="owner-only w-full text-left p-4 hover:bg-emerald-50 text-xs font-black text-emerald-600 border-b">FOUNDER PANEL</button>
-                <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-slate-50 text-xs font-bold">MY PROFILE</button>
-                <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-50 text-xs font-bold text-red-500">SIGN OUT</button>
-                <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-50 text-xs font-bold">SIGN IN</button>
+            <div id="drop" class="dropdown-menu overflow-hidden">
+                <button onclick="openM('owner-modal')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-xs font-black text-emerald-400 border-b border-slate-700">
+                    <i class="fa-solid fa-gauge-high mr-2"></i> FOUNDER COMMAND
+                </button>
+                <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-500/10 text-xs font-bold text-red-400">
+                    <i class="fa-solid fa-power-off mr-2"></i> DEACTIVATE SESSION
+                </button>
+                <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-xs font-bold text-emerald-400 italic">
+                    <i class="fa-solid fa-lock-open mr-2"></i> ACCESS SYSTEM
+                </button>
             </div>
         </div>
     </div>
 </nav>
 
-<div id="owner-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden">
-        <div class="p-6 border-b flex justify-between items-center">
-            <div class="flex gap-2">
-                <button onclick="showTab('users-tab')" class="bg-emerald-500 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase">Users</button>
-                <button onclick="showTab('settings-tab')" class="bg-slate-100 px-4 py-2 rounded-lg text-[10px] font-black uppercase">Stats</button>
-            </div>
-            <button onclick="closeM('owner-modal')" class="text-2xl">×</button>
-        </div>
-        <div class="p-6 overflow-y-auto">
-            <div id="users-tab" class="tab-content active">
-                <table class="w-full text-left text-xs">
-                    <thead class="uppercase opacity-50 font-black border-b">
-                        <tr><th class="pb-2">Name</th><th class="pb-2">Email</th><th class="pb-2">Plan</th><th class="pb-2 text-right">Action</th></tr>
-                    </thead>
-                    <tbody id="db-list"></tbody>
-                </table>
-            </div>
-            <div id="settings-tab" class="tab-content">
-                <p class="font-black italic">Account Stats Coming Soon...</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="book-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-[2rem] w-full max-w-sm relative">
-        <h2 class="text-2xl font-black uppercase italic mb-4">Confirm Order</h2>
-        <p id="b-plan" class="text-emerald-600 font-black text-xs mb-4 uppercase"></p>
-        <input id="b-addr" placeholder="Address" class="w-full bg-slate-50 p-4 rounded-xl mb-4 font-bold outline-none border">
-        <button id="b-sub" onclick="send()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase">Submit</button>
-        <button onclick="closeM('book-modal')" class="absolute top-4 right-4">×</button>
-    </div>
-</div>
-
-<div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[500] flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-[2rem] w-full max-w-sm relative">
-        <h2 id="a-tit" class="text-2xl font-black uppercase italic mb-6">Sign In</h2>
-        <div class="space-y-4">
-            <input id="a-u" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none">
-            <input id="a-e" placeholder="Email" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none hidden">
-            <input id="a-p" type="password" placeholder="Password" class="w-full bg-slate-50 p-4 rounded-xl font-bold border outline-none">
-            <button onclick="auth()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase">Submit</button>
-            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-400 text-[10px] font-black uppercase mt-4">Create Account</button>
-        </div>
-    </div>
-</div>
-
-<section class="hero-gradient p-20 text-center text-white">
-    <h1 class="text-4xl font-black uppercase italic mb-4">Trouvaille Elite</h1>
-    <p class="opacity-70 mb-10">Bin sanitization at its peak.</p>
-    <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-        <div class="bg-white text-slate-900 p-8 rounded-3xl">
-            <h3 class="font-black text-xs uppercase opacity-50 mb-2">Single Wash</h3>
-            <p class="text-3xl font-black mb-4">$15</p>
-            <button onclick="book('Single Wash')" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold">Select</button>
-        </div>
-        <div class="bg-emerald-500 p-8 rounded-3xl">
-            <h3 class="font-black text-xs uppercase text-emerald-100 mb-2">Monthly</h3>
-            <p class="text-3xl font-black mb-4">$20</p>
-            <button onclick="book('Monthly Elite')" class="w-full bg-white text-emerald-600 py-3 rounded-xl font-bold">Select</button>
+<section class="hero-bg pt-24 pb-32 px-6 text-center">
+    <div class="max-w-4xl mx-auto">
+        <span class="text-emerald-400 font-black text-[10px] uppercase tracking-[0.3em] mb-4 block">Medical Grade Sanitization</span>
+        <h2 class="text-5xl md:text-7xl font-extrabold text-white italic mb-6 leading-tight">Elite Bin Hygiene.<br>Defined by <span class="text-emerald-500">Precision.</span></h2>
+        <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">High-pressure steam cleaning and molecular deodorization for the modern homeowner.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="scrollToPlans()" class="bg-emerald-500 hover:bg-emerald-400 text-white px-10 py-4 rounded-2xl font-black shadow-[0_10px_30px_rgba(16,185,129,0.3)]">DEPLOY SERVICE</button>
         </div>
     </div>
 </section>
 
-<script>
-    // --- CREDENTIALS SWAP ---
-    const PUB_KEY = "Service_6ymb279"; // As you specified: Service ID is Public Key
-    const SERV_ID = "v-4sLf-EzCLBYcWe7"; 
-    const T_OWNER = "template_pruo22c";
-    const T_CUST = "template_4hi1opb";
+<section id="plans" class="max-w-6xl mx-auto px-6 -mt-16 grid md:grid-cols-2 gap-8 pb-24">
+    <div class="glass p-10 rounded-[2.5rem] border border-slate-800">
+        <h3 class="text-emerald-500 font-black text-xs uppercase tracking-widest mb-2">On-Demand</h3>
+        <p class="text-4xl font-black text-white mb-6">$15 <span class="text-sm font-normal text-slate-500">/ One-time</span></p>
+        <ul class="space-y-4 mb-10 text-sm text-slate-400">
+            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 200°F Steam Sanitization</li>
+            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Eco-Friendly Deodorizer</li>
+            <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Visual Inspection Report</li>
+        </ul>
+        <button onclick="book('Single Wash')" class="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-black uppercase text-xs">Book Single</button>
+    </div>
+    <div class="bg-emerald-600 p-10 rounded-[2.5rem] shadow-2xl shadow-emerald-500/20">
+        <h3 class="text-emerald-200 font-black text-xs uppercase tracking-widest mb-2">Elite Membership</h3>
+        <p class="text-4xl font-black text-white mb-6">$20 <span class="text-sm font-normal text-emerald-200">/ Month</span></p>
+        <ul class="space-y-4 mb-10 text-sm text-emerald-100">
+            <li><i class="fa-solid fa-bolt text-white mr-2"></i> Monthly Priority Scheduling</li>
+            <li><i class="fa-solid fa-bolt text-white mr-2"></i> Bacterial Neutralization</li>
+            <li><i class="fa-solid fa-bolt text-white mr-2"></i> 100% Odor Elimination</li>
+        </ul>
+        <button onclick="book('Monthly Elite')" class="w-full py-4 bg-white text-emerald-600 hover:bg-emerald-50 rounded-2xl font-black uppercase text-xs">Subscribe Now</button>
+    </div>
+</section>
 
-    let user = JSON.parse(localStorage.getItem('loggedUser')) || null;
-    let isLog = true;
-    let selPlan = "";
+<div id="owner-modal" class="hidden fixed inset-0 bg-[#020617]/95 z-[500] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-[3rem] w-full max-w-5xl h-[80vh] flex flex-col overflow-hidden">
+        <div class="p-8 border-b border-slate-800 flex justify-between items-center">
+            <h2 class="text-xl font-black uppercase italic text-emerald-500">Management Suite</h2>
+            <button onclick="closeM('owner-modal')" class="text-slate-500 text-3xl">&times;</button>
+        </div>
+        <div class="p-8 flex-1 overflow-y-auto">
+            <table class="w-full text-left">
+                <thead class="text-[10px] uppercase font-black text-slate-500 tracking-widest border-b border-slate-800">
+                    <tr><th class="pb-4">Operator</th><th class="pb-4">Encryption</th><th class="pb-4">Status</th><th class="pb-4 text-right">Control</th></tr>
+                </thead>
+                <tbody id="db-list" class="text-sm"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="book-modal" class="hidden fixed inset-0 bg-[#020617]/90 z-[500] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-slate-900 p-10 rounded-[3rem] w-full max-w-md border border-slate-800">
+        <h2 class="text-3xl font-black text-white italic mb-2">Finalize <span class="text-emerald-500">Order</span></h2>
+        <p id="b-plan" class="text-slate-400 font-bold text-xs uppercase mb-8 border-b border-slate-800 pb-4"></p>
+        <div class="space-y-4">
+            <input id="b-addr" placeholder="Installation/Service Address" class="w-full bg-slate-800 border border-slate-700 p-5 rounded-2xl text-white outline-none focus:border-emerald-500">
+            <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase italic tracking-widest shadow-lg">Confirm & Send</button>
+        </div>
+        <button onclick="closeM('book-modal')" class="w-full text-slate-500 text-xs font-bold mt-6 uppercase hover:text-white">Cancel Request</button>
+    </div>
+</div>
+
+<div id="auth-modal" class="hidden fixed inset-0 bg-[#020617]/95 z-[500] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 p-10 rounded-[3rem] w-full max-w-sm relative">
+        <h2 id="a-tit" class="text-3xl font-black text-white uppercase italic mb-8">System Access</h2>
+        <div class="space-y-4">
+            <input id="a-u" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 p-5 rounded-2xl text-white outline-none">
+            <input id="a-e" placeholder="Email (Required for Alerts)" class="w-full bg-slate-800 border border-slate-700 p-5 rounded-2xl text-white outline-none hidden">
+            <input id="a-p" type="password" placeholder="Passcode" class="w-full bg-slate-800 border border-slate-700 p-5 rounded-2xl text-white outline-none">
+            <button onclick="auth()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase italic">Unlock System</button>
+            <button onclick="tAuth()" id="a-tgl" class="w-full text-slate-500 text-[10px] font-black uppercase mt-4 hover:text-emerald-500 tracking-widest">Request Credentials</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // CREDENTIALS - Service ID is Public Key as requested
+    const E_PUB = "Service_6ymb279"; 
+    const E_SER = "v-4sLf-EzCLBYcWe7";
+    const T_OWN = "template_pruo22c";
+    const T_CUS = "template_4hi1opb";
+
+    let activeUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let isLogin = true;
+    let selectedPlan = "";
 
     function boot() {
-        emailjs.init(PUB_KEY);
-        if(user) {
-            document.getElementById('u-nm').innerText = user.username;
-            document.getElementById('u-av').innerText = user.username[0].toUpperCase();
-            document.getElementById('li-btn').style.display = 'none';
-            document.getElementById('lo-btn').style.display = 'block';
-            document.getElementById('p-btn').style.display = 'block';
-            if(user.username === "Adrien") document.body.classList.add('is-owner');
+        emailjs.init(E_PUB);
+        if(activeUser) {
+            document.getElementById('u-nm').innerText = activeUser.username;
+            document.getElementById('u-av').innerText = activeUser.username[0].toUpperCase();
+            document.getElementById('li-btn').classList.add('hidden');
+            document.getElementById('lo-btn').classList.remove('hidden');
+            if(activeUser.username === "Adrien") document.body.classList.add('is-owner');
         }
     }
 
-    function showTab(id) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'users-tab') render();
+    async function handleOrder() {
+        const addr = document.getElementById('b-addr').value;
+        const btn = document.getElementById('b-sub');
+        if(!addr) return alert("Operation Failure: Address required.");
+
+        btn.innerText = "UPLOADING DATA...";
+        btn.disabled = true;
+
+        const data = {
+            user_name: activeUser.username,
+            user_email: activeUser.email,
+            plan_selected: selectedPlan,
+            address: addr,
+            to_email: "favela23@gmail.com"
+        };
+
+        try {
+            await emailjs.send(E_SER, T_OWN, data);
+            await emailjs.send(E_SER, T_CUS, data);
+            alert("Mission Confirmed. Owner notified.");
+            location.reload();
+        } catch (e) {
+            alert("Secure Link Failed. Check Console.");
+            btn.innerText = "RETRY CONFIRMATION";
+            btn.disabled = false;
+        }
     }
 
     function render() {
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        const list = document.getElementById('db-list');
-        list.innerHTML = users.length ? users.map(u => `
-            <tr class="border-b">
-                <td class="py-4 font-black uppercase">${u.username}</td>
-                <td class="py-4 opacity-60">${u.email}</td>
+        const container = document.getElementById('db-list');
+        container.innerHTML = users.length ? users.map(u => `
+            <tr class="border-b border-slate-800">
+                <td class="py-6 font-bold text-white uppercase">${u.username}</td>
+                <td class="py-6 text-slate-500">${u.email}</td>
                 <td class="py-4">
-                    <select onchange="updSub('${u.username}', this.value)" class="bg-emerald-50 p-1 rounded text-[10px] font-black uppercase">
-                        <option value="None" ${u.plan==='None'?'selected':''}>None</option>
+                    <select onchange="updSub('${u.username}', this.value)" class="bg-slate-800 text-emerald-400 font-black text-[10px] uppercase p-2 rounded-lg border border-slate-700 outline-none">
+                        <option value="None" ${u.plan==='None'?'selected':''}>Inactive</option>
                         <option value="Single" ${u.plan==='Single'?'selected':''}>Single</option>
                         <option value="Monthly" ${u.plan==='Monthly'?'selected':''}>Monthly</option>
                     </select>
                 </td>
-                <td class="py-4 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-black">DELETE</button></td>
-            </tr>`).join('') : '<tr><td colspan="4" class="py-10 text-center opacity-30 font-bold italic">DATABASE EMPTY</td></tr>';
+                <td class="py-4 text-right">
+                    <button onclick="del('${u.username}')" class="text-red-500 font-black text-[10px] hover:text-white bg-red-500/10 px-4 py-2 rounded-lg uppercase">Wipe Data</button>
+                </td>
+            </tr>
+        `).join('') : '<tr><td colspan="4" class="py-20 text-center text-slate-700 font-black">NO ACTIVE SIGNATURES FOUND</td></tr>';
     }
 
     function updSub(n, p) {
@@ -158,44 +211,26 @@
     }
 
     function del(n) {
-        if(!confirm("Delete account?")) return;
+        if(!confirm("Execute permanent wipe of "+n+"?")) return;
         let list = JSON.parse(localStorage.getItem('users')) || [];
         localStorage.setItem('users', JSON.stringify(list.filter(x => x.username !== n)));
         render();
     }
 
-    async function send() {
-        const ad = document.getElementById('b-addr').value;
-        if(!ad) return alert("Missing address");
-        const btn = document.getElementById('b-sub');
-        btn.innerText = "SENDING...";
-        btn.disabled = true;
-
-        const p = { user_name: user.username, user_email: user.email, plan_selected: selPlan, address: ad, to_email: "favela23@gmail.com" };
-
-        try {
-            await emailjs.send(SERV_ID, T_OWNER, p);
-            await emailjs.send(SERV_ID, T_CUST, p);
-            alert("Order Success!");
-            location.reload();
-        } catch (e) {
-            alert("Email Fail: Check IDs");
-            btn.innerText = "SUBMIT";
-            btn.disabled = false;
-        }
-    }
-
-    function tAuth() { isLog = !isLog; document.getElementById('a-tit').innerText = isLog ? "Sign In" : "Register"; document.getElementById('a-e').classList.toggle('hidden', isLog); }
     function auth() {
         const u = document.getElementById('a-u').value.trim();
         const p = document.getElementById('a-p').value.trim();
         const e = document.getElementById('a-e').value.trim();
         let list = JSON.parse(localStorage.getItem('users')) || [];
 
-        if(isLog) {
+        if(isLogin) {
             if(u === "Adrien" && p === "favela23") login({username:u, email:"founder@trouvaille.com"});
-            else { const f = list.find(x => x.username === u && x.password === p); if(f) login(f); else alert("Wrong Login"); }
+            else {
+                const f = list.find(x => x.username === u && x.password === p);
+                if(f) login(f); else alert("Access Denied.");
+            }
         } else {
+            if(!u || !p || !e) return alert("Credentials incomplete.");
             const n = {username:u, password:p, email:e, plan:"None"};
             list.push(n);
             localStorage.setItem('users', JSON.stringify(list));
@@ -205,10 +240,12 @@
 
     function login(o) { localStorage.setItem('loggedUser', JSON.stringify(o)); location.reload(); }
     function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
+    function tAuth() { isLogin = !isLogin; document.getElementById('a-tit').innerText = isLog ? "System Access" : "Credential Request"; document.getElementById('a-e').classList.toggle('hidden', isLogin); }
+    function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
     function openM(id) { if(id==='owner-modal') render(); document.getElementById(id).classList.remove('hidden'); }
     function closeM(id) { document.getElementById(id).classList.add('hidden'); }
-    function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
-    function book(p) { if(!user) return openM('auth-modal'); selPlan = p; document.getElementById('b-plan').innerText = p; openM('book-modal'); }
+    function book(p) { if(!activeUser) return openM('auth-modal'); selectedPlan = p; document.getElementById('b-plan').innerText = p; openM('book-modal'); }
+    function scrollToPlans() { document.getElementById('plans').scrollIntoView({behavior:'smooth'}); }
 
     boot();
 </script>
