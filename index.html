@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouvaille Bins</title>
+    <title>Trouvaille Bins | Professional Cleaning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -13,17 +13,21 @@
         * { font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         body { background-color: var(--bg); color: #f8fafc; margin: 0; overflow-x: hidden; }
         .glass-card { background: var(--card); border: 1px solid var(--border); }
+        
+        /* Owner View Control */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
+        
+        /* Dropdown & Modals */
         .dropdown { display: none; position: absolute; right: 0; top: 115%; width: 14rem; background: var(--card); border: 1px solid var(--border); border-radius: 1.5rem; z-index: 100; padding: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
         .show { display: block !important; }
         
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
-        
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .animate-pop { animation: popIn 0.3s ease-out forwards; }
+
+        /* Custom Slider */
         input[type=range] { -webkit-appearance: none; background: #334155; height: 8px; border-radius: 10px; width: 100%; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #10b981; cursor: pointer; border: 3px solid white; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--emerald); cursor: pointer; border: 3px solid white; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
     </style>
 </head>
 <body>
@@ -33,9 +37,9 @@
     <div class="relative">
         <button onclick="document.getElementById('drop').classList.toggle('show')" class="glass-card pl-4 pr-2 py-2 rounded-full flex items-center gap-3 hover:border-emerald-500/50">
             <span id="nav-name" class="text-[10px] font-bold uppercase opacity-60 tracking-widest">Guest</span>
-            <img id="nav-avatar" src="https://ui-avatars.com/api/?name=G&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover border border-slate-700">
+            <img id="nav-avatar" src="https://ui-avatars.com/api/?name=?&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover border border-slate-700">
         </button>
-        <div id="drop" class="dropdown animate-fade">
+        <div id="drop" class="dropdown">
             <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-3 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20 uppercase">Founder Panel</button>
             <button onclick="openM('profile-modal')" class="w-full text-left p-3 hover:bg-slate-800 text-[10px] font-bold uppercase rounded-lg">Profile Settings</button>
             <button onclick="logout()" class="w-full text-left p-3 hover:bg-red-500/10 text-[10px] font-bold text-red-500 uppercase rounded-lg">Sign Out</button>
@@ -43,97 +47,89 @@
     </div>
 </nav>
 
-<section id="user-dash" class="hidden py-8 px-6 max-w-4xl mx-auto animate-fade">
-    <div class="glass-card p-6 rounded-[2.5rem] bg-emerald-500/5 border-emerald-500/20">
-        <h2 id="welcome-msg" class="text-xl font-black italic uppercase mb-4">Welcome</h2>
+<section id="user-dash" class="hidden py-8 px-6 max-w-4xl mx-auto">
+    <div class="glass-card p-6 rounded-[2.5rem] bg-emerald-500/5 border-emerald-500/20 animate-pop">
+        <h2 id="welcome-msg" class="text-xl font-black italic uppercase mb-4 text-emerald-400">Welcome</h2>
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
-                <p class="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Status</p>
-                <p id="dash-status" class="font-bold text-emerald-500 text-sm">Active Member</p>
+                <p class="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Job Status</p>
+                <p id="dash-status" class="font-bold text-emerald-500 text-sm">No Active Orders</p>
             </div>
             <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
-                <p class="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Cleaning Date</p>
+                <p class="text-[9px] font-bold opacity-40 uppercase mb-1 tracking-widest">Scheduled For</p>
                 <p id="dash-date" class="font-bold text-sm text-slate-300">TBA</p>
             </div>
         </div>
     </div>
 </section>
 
-<main class="py-12 px-6 text-center max-w-5xl mx-auto animate-fade">
+<main class="py-12 px-6 text-center max-w-5xl mx-auto">
     <div class="grid md:grid-cols-2 gap-8">
-        <div class="glass-card p-8 rounded-[3rem] text-left hover:scale-[1.02]">
+        <div class="glass-card p-8 rounded-[3rem] text-left hover:border-emerald-500/30 transition-all">
             <h4 class="text-xl font-black italic uppercase mb-2">Single Wash</h4>
-            <p class="text-[10px] opacity-50 uppercase font-bold mb-6">One-time deep clean</p>
+            <p class="text-[10px] opacity-40 uppercase font-bold mb-6 tracking-widest">One-time deep steam clean</p>
             <div class="mb-10">
                 <div class="flex justify-between items-end mb-4">
-                    <span id="bin-count" class="text-3xl font-black tracking-tighter">1 Bin</span>
+                    <span id="bin-display" class="text-3xl font-black tracking-tighter">1 Bin</span>
                     <span id="single-price" class="text-3xl font-black text-emerald-500">$15</span>
                 </div>
-                <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updPrc()">
+                <input type="range" id="bin-slider" min="1" max="5" value="1" oninput="updatePricing()">
             </div>
-            <button onclick="order('Single Wash')" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase text-xs shadow-lg shadow-emerald-500/20 hover:bg-emerald-400">Book Service</button>
+            <button onclick="initiateOrder('Single Wash')" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase text-xs shadow-lg shadow-emerald-500/20 hover:bg-emerald-400">Book Service</button>
         </div>
 
-        <div class="bg-emerald-600 p-8 rounded-[3rem] text-left shadow-2xl hover:scale-[1.02] relative overflow-hidden">
-            <div class="absolute -right-4 -top-4 opacity-10 text-9xl"><i class="fa-solid fa-star"></i></div>
+        <div class="bg-emerald-600 p-8 rounded-[3rem] text-left shadow-2xl relative overflow-hidden group">
+            <div class="absolute -right-4 -top-4 opacity-10 text-9xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-calendar-check"></i></div>
             <h4 class="text-xl font-black italic uppercase mb-2 text-white">Monthly</h4>
-            <p class="text-[10px] opacity-80 uppercase font-bold mb-6 text-white">Keep them fresh year-round</p>
+            <p class="text-[10px] opacity-80 uppercase font-bold mb-6 text-white tracking-widest">Keep them fresh year-round</p>
             <p class="text-5xl font-black text-white mb-10 tracking-tighter">$20<span class="text-sm font-normal opacity-60">/mo</span></p>
-            <button onclick="order('Monthly Subscription', '$20')" class="w-full bg-white text-emerald-600 py-5 rounded-2xl font-black uppercase text-xs shadow-xl">Subscribe</button>
+            <button onclick="initiateOrder('Monthly Subscription')" class="w-full bg-white text-emerald-600 py-5 rounded-2xl font-black uppercase text-xs shadow-xl hover:bg-slate-100">Subscribe</button>
         </div>
     </div>
 </main>
 
-<div id="profile-modal" class="hidden fixed inset-0 bg-black/95 z-[200] p-4 flex items-center justify-center">
-    <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] animate-fade relative">
-        <h2 class="text-2xl font-black italic uppercase mb-6 text-center">Your Profile</h2>
-        
-        <div class="flex flex-col items-center mb-6">
-            <img id="profile-preview" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff" class="w-24 h-24 rounded-full object-cover border-4 border-emerald-500">
-        </div>
-
-        <div class="space-y-3">
-            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Legal Name</label><input id="p-legal" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
-            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Username</label><input id="p-user" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
-            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Email</label><input id="p-email" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
-            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Phone</label><input id="p-phone" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
-            <button onclick="saveProfile()" class="w-full bg-emerald-500 py-4 rounded-xl font-black uppercase text-xs mt-4">Save Changes</button>
-        </div>
-        <button onclick="closeM('profile-modal')" class="absolute top-6 right-6 opacity-30 text-2xl">&times;</button>
-    </div>
-</div>
-
-<div id="book-modal" class="hidden fixed inset-0 bg-black/95 z-[200] flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-sm p-8 rounded-[3rem] relative animate-fade">
+<div id="book-modal" class="hidden fixed inset-0 bg-black/95 z-[200] p-4 flex items-center justify-center">
+    <div class="glass-card w-full max-w-sm p-8 rounded-[3rem] relative animate-pop">
         <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                <i class="fa-solid fa-location-dot"></i>
-            </div>
-            <h2 class="text-2xl font-black italic uppercase mb-1">Confirm Location</h2>
-            <p id="checkout-desc" class="text-[10px] font-black text-emerald-500 uppercase tracking-widest"></p>
+            <h2 class="text-2xl font-black italic uppercase mb-1">Final Step</h2>
+            <p id="checkout-summary" class="text-[10px] font-black text-emerald-500 uppercase tracking-widest"></p>
         </div>
         
         <div class="space-y-4">
             <div>
                 <label class="text-[10px] font-bold uppercase opacity-60 ml-1">Service Address</label>
-                <input id="addr-input" placeholder="123 Street Name, City" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none focus:border-emerald-500 text-sm">
+                <input id="addr-input" placeholder="PUT REAL ADDRESS HERE" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none focus:border-emerald-500 text-sm">
             </div>
             
             <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-2xl">
                 <p class="text-[10px] font-bold text-red-400 uppercase leading-tight">
                     <i class="fa-solid fa-triangle-exclamation mr-1"></i> 
-                    Disclaimer: If you provide a different house or incorrect address, we will not clean your bins. Please ensure your address is 100% correct.
+                    Disclaimer: If you put a different house we will not clean your bins so put your correct address.
                 </p>
             </div>
 
-            <button id="submit-btn" onclick="confirmOrder()" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase text-xs shadow-xl shadow-emerald-500/20">Confirm & Pay</button>
+            <button id="submit-btn" onclick="sendOrderEmail()" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase text-xs shadow-xl">Confirm & Pay</button>
         </div>
-        <button onclick="closeM('book-modal')" class="absolute top-6 right-6 opacity-20 text-2xl">&times;</button>
+        <button onclick="closeM('book-modal')" class="absolute top-6 right-6 opacity-30 text-2xl">&times;</button>
+    </div>
+</div>
+
+<div id="profile-modal" class="hidden fixed inset-0 bg-black/95 z-[200] p-4 flex items-center justify-center">
+    <div class="glass-card w-full max-w-md p-8 rounded-[2.5rem] relative animate-pop">
+        <h2 class="text-2xl font-black italic uppercase mb-6 text-center">Profile Settings</h2>
+        <div class="space-y-3">
+            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Legal Name</label><input id="p-legal" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
+            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Username</label><input id="p-user" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
+            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Email</label><input id="p-email" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
+            <div><label class="text-[9px] font-bold uppercase opacity-40 ml-2">Phone</label><input id="p-phone" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none focus:border-emerald-500"></div>
+            <button onclick="updateUserData()" class="w-full bg-emerald-500 py-4 rounded-xl font-black uppercase text-xs mt-4">Save Changes</button>
+        </div>
+        <button onclick="closeM('profile-modal')" class="absolute top-6 right-6 opacity-30 text-2xl">&times;</button>
     </div>
 </div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-black/98 z-[300] flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-sm p-10 rounded-[3rem] animate-fade">
+    <div class="glass-card w-full max-w-sm p-10 rounded-[3rem] animate-pop">
         <h2 id="auth-title" class="text-3xl font-black italic uppercase mb-8 text-center">Join Us</h2>
         <div class="space-y-3">
             <div id="reg-fields" class="hidden space-y-3">
@@ -143,14 +139,14 @@
             </div>
             <input id="u-name" placeholder="Username" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
             <input id="u-pass" type="password" placeholder="Passcode" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
-            <button onclick="doAuth()" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase mt-4">Continue</button>
+            <button onclick="handleAuth()" class="w-full bg-emerald-500 py-5 rounded-2xl font-black uppercase mt-4">Continue</button>
         </div>
-        <p onclick="toggleAuth()" id="auth-toggle" class="text-center text-[10px] mt-8 opacity-40 uppercase font-black cursor-pointer hover:text-emerald-500">Switch to Sign Up</p>
+        <p onclick="toggleAuthMode()" id="auth-toggle" class="text-center text-[10px] mt-8 opacity-40 uppercase font-black cursor-pointer hover:text-emerald-500 tracking-widest">Switch to Sign Up</p>
     </div>
 </div>
 
 <div id="owner-panel" class="hidden fixed inset-0 bg-slate-950 z-[100] p-4 flex items-center justify-center">
-    <div class="glass-card w-full max-w-6xl h-[85vh] rounded-[2.5rem] flex flex-col overflow-hidden animate-fade">
+    <div class="glass-card w-full max-w-6xl h-[85vh] rounded-[2.5rem] flex flex-col overflow-hidden animate-pop">
         <div class="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
             <h2 class="text-xl font-black italic uppercase">Founder Command</h2>
             <button onclick="closeM('owner-panel')" class="text-2xl opacity-50">&times;</button>
@@ -159,199 +155,267 @@
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="opacity-30 uppercase font-black border-b border-slate-800">
-                        <th class="pb-4">Avatar</th><th class="pb-4">User Info</th><th class="pb-4">Address</th><th class="pb-4">Status</th><th class="pb-4">Schedule</th><th class="pb-4">Action</th>
+                        <th class="pb-4">User</th><th class="pb-4">Order Details</th><th class="pb-4">Address</th><th class="pb-4">Schedule</th><th class="pb-4">Action</th>
                     </tr>
                 </thead>
-                <tbody id="founder-rows"></tbody>
+                <tbody id="admin-table-body"></tbody>
             </table>
         </div>
     </div>
 </div>
 
 <script>
-    const E_PUB = "Or10zkajJK3CNcnic"; 
-    const E_SER = "service_6ymb279"; 
-    const T_OWN = "template_pruo22c"; 
-    const ADMIN = "favela23@gmail.com"; 
+    // --- EMAILJS CONFIGURATION ---
+    const EMAIL_PUB_KEY = "Or10zkajJK3CNcnic"; 
+    const SERVICE_ID = "service_6ymb279"; 
+    const TEMPLATE_ID = "template_pruo22c"; 
+    const ADMIN_EMAIL = "favela23@gmail.com"; 
 
-    emailjs.init(E_PUB);
+    emailjs.init(EMAIL_PUB_KEY);
 
-    let current = JSON.parse(localStorage.getItem('loggedUser')) || null;
-    let isReg = false;
-    let pPlan = ""; 
-    let pPrice = "";
+    // --- STATE MANAGEMENT ---
+    let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
+    let isRegistering = false;
+    let selectedPlan = ""; 
+    let currentPrice = "$15";
+    let currentBinCount = "1";
 
-    function boot() {
+    function init() {
         if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
-        if(current) {
-            document.getElementById('nav-name').innerText = current.username;
-            
-            // Set the avatar to the first letter of the username automatically
-            const avatarUrl = `https://ui-avatars.com/api/?name=${current.username}&background=10b981&color=fff`;
-            document.getElementById('nav-avatar').src = avatarUrl;
-            document.getElementById('profile-preview').src = avatarUrl;
-            
-            document.getElementById('user-dash').classList.remove('hidden');
-            document.getElementById('welcome-msg').innerText = `Yo, ${current.username}!`;
-            
-            // Populate profile fields
-            document.getElementById('p-legal').value = current.legalName || "";
-            document.getElementById('p-user').value = current.username || "";
-            document.getElementById('p-email').value = current.email || "";
-            document.getElementById('p-phone').value = current.phone || "";
-
-            const users = JSON.parse(localStorage.getItem('users'));
-            const me = users.find(u => u.username === current.username);
-            if(me) {
-                document.getElementById('dash-status').innerText = me.status || "Member";
-                document.getElementById('dash-date').innerText = me.schedule || "Awaiting Date";
-            }
-            if(current.username === "Adrien") document.body.classList.add('is-owner');
+        
+        if(currentUser) {
+            updateUIForLoggedInUser();
         } else {
             openM('auth-modal');
         }
     }
 
-    function saveProfile() {
-        let users = JSON.parse(localStorage.getItem('users'));
-        let idx = users.findIndex(u => u.username === current.username);
+    function updateUIForLoggedInUser() {
+        document.getElementById('nav-name').innerText = currentUser.username;
+        // Profile Avatar based on first letter
+        const firstLetter = currentUser.username.charAt(0).toUpperCase();
+        const avatar = `https://ui-avatars.com/api/?name=${firstLetter}&background=10b981&color=fff&bold=true`;
+        document.getElementById('nav-avatar').src = avatar;
+
+        document.getElementById('user-dash').classList.remove('hidden');
+        document.getElementById('welcome-msg').innerText = `Yo, ${currentUser.username}!`;
         
-        current.legalName = document.getElementById('p-legal').value;
-        current.username = document.getElementById('p-user').value;
-        current.email = document.getElementById('p-email').value;
-        current.phone = document.getElementById('p-phone').value;
-        
-        users[idx] = {...users[idx], ...current};
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('loggedUser', JSON.stringify(current));
-        alert("Profile Updated!");
-        location.reload();
+        // Sync Profile Inputs
+        document.getElementById('p-legal').value = currentUser.legalName || "";
+        document.getElementById('p-user').value = currentUser.username || "";
+        document.getElementById('p-email').value = currentUser.email || "";
+        document.getElementById('p-phone').value = currentUser.phone || "";
+
+        const allUsers = JSON.parse(localStorage.getItem('users'));
+        const userData = allUsers.find(u => u.username === currentUser.username);
+        if(userData) {
+            document.getElementById('dash-status').innerText = userData.status || "Ready to Book";
+            document.getElementById('dash-date').innerText = userData.schedule || "Pending Admin";
+        }
+
+        if(currentUser.username === "Adrien") document.body.classList.add('is-owner');
     }
 
-    function updPrc() {
+    // --- PRICING LOGIC ---
+    function updatePricing() {
         const val = document.getElementById('bin-slider').value;
-        const price = 15 + (val - 1) * 10;
-        document.getElementById('bin-count').innerText = val + (val > 1 ? " Bins" : " Bin");
-        document.getElementById('single-price').innerText = "$" + price;
-        pPrice = "$" + price;
+        currentBinCount = val;
+        const calcPrice = 15 + (val - 1) * 10;
+        document.getElementById('bin-display').innerText = val + (val > 1 ? " Bins" : " Bin");
+        document.getElementById('single-price').innerText = "$" + calcPrice;
+        currentPrice = "$" + calcPrice;
     }
 
-    async function confirmOrder() {
-        const addr = document.getElementById('addr-input').value;
+    // --- BOOKING LOGIC ---
+    function initiateOrder(plan) {
+        if(!currentUser) return openM('auth-modal');
+        selectedPlan = plan;
+        if(plan === "Monthly Subscription") {
+            currentPrice = "$20";
+            currentBinCount = "Recurring (2 Bins)";
+        } else {
+            updatePricing();
+        }
+        document.getElementById('checkout-summary').innerText = `${selectedPlan} • ${currentPrice}`;
+        openM('book-modal');
+    }
+
+    async function sendOrderEmail() {
+        const address = document.getElementById('addr-input').value;
         const btn = document.getElementById('submit-btn');
-        if(!addr) return alert("You must put your correct address!");
+        
+        if(!address) return alert("Error: Address is required!");
 
-        btn.innerText = "Sending..."; btn.disabled = true;
+        btn.innerText = "Sending Order...";
+        btn.disabled = true;
 
-        const emailParams = {
-            to_email: ADMIN, 
-            user_name: current.username,
-            legal_name: current.legalName,
-            user_contact: current.phone + " / " + current.email,
-            address: addr,
-            plan: pPlan,
-            price: pPrice
+        // MATCHES YOUR EMAILJS TEMPLATE {{variables}}
+        const templateParams = {
+            to_email: ADMIN_EMAIL, 
+            user_name: currentUser.username,
+            legal_name: currentUser.legalName || currentUser.username,
+            user_contact: `${currentUser.phone || 'No Phone'} / ${currentUser.email || 'No Email'}`,
+            address: address,
+            plan: selectedPlan,
+            bin_count: currentBinCount,
+            price: currentPrice
         };
 
         try {
-            await emailjs.send(E_SER, T_OWN, emailParams);
+            await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+            
+            // Save order locally for dashboard
             let users = JSON.parse(localStorage.getItem('users'));
-            let idx = users.findIndex(u => u.username === current.username);
-            users[idx].address = addr;
-            users[idx].status = "Ordered: " + pPlan;
+            let idx = users.findIndex(u => u.username === currentUser.username);
+            users[idx].status = "Ordered: " + selectedPlan;
+            users[idx].address = address;
             localStorage.setItem('users', JSON.stringify(users));
-            alert("Sent! Adrien will check the address and clean your bins soon.");
+            
+            alert("Order Success! Adrien has been notified.");
             location.reload();
-        } catch (e) {
-            alert("Error: " + (e.text || "Contact Support"));
-            btn.innerText = "Confirm & Pay"; btn.disabled = false;
+        } catch (error) {
+            console.error("EmailJS Error:", error);
+            alert("Bug detected: Check your EmailJS Keys or Template Variables.");
+            btn.innerText = "Confirm & Pay";
+            btn.disabled = false;
         }
     }
 
-    function refreshFounder() {
-        const users = JSON.parse(localStorage.getItem('users')).filter(u => u.username !== "Adrien");
-        const list = document.getElementById('founder-rows');
-        list.innerHTML = users.map(u => `
-            <tr class="border-b border-slate-800/50 hover:bg-white/5">
-                <td class="py-4"><img src="https://ui-avatars.com/api/?name=${u.username}&background=10b981&color=fff" class="w-10 h-10 rounded-full border border-slate-700"></td>
-                <td class="py-4">
-                    <div class="font-bold uppercase text-white">${u.legalName || u.username}</div>
-                    <div class="opacity-40 text-[9px]">${u.email || ''} • ${u.phone || ''}</div>
-                </td>
-                <td class="py-4 opacity-70">${u.address || '—'}</td>
-                <td class="py-4"><span class="bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded text-[9px] font-black">${u.status || 'Active'}</span></td>
-                <td class="py-4">
-                    <div class="flex gap-2">
-                        <input type="text" id="sch-${u.username}" placeholder="Set Date" value="${u.schedule || ''}" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-[10px] w-24">
-                        <button onclick="saveSchedule('${u.username}')" class="bg-emerald-500 px-2 py-1.5 rounded font-bold text-[9px]">Set</button>
-                    </div>
-                </td>
-                <td class="py-4 text-right">
-                    <button onclick="killUser('${u.username}')" class="text-red-500 opacity-30 hover:opacity-100"><i class="fa-solid fa-trash-can"></i></button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    function saveSchedule(uName) {
+    // --- PROFILE MANAGEMENT ---
+    function updateUserData() {
         let users = JSON.parse(localStorage.getItem('users'));
-        let idx = users.findIndex(u => u.username === uName);
-        users[idx].schedule = document.getElementById('sch-' + uName).value;
+        let idx = users.findIndex(u => u.username === currentUser.username);
+        
+        const newUsername = document.getElementById('p-user').value;
+        
+        currentUser.legalName = document.getElementById('p-legal').value;
+        currentUser.username = newUsername;
+        currentUser.email = document.getElementById('p-email').value;
+        currentUser.phone = document.getElementById('p-phone').value;
+        
+        users[idx] = {...users[idx], ...currentUser};
         localStorage.setItem('users', JSON.stringify(users));
-        alert("Schedule Saved");
-        refreshFounder();
+        localStorage.setItem('loggedUser', JSON.stringify(currentUser));
+        
+        alert("Profile Updated Successfully!");
+        location.reload();
     }
 
-    function killUser(uName) {
-        if(!confirm("Delete user?")) return;
-        let users = JSON.parse(localStorage.getItem('users'));
-        localStorage.setItem('users', JSON.stringify(users.filter(u => u.username !== uName)));
-        refreshFounder();
-    }
-
-    function order(plan) { 
-        if(!current) return openM('auth-modal'); 
-        pPlan = plan; 
-        if(plan === "Single Wash") updPrc(); else pPrice = "$20";
-        document.getElementById('checkout-desc').innerText = `${plan} • ${pPrice}`; 
-        openM('book-modal'); 
-    }
-    
-    function openM(id) { if(id === 'owner-panel') refreshFounder(); document.getElementById(id).classList.remove('hidden'); document.getElementById('drop').classList.remove('show'); }
-    function closeM(id) { document.getElementById(id).classList.add('hidden'); }
-    function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
-    function toggleAuth() { isReg = !isReg; document.getElementById('auth-title').innerText = isReg ? "Sign Up" : "Sign In"; document.getElementById('auth-toggle').innerText = isReg ? "Switch to Sign In" : "Switch to Sign Up"; document.getElementById('reg-fields').classList.toggle('hidden', !isReg); }
-    
-    function doAuth() {
+    // --- AUTHENTICATION ---
+    function handleAuth() {
         const u = document.getElementById('u-name').value.trim();
         const p = document.getElementById('u-pass').value;
         let users = JSON.parse(localStorage.getItem('users'));
         
-        if(!isReg) {
-            if(u === "Adrien" && p === "favela23") login({username: "Adrien"});
-            else {
-                const f = users.find(x => x.username === u && x.password === p);
-                if(f) login(f); else alert("Login Failed");
+        if(!isRegistering) {
+            // ADMIN LOGIN
+            if(u === "Adrien" && p === "favela23") {
+                loginSession({username: "Adrien", legalName: "Founder"});
+                return;
             }
+            // USER LOGIN
+            const found = users.find(x => x.username === u && x.password === p);
+            if(found) loginSession(found); else alert("Invalid Credentials.");
         } else {
+            // SIGN UP
+            if(!u || !p) return alert("Fill all fields!");
             const newUser = {
                 username: u, 
                 password: p, 
                 legalName: document.getElementById('u-legal').value,
                 email: document.getElementById('u-email').value,
                 phone: document.getElementById('u-phone').value,
-                address: "", 
-                schedule: "", 
-                status: "New Client"
+                status: "Member",
+                address: "",
+                schedule: ""
             };
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            login(newUser);
+            loginSession(newUser);
         }
     }
-    function login(obj) { localStorage.setItem('loggedUser', JSON.stringify(obj)); location.reload(); }
 
-    boot();
+    function loginSession(obj) {
+        localStorage.setItem('loggedUser', JSON.stringify(obj));
+        location.reload();
+    }
+
+    function logout() {
+        localStorage.removeItem('loggedUser');
+        location.reload();
+    }
+
+    function toggleAuthMode() {
+        isRegistering = !isRegistering;
+        document.getElementById('auth-title').innerText = isRegistering ? "Create Account" : "Join Us";
+        document.getElementById('auth-toggle').innerText = isRegistering ? "Switch to Sign In" : "Switch to Sign Up";
+        document.getElementById('reg-fields').classList.toggle('hidden', !isRegistering);
+    }
+
+    // --- ADMIN / OWNER FUNCTIONS ---
+    function loadAdminPanel() {
+        const users = JSON.parse(localStorage.getItem('users')).filter(u => u.username !== "Adrien");
+        const container = document.getElementById('admin-table-body');
+        
+        container.innerHTML = users.map(u => `
+            <tr class="border-b border-slate-800/50 hover:bg-white/5 transition-colors">
+                <td class="py-4">
+                    <div class="font-bold text-white uppercase tracking-tight">${u.legalName || u.username}</div>
+                    <div class="opacity-40 text-[9px]">${u.email || 'No Email'}</div>
+                </td>
+                <td class="py-4">
+                    <span class="text-emerald-500 font-bold">${u.status || 'Active'}</span>
+                </td>
+                <td class="py-4 opacity-70">${u.address || 'No Address Provided'}</td>
+                <td class="py-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="date-${u.username}" placeholder="Ex: Monday 2PM" value="${u.schedule || ''}" class="bg-slate-900 border border-slate-800 p-2 rounded-lg text-[10px] w-32 outline-none focus:border-emerald-500">
+                        <button onclick="setSchedule('${u.username}')" class="bg-emerald-500 px-3 py-2 rounded-lg font-bold text-[9px] uppercase">Set</button>
+                    </div>
+                </td>
+                <td class="py-4">
+                    <button onclick="deleteUser('${u.username}')" class="text-red-500 opacity-40 hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function setSchedule(uName) {
+        let users = JSON.parse(localStorage.getItem('users'));
+        let idx = users.findIndex(u => u.username === uName);
+        const val = document.getElementById(`date-${uName}`).value;
+        users[idx].schedule = val;
+        localStorage.setItem('users', JSON.stringify(users));
+        alert("Schedule set for " + uName);
+        loadAdminPanel();
+    }
+
+    function deleteUser(uName) {
+        if(!confirm("Are you sure? This deletes the customer.")) return;
+        let users = JSON.parse(localStorage.getItem('users'));
+        localStorage.setItem('users', JSON.stringify(users.filter(u => u.username !== uName)));
+        loadAdminPanel();
+    }
+
+    // --- UI HELPERS ---
+    function openM(id) { 
+        if(id === 'owner-panel') loadAdminPanel();
+        document.getElementById(id).classList.remove('hidden'); 
+        document.getElementById('drop').classList.remove('show'); 
+    }
+    
+    function closeM(id) { 
+        document.getElementById(id).classList.add('hidden'); 
+    }
+
+    // Close dropdown on outside click
+    window.onclick = function(event) {
+        if (!event.target.closest('.relative')) {
+            document.getElementById('drop').classList.remove('show');
+        }
+    }
+
+    init();
 </script>
 </body>
 </html>
