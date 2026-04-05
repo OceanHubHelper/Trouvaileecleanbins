@@ -13,6 +13,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         .tail-container * { font-family: 'Plus Jakarta Sans', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); }
+        
         .dropdown-content { 
             display: none; 
             position: absolute; 
@@ -26,6 +27,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
             z-index: 110; 
         }
+        
         .show { display: block !important; }
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
@@ -37,7 +39,15 @@
         #announcement-bar.active { display: flex; }
 
         input[type=range] { -webkit-appearance: none; background: #e2e8f0; border-radius: 99px; height: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%; background: #10b981; cursor: pointer; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            height: 26px; width: 26px; 
+            border-radius: 50%; 
+            background: #10b981; 
+            cursor: pointer; 
+            border: 4px solid white; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
     </style>
 </head>
 
@@ -45,7 +55,7 @@
 
 <div id="announcement-bar" class="bg-emerald-600 text-white px-6 py-3 font-black text-xs uppercase tracking-widest justify-between items-center sticky top-0 z-[110]">
     <span id="announcement-text"></span>
-    <button onclick="closeAnnouncement()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+    <button onclick="deleteAnnouncement()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
 </div>
 
 <nav class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-[100]">
@@ -56,7 +66,7 @@
         </div>
 
         <div class="relative">
-            <button onclick="toggleDropdown()" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
+            <button onclick="toggleDropdown(event)" class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-200 bg-white hover:border-emerald-500 transition-all">
                 <div id="nav-avatar" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-extrabold text-xs uppercase">G</div>
                 <span id="nav-user-name" class="text-sm font-bold text-slate-700 italic">Guest</span>
                 <i class="fa-solid fa-chevron-down text-[10px] opacity-40"></i>
@@ -75,7 +85,7 @@
                     <i class="fa-solid fa-power-off mr-2"></i> Sign Out
                 </button>
                 
-                <button id="login-btn" onclick="openAuthModal()" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
+                <button id="login-btn" onclick="openModal('auth-modal')" class="w-full text-left px-5 py-4 hover:bg-emerald-50 text-sm font-bold text-emerald-600">
                     <i class="fa-solid fa-circle-user mr-2"></i> Login / Register
                 </button>
             </div>
@@ -98,17 +108,30 @@
             <div id="single-price-display" class="text-5xl font-black text-slate-900 mb-8">$15</div>
             <input type="range" id="bin-slider" min="1" max="10" value="1" oninput="updateSinglePrice()" class="w-full mb-4">
             <p id="bin-count-label" class="text-center text-sm font-black text-emerald-600 mb-6 italic">1 Bin Selected</p>
-            <button onclick="openBookingForm('Single Wash', true)" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black">Book Now</button>
+            <button onclick="openBookingForm('Single Wash', true)" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black hover:bg-emerald-600 transition-all">Book Now</button>
         </div>
+        
         <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-2xl border-4 border-emerald-500 transform lg:scale-110 z-10">
-            <h4 class="text-emerald-400 font-bold uppercase text-[10px] mb-2 tracking-widest">Monthly Elite</h4>
+            <h4 class="text-emerald-400 font-bold uppercase text-[10px] mb-2 tracking-widest italic">Monthly Elite</h4>
             <div class="text-6xl font-black text-white mb-10">$20</div>
-            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black">Subscribe</button>
+            <button onclick="openBookingForm('Monthly Elite', false, 20)" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black hover:bg-emerald-400 transition-all">Subscribe</button>
         </div>
+        
         <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
-            <h4 class="text-slate-400 font-bold uppercase text-[10px] mb-2 tracking-widest">Bi-Monthly</h4>
+            <h4 class="text-slate-400 font-bold uppercase text-[10px] mb-2 tracking-widest italic">Bi-Monthly</h4>
             <div class="text-5xl font-black text-slate-900 mb-10">$55</div>
-            <button onclick="openBookingForm('Bi-Monthly Elite', false, 55)" class="w-full py-5 bg-slate-100 text-slate-900 rounded-2xl font-black">Select</button>
+            <button onclick="openBookingForm('Bi-Monthly Elite', false, 55)" class="w-full py-5 bg-slate-100 text-slate-900 rounded-2xl font-black hover:bg-slate-900 hover:text-white transition-all">Select</button>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 bg-white border-y border-slate-100 text-center">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-black italic uppercase mb-12">What Clients Say</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="p-8 bg-slate-50 rounded-3xl font-bold italic text-slate-600">"Smell is gone instantly. Best service in town!" - Joey K.</div>
+            <div class="p-8 bg-slate-50 rounded-3xl font-bold italic text-slate-600">"The monthly plan is a lifesaver for our family." - Ana R.</div>
+            <div class="p-8 bg-slate-50 rounded-3xl font-bold italic text-slate-600">"High pressure steam makes a huge difference." - Leo M.</div>
         </div>
     </div>
 </section>
@@ -122,32 +145,31 @@
             </div>
             <button onclick="closeModal('owner-panel')" class="text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
         </div>
+        
         <div class="flex-1 overflow-y-auto p-8">
             <div id="user-tab" class="tab-content active">
                 <div class="mb-6 relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                    <input type="text" id="user-search" oninput="renderOwnerList()" placeholder="Search customers..." class="w-full pl-12 pr-6 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
+                    <input type="text" id="user-search" oninput="renderOwnerList()" placeholder="Search users..." class="w-full pl-12 pr-6 py-4 bg-slate-50 rounded-2xl outline-none font-bold">
                 </div>
                 <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-[10px] uppercase font-black text-slate-400">
-                        <tr><th class="p-5">Customer</th><th class="p-5">Subscription</th><th class="p-5 text-right">Actions</th></tr>
+                    <thead class="text-[10px] uppercase font-black text-slate-400">
+                        <tr><th class="p-5">User</th><th class="p-5">Plan</th><th class="p-5 text-right">Actions</th></tr>
                     </thead>
                     <tbody id="owner-user-list"></tbody>
                 </table>
             </div>
             <div id="ann-tab" class="tab-content">
                 <div class="max-w-md mx-auto py-10">
-                    <h3 class="text-xl font-black uppercase italic mb-6">Broadcast Message</h3>
-                    <textarea id="ann-input" placeholder="Announcement text..." class="w-full p-5 bg-slate-50 rounded-2xl mb-4 h-32 outline-none font-bold border-2 border-transparent focus:border-emerald-500"></textarea>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <select id="ann-duration" class="p-4 bg-slate-50 rounded-xl font-bold outline-none">
+                    <h3 class="text-xl font-black uppercase italic mb-6">Broadcast News</h3>
+                    <textarea id="ann-input" placeholder="Message..." class="w-full p-5 bg-slate-50 rounded-2xl mb-4 h-32 outline-none font-bold"></textarea>
+                    <div class="grid grid-cols-2 gap-4">
+                        <select id="ann-duration" class="p-4 bg-slate-50 rounded-xl font-bold">
                             <option value="infinite">Infinite</option>
                             <option value="3600">1 Hour</option>
-                            <option value="86400">24 Hours</option>
                         </select>
                         <button onclick="saveAnnouncement()" class="bg-emerald-600 text-white font-black uppercase rounded-xl">Launch</button>
                     </div>
-                    <button onclick="deleteAnnouncement()" class="w-full py-4 text-red-500 font-black uppercase text-xs border-2 border-red-50 border-dashed rounded-xl">Delete Announcement</button>
                 </div>
             </div>
         </div>
@@ -158,31 +180,41 @@
     <div class="bg-white p-10 rounded-[3rem] max-w-sm w-full relative shadow-2xl">
         <h2 class="text-3xl font-black mb-8 italic uppercase italic">My Profile</h2>
         <div class="space-y-4">
-            <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Username</label>
-                <input id="profile-user" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
-            </div>
-            <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Email</label>
-                <input id="profile-email" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
-            </div>
-            <button onclick="saveProfile()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase italic shadow-lg">Save Changes</button>
+            <input id="profile-user" placeholder="Username" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
+            <input id="profile-email" placeholder="Email" class="w-full bg-slate-50 p-4 rounded-xl font-bold outline-none border-2 border-transparent focus:border-emerald-500">
+            <button onclick="saveProfile()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black uppercase italic">Save Changes</button>
         </div>
         <button onclick="closeModal('profile-modal')" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
     </div>
 </div>
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[200] p-4">
-    <div class="bg-white p-10 rounded-[3rem] max-w-sm w-full relative">
+    <div class="bg-white p-10 rounded-[3rem] max-w-sm w-full relative shadow-2xl">
         <h2 id="auth-title" class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Member Login</h2>
         <div class="space-y-4">
-            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl outline-none font-bold">
-            <input id="auth-email" placeholder="Email" class="w-full bg-slate-50 p-5 rounded-2xl outline-none font-bold hidden">
-            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl outline-none font-bold">
+            <input id="auth-user" placeholder="Username" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
+            <input id="auth-email" placeholder="Email" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none hidden">
+            <input id="auth-pass" type="password" placeholder="Password" class="w-full bg-slate-50 p-5 rounded-2xl font-bold outline-none">
             <button onclick="handleAuth()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase italic">Submit</button>
             <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-slate-400 text-[10px] font-black uppercase tracking-widest mt-4">No account? Sign Up</button>
         </div>
         <button onclick="closeModal('auth-modal')" class="absolute top-8 right-8 text-slate-300"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
+    </div>
+</div>
+
+<div id="booking-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[200] p-4">
+    <div class="bg-white p-10 rounded-[3rem] max-w-md w-full relative shadow-2xl text-center">
+        <h2 class="text-3xl font-black mb-2 italic uppercase">Confirm Order</h2>
+        <p id="plan-label" class="text-emerald-600 font-black text-xs mb-8 uppercase tracking-widest"></p>
+        <div class="space-y-4 text-left">
+            <input id="form-name" required placeholder="Full Name" class="w-full p-5 bg-slate-50 rounded-2xl outline-none">
+            <input id="form-address" required placeholder="Address" class="w-full p-5 bg-slate-50 rounded-2xl outline-none">
+            <div class="bg-slate-900 p-8 rounded-[2rem] text-center my-6">
+                <p id="modal-total" class="text-6xl font-black text-white">$15</p>
+            </div>
+            <button onclick="sendBooking()" class="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black uppercase italic">Confirm Mission</button>
+        </div>
+        <button onclick="closeModal('booking-modal')" class="absolute top-10 right-10 text-slate-300 hover:text-slate-900"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
     </div>
 </div>
 
@@ -191,11 +223,13 @@
     const OWNER_DATA = { user: "Adrien", pass: "favela23" };
     let currentUser = JSON.parse(localStorage.getItem('loggedUser')) || null;
     let isLoginMode = true;
+    let selectedPlan = "";
+    let finalPrice = 0;
 
-    // --- GENERAL UI ---
-    function toggleDropdown() { document.getElementById("profileDropdown").classList.toggle("show"); }
-    window.onclick = (e) => { if (!e.target.closest('.relative')) document.getElementById("profileDropdown").classList.remove('show'); }
-
+    // --- MODAL & DROPDOWN ---
+    function toggleDropdown(e) { e.stopPropagation(); document.getElementById("profileDropdown").classList.toggle("show"); }
+    window.onclick = () => { document.getElementById("profileDropdown").classList.remove('show'); };
+    
     function openModal(id) { 
         if (id === 'owner-panel') renderOwnerList();
         if (id === 'profile-modal' && currentUser) {
@@ -215,135 +249,124 @@
     }
 
     function handleAuth() {
-        const userIn = document.getElementById('auth-user').value.trim();
-        const passIn = document.getElementById('auth-pass').value.trim();
-        const emailIn = document.getElementById('auth-email').value.trim();
+        const uIn = document.getElementById('auth-user').value.trim();
+        const pIn = document.getElementById('auth-pass').value.trim();
+        const eIn = document.getElementById('auth-email').value.trim();
         let users = JSON.parse(localStorage.getItem('users')) || [];
 
         if (isLoginMode) {
-            if (userIn === OWNER_DATA.user && passIn === OWNER_DATA.pass) return successLogin({ username: userIn, isOwner: true });
-            const found = users.find(u => u.username === userIn && u.password === passIn);
-            if (found) {
-                if (found.banned) alert("Account Banned.");
-                else successLogin(found);
-            } else alert("Account does not exist.");
+            if (uIn === OWNER_DATA.user && pIn === OWNER_DATA.pass) return login({ username: uIn, isOwner: true });
+            const found = users.find(u => u.username === uIn && u.password === pIn);
+            if (found) found.banned ? alert("Account Banned") : login(found);
+            else alert("Account does not exist.");
         } else {
-            if (userIn === OWNER_DATA.user || users.find(u => u.username === userIn)) return alert("Username taken.");
-            const newUser = { username: userIn, password: passIn, email: emailIn, plan: "Single Wash" };
+            if (uIn === OWNER_DATA.user || users.find(u => u.username === uIn)) return alert("Username taken.");
+            const newUser = { username: uIn, password: pIn, email: eIn, plan: "New User" };
             users.push(newUser); localStorage.setItem('users', JSON.stringify(users));
-            successLogin(newUser);
+            login(newUser);
         }
     }
-
-    function successLogin(u) { localStorage.setItem('loggedUser', JSON.stringify(u)); location.reload(); }
+    function login(u) { localStorage.setItem('loggedUser', JSON.stringify(u)); location.reload(); }
     function logout() { localStorage.removeItem('loggedUser'); location.reload(); }
 
-    // --- PROFILE SAVE (FIXED) ---
-    function saveProfile() {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        const newName = document.getElementById('profile-user').value.trim();
-        const newEmail = document.getElementById('profile-email').value.trim();
+    // --- BOOKING ---
+    function updateSinglePrice() {
+        const val = document.getElementById('bin-slider').value;
+        const total = 15 + (val - 1) * 10;
+        document.getElementById('single-price-display').innerText = "$" + total;
+        document.getElementById('bin-count-label').innerText = val + " Bin" + (val > 1 ? "s" : "") + " Selected";
+    }
 
-        if (currentUser.isOwner) {
-            alert("Founder accounts are hardcoded and cannot be edited here.");
-            return;
-        }
+    function openBookingForm(plan, isSingle, price) {
+        selectedPlan = isSingle ? `Single (${document.getElementById('bin-slider').value} Bins)` : plan;
+        finalPrice = isSingle ? (15 + (document.getElementById('bin-slider').value - 1) * 10) : price;
+        document.getElementById('plan-label').innerText = selectedPlan;
+        document.getElementById('modal-total').innerText = "$" + finalPrice;
+        openModal('booking-modal');
+    }
 
-        const idx = users.findIndex(u => u.username === currentUser.username);
-        if (idx !== -1) {
-            users[idx].username = newName;
-            users[idx].email = newEmail;
-            localStorage.setItem('users', JSON.stringify(users));
-            currentUser = users[idx];
-            localStorage.setItem('loggedUser', JSON.stringify(currentUser));
-            alert("Profile updated!");
-            location.reload();
-        }
+    function sendBooking() {
+        alert("Booking Confirmed for " + selectedPlan);
+        closeModal('booking-modal');
     }
 
     // --- OWNER PANEL ---
-    function switchTab(tabId) {
+    function switchTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        document.getElementById('user-tab-btn').className = tabId === 'user-tab' ? "bg-emerald-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase italic" : "bg-slate-200 text-slate-600 px-6 py-2 rounded-full font-black text-xs uppercase italic";
-        document.getElementById('ann-tab-btn').className = tabId === 'ann-tab' ? "bg-emerald-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase italic" : "bg-slate-200 text-slate-600 px-6 py-2 rounded-full font-black text-xs uppercase italic";
+        document.getElementById(id).classList.add('active');
+        document.getElementById('user-tab-btn').className = id === 'user-tab' ? "bg-emerald-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase italic" : "bg-slate-200 text-slate-600 px-6 py-2 rounded-full font-black text-xs uppercase italic";
+        document.getElementById('ann-tab-btn').className = id === 'ann-tab' ? "bg-emerald-600 text-white px-6 py-2 rounded-full font-black text-xs uppercase italic" : "bg-slate-200 text-slate-600 px-6 py-2 rounded-full font-black text-xs uppercase italic";
     }
 
     function renderOwnerList() {
-        const query = document.getElementById('user-search').value.toLowerCase();
-        const list = document.getElementById('owner-user-list');
+        const q = document.getElementById('user-search').value.toLowerCase();
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        list.innerHTML = users.filter(u => u.username.toLowerCase().includes(query)).map(u => `
+        document.getElementById('owner-user-list').innerHTML = users.filter(u => u.username.toLowerCase().includes(q)).map(u => `
             <tr class="border-b ${u.banned ? 'bg-red-50' : ''}">
                 <td class="p-5 font-black uppercase text-xs">${u.username}</td>
                 <td class="p-5">
-                    <select onchange="manualPlan('${u.username}', this.value)" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase cursor-pointer">
-                        <option value="Single Wash" ${u.plan === 'Single Wash' ? 'selected' : ''}>Single Wash</option>
-                        <option value="Monthly Elite" ${u.plan === 'Monthly Elite' ? 'selected' : ''}>Monthly Elite</option>
-                        <option value="Bi-Monthly Elite" ${u.plan === 'Bi-Monthly Elite' ? 'selected' : ''}>Bi-Monthly Elite</option>
+                    <select onchange="updateUserField('${u.username}', 'plan', this.value)" class="text-[10px] font-black uppercase bg-emerald-50 p-1 rounded-lg">
+                        <option value="Single Wash" ${u.plan.includes('Single') ? 'selected':''}>Single</option>
+                        <option value="Monthly Elite" ${u.plan === 'Monthly Elite' ? 'selected':''}>Monthly</option>
+                        <option value="Bi-Monthly Elite" ${u.plan === 'Bi-Monthly Elite' ? 'selected':''}>Bi-Monthly</option>
                     </select>
                 </td>
-                <td class="p-5 text-right">
-                    <button onclick="toggleBan('${u.username}')" class="text-red-500 font-black text-[10px] uppercase underline">${u.banned ? 'Unban' : 'Ban'}</button>
+                <td class="p-5 text-right flex justify-end gap-3">
+                    <button onclick="toggleBan('${u.username}')" class="text-xs font-black uppercase text-red-500 underline">${u.banned ? 'Unban':'Ban'}</button>
+                    <button onclick="deleteUser('${u.username}')" class="bg-red-500 text-white p-2 rounded-lg text-[10px] uppercase font-black">Delete</button>
                 </td>
-            </tr>
-        `).join('');
+            </tr>`).join('');
     }
 
-    function manualPlan(user, plan) {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
+    function updateUserField(user, field, val) {
+        let users = JSON.parse(localStorage.getItem('users'));
         const i = users.findIndex(u => u.username === user);
-        if (i !== -1) { users[i].plan = plan; localStorage.setItem('users', JSON.stringify(users)); alert(`Updated ${user} to ${plan}`); }
+        users[i][field] = val;
+        localStorage.setItem('users', JSON.stringify(users));
+        renderOwnerList();
     }
 
     function toggleBan(u) {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let users = JSON.parse(localStorage.getItem('users'));
         const i = users.findIndex(x => x.username === u);
         users[i].banned = !users[i].banned;
         localStorage.setItem('users', JSON.stringify(users));
         renderOwnerList();
     }
 
+    function deleteUser(u) {
+        if(!confirm("Delete " + u + "?")) return;
+        let users = JSON.parse(localStorage.getItem('users'));
+        localStorage.setItem('users', JSON.stringify(users.filter(x => x.username !== u)));
+        renderOwnerList();
+    }
+
     // --- ANNOUNCEMENT ---
     function saveAnnouncement() {
         const text = document.getElementById('ann-input').value;
-        const duration = document.getElementById('ann-duration').value;
-        const expiry = duration === 'infinite' ? 'infinite' : Date.now() + (duration * 1000);
-        localStorage.setItem('announcement', JSON.stringify({ text, expiry }));
-        checkAnnouncement();
-        alert("Announcement launched!");
+        const dur = document.getElementById('ann-duration').value;
+        const exp = dur === 'infinite' ? 'infinite' : Date.now() + 3600000;
+        localStorage.setItem('announcement', JSON.stringify({ text, exp }));
+        location.reload();
     }
-    function deleteAnnouncement() { localStorage.removeItem('announcement'); checkAnnouncement(); }
-    function checkAnnouncement() {
-        const ann = JSON.parse(localStorage.getItem('announcement'));
-        const bar = document.getElementById('announcement-bar');
-        if (ann && (ann.expiry === 'infinite' || Date.now() < ann.expiry)) {
-            bar.classList.add('active');
-            document.getElementById('announcement-text').innerText = ann.text;
-        } else bar.classList.remove('active');
-    }
-    function closeAnnouncement() { document.getElementById('announcement-bar').classList.remove('active'); }
+    function deleteAnnouncement() { localStorage.removeItem('announcement'); location.reload(); }
 
-    // --- INIT ---
-    function updateSinglePrice() { 
-        const bins = document.getElementById('bin-slider').value; 
-        document.getElementById('single-price-display').innerText = "$" + (15 + (bins-1)*10);
-        document.getElementById('bin-count-label').innerText = bins + " Bin" + (bins>1?'s':'') + " Selected";
-    }
-
-    function updateUI() {
+    function init() {
         if (currentUser) {
             document.getElementById('nav-user-name').innerText = currentUser.username;
             document.getElementById('nav-avatar').innerText = currentUser.username[0];
             document.getElementById('login-btn').classList.add('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
             document.getElementById('nav-profile-btn').classList.remove('hidden');
-            if (currentUser.username === OWNER_DATA.user || currentUser.isOwner) document.body.classList.add('is-owner');
+            if (currentUser.username === OWNER_DATA.user) document.body.classList.add('is-owner');
+        }
+        const ann = JSON.parse(localStorage.getItem('announcement'));
+        if (ann && (ann.exp === 'infinite' || Date.now() < ann.exp)) {
+            document.getElementById('announcement-bar').classList.add('active');
+            document.getElementById('announcement-text').innerText = ann.text;
         }
     }
-
-    checkAnnouncement();
-    updateUI();
+    init();
 </script>
 </body>
 </html>
