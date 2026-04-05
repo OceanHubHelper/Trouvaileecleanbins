@@ -10,11 +10,11 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         
-        :root { --bg: #020617; --card: #0f172a; --text: #f8fafc; --border: #1e293b; }
-        .light-mode { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --border: #e2e8f0; }
+        :root { --bg: #020617; --card: #0f172a; --text: #f8fafc; --border: #1e293b; --accent: #10b981; }
+        .light-mode { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --border: #e2e8f0; --accent: #059669; }
 
-        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.3s, color 0.3s; scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--text); }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; }
         .glass-card { background-color: var(--card); border: 1px solid var(--border); }
         
         .owner-only { display: none !important; }
@@ -37,42 +37,57 @@
             <button onclick="toggleTheme()" class="text-lg hover:text-emerald-500"><i class="fa-solid fa-circle-half-stroke"></i></button>
             <div class="relative">
                 <button onclick="toggleDrop()" class="flex items-center gap-3 glass-card p-2 px-4 rounded-full">
-                    <span id="nav-name" class="text-[10px] font-bold uppercase opacity-60">Guest</span>
+                    <span id="nav-name" class="text-[10px] font-bold uppercase opacity-60 tracking-widest">Guest</span>
                     <img id="nav-img" src="https://ui-avatars.com/api/?name=?&background=10b981&color=fff" class="w-8 h-8 rounded-full object-cover">
                 </button>
                 <div id="drop" class="dropdown overflow-hidden">
-                    <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20">FOUNDER PANEL</button>
-                    <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold border-b border-slate-800/20">MANAGE PROFILE</button>
-                    <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-500/10 text-[10px] font-bold text-red-500">DEACTIVATE</button>
-                    <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold text-emerald-500">SIGN IN</button>
+                    <button onclick="openM('owner-panel')" class="owner-only w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-black text-emerald-500 border-b border-slate-800/20 uppercase">FOUNDER PANEL</button>
+                    <button id="p-btn" onclick="openM('profile-modal')" class="hidden w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold border-b border-slate-800/20 uppercase">Settings</button>
+                    <button id="lo-btn" onclick="logout()" class="hidden w-full text-left p-4 hover:bg-red-500/10 text-[10px] font-bold text-red-500 uppercase">Sign Out</button>
+                    <button id="li-btn" onclick="openM('auth-modal')" class="w-full text-left p-4 hover:bg-emerald-500/10 text-[10px] font-bold text-emerald-500 uppercase">Sign In</button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
 
-<header class="py-32 px-6 text-center">
+<header class="pt-32 pb-20 px-6 text-center">
     <h2 class="text-6xl md:text-8xl font-black italic uppercase leading-none mb-6">Pristine Bins.<br><span class="text-emerald-500">Elite Care.</span></h2>
     <p class="opacity-60 text-lg mb-10 max-w-xl mx-auto font-medium">Professional bin sanitization for your home. Odor-free, bacteria-free, hassle-free.</p>
-    <button onclick="document.getElementById('process').scrollIntoView()" class="bg-emerald-500 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm shadow-xl hover:scale-105">Get Started</button>
+    <button onclick="document.getElementById('process').scrollIntoView()" class="bg-emerald-500 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm shadow-xl hover:scale-105">Learn More</button>
 </header>
+
+<section id="client-dashboard" class="hidden py-10 max-w-4xl mx-auto px-6">
+    <div class="glass-card p-8 rounded-[2.5rem] border-emerald-500/30 bg-emerald-500/5">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-emerald-500 mb-2">Service Status</h3>
+                <h4 id="dash-welcome" class="text-2xl font-black italic uppercase">Welcome back!</h4>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-[10px] font-bold uppercase opacity-50 mb-1">Next Scheduled Wash</p>
+                <div id="dash-time" class="text-xl font-black text-emerald-500">Not Scheduled Yet</div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section id="process" class="py-24 max-w-6xl mx-auto px-6 text-center">
     <h3 class="text-3xl font-black uppercase italic mb-16">The Process</h3>
     <div class="grid md:grid-cols-3 gap-12">
         <div class="glass-card p-8 rounded-[2rem]">
             <i class="fa-solid fa-calendar-check text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2">Schedule</h4>
+            <h4 class="font-bold mb-2 uppercase">Schedule</h4>
             <p class="text-sm opacity-60">We coordinate with your local trash pickup schedule.</p>
         </div>
         <div class="glass-card p-8 rounded-[2rem]">
             <i class="fa-solid fa-hand-sparkles text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2">Sanitize</h4>
+            <h4 class="font-bold mb-2 uppercase">Sanitize</h4>
             <p class="text-sm opacity-60">Eco-friendly deep cleaning to neutralize 99% of germs.</p>
         </div>
         <div class="glass-card p-8 rounded-[2rem]">
             <i class="fa-solid fa-leaf text-4xl text-emerald-500 mb-6"></i>
-            <h4 class="font-bold mb-2">Refresh</h4>
+            <h4 class="font-bold mb-2 uppercase">Refresh</h4>
             <p class="text-sm opacity-60">Natural deodorizers leave your bins smelling like new.</p>
         </div>
     </div>
@@ -115,16 +130,16 @@
 
 <div id="auth-modal" class="hidden fixed inset-0 bg-black/90 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">System Access</h2>
+        <h2 id="a-tit" class="text-3xl font-black uppercase italic mb-8 text-center">Access</h2>
         <div class="space-y-3">
-            <input id="a-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none focus:border-emerald-500">
+            <input id="a-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             <div id="reg-fields" class="hidden space-y-3">
                 <input id="a-e" placeholder="Email" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
                 <input id="a-ph" placeholder="Phone" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             </div>
             <input id="a-p" type="password" placeholder="Passcode" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl outline-none">
             <button onclick="auth()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Continue</button>
-            <button onclick="tAuth()" id="a-tgl" class="w-full opacity-50 text-[10px] font-black uppercase mt-4">New here? Register</button>
+            <button onclick="tAuth()" id="a-tgl" class="w-full opacity-50 text-[10px] font-black uppercase mt-4">Create Account</button>
         </div>
         <button onclick="closeM('auth-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
@@ -132,16 +147,16 @@
 
 <div id="profile-modal" class="hidden fixed inset-0 bg-black/95 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-md relative">
-        <h2 class="text-2xl font-black uppercase italic mb-8">Edit Profile</h2>
+        <h2 class="text-2xl font-black uppercase italic mb-8">Settings</h2>
         <div class="space-y-4">
             <div class="flex items-center gap-4 mb-4">
                 <img id="edit-preview" src="" class="w-20 h-20 rounded-full object-cover border-4 border-emerald-500">
-                <input id="p-img" placeholder="Profile Image URL" class="flex-1 bg-inherit border border-slate-800/40 p-4 rounded-xl text-xs">
+                <input id="p-img" placeholder="Avatar Image URL" class="flex-1 bg-inherit border border-slate-800/40 p-4 rounded-xl text-xs">
             </div>
             <input id="p-u" placeholder="Username" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
             <input id="p-e" placeholder="Email" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
             <input id="p-ph" placeholder="Phone" class="w-full bg-inherit border border-slate-800/40 p-4 rounded-xl">
-            <button onclick="saveProfile()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Update Account</button>
+            <button onclick="saveProfile()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Save Changes</button>
         </div>
         <button onclick="closeM('profile-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
@@ -149,24 +164,24 @@
 
 <div id="book-modal" class="hidden fixed inset-0 bg-black/95 z-[500] flex items-center justify-center p-4">
     <div class="glass-card p-10 rounded-[3rem] w-full max-w-sm relative">
-        <h2 class="text-2xl font-black uppercase italic mb-2">Finalize Booking</h2>
+        <h2 class="text-2xl font-black uppercase italic mb-2">Book Wash</h2>
         <p id="b-summary" class="text-emerald-500 font-black text-xs uppercase mb-8"></p>
-        <input id="b-addr" placeholder="Your Service Address" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
-        <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Send to Adrien</button>
+        <input id="b-addr" placeholder="Service Address" class="w-full bg-inherit border border-slate-800/40 p-5 rounded-2xl mb-4">
+        <button id="b-sub" onclick="handleOrder()" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase">Confirm Request</button>
         <button onclick="closeM('book-modal')" class="absolute top-8 right-8 opacity-40 text-2xl">&times;</button>
     </div>
 </div>
 
 <div id="owner-panel" class="hidden fixed inset-0 bg-black/98 z-[500] flex items-center justify-center p-4">
-    <div class="glass-card rounded-[3rem] w-full max-w-5xl h-[80vh] flex flex-col overflow-hidden">
+    <div class="glass-card rounded-[3rem] w-full max-w-6xl h-[80vh] flex flex-col overflow-hidden">
         <div class="p-8 border-b border-slate-800/20 flex justify-between items-center">
-            <h2 class="text-sm font-black uppercase text-emerald-500 italic">User Management</h2>
+            <h2 class="text-sm font-black uppercase text-emerald-500 italic">Trouvaille Founder Panel</h2>
             <button onclick="closeM('owner-panel')" class="opacity-40 text-3xl">&times;</button>
         </div>
         <div class="flex-1 overflow-y-auto p-8">
             <table class="w-full text-left text-xs">
                 <thead class="uppercase opacity-40 font-black border-b border-slate-800/20">
-                    <tr><th class="pb-6">User</th><th class="pb-6">Contact</th><th class="pb-6">Plan Status</th><th class="pb-6 text-right">Actions</th></tr>
+                    <tr><th class="pb-6">User</th><th class="pb-6">Contact</th><th class="pb-6">Plan</th><th class="pb-6">Set Schedule</th><th class="pb-6 text-right">Actions</th></tr>
                 </thead>
                 <tbody id="db-list"></tbody>
             </table>
@@ -175,8 +190,9 @@
 </div>
 
 <script>
-    const E_PUB = "Service_6ymb279"; 
-    const E_SER = "v-4sLf-EzCLBYcWe7";
+    // FIXED EMAILJS CONFIG
+    const E_PUB = "v-4sLf-EzCLBYcWe7"; // Correct Public Key
+    const E_SER = "Service_6ymb279";    // Correct Service ID
     const T_OWN = "template_pruo22c";
     const T_CUS = "template_4hi1opb";
 
@@ -196,8 +212,17 @@
             document.getElementById('li-btn').classList.add('hidden');
             document.getElementById('lo-btn').classList.remove('hidden');
             document.getElementById('p-btn').classList.remove('hidden');
+            document.getElementById('client-dashboard').classList.remove('hidden');
+            document.getElementById('dash-welcome').innerText = `Welcome back, ${currentUser.username}!`;
+            document.getElementById('dash-time').innerText = currentUser.schedule || "Pending Selection";
+            
             if(currentUser.username === "Adrien") document.body.classList.add('is-owner');
         }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
     }
 
     function updPrc() {
@@ -208,31 +233,10 @@
         activePrice = "$" + total;
     }
 
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    }
-
-    function saveProfile() {
-        let users = JSON.parse(localStorage.getItem('users'));
-        const idx = users.findIndex(u => u.username === currentUser.username);
-        
-        currentUser.username = document.getElementById('p-u').value;
-        currentUser.email = document.getElementById('p-e').value;
-        currentUser.phone = document.getElementById('p-ph').value;
-        currentUser.avatar = document.getElementById('p-img').value;
-
-        users[idx] = currentUser;
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('loggedUser', JSON.stringify(currentUser));
-        location.reload();
-    }
-
     async function handleOrder() {
         const addr = document.getElementById('b-addr').value;
         const btn = document.getElementById('b-sub');
-        if(!addr) return alert("Please provide an address.");
-
+        if(!addr) return alert("Address required.");
         btn.innerText = "SENDING..."; btn.disabled = true;
 
         const data = {
@@ -247,10 +251,10 @@
         try {
             await emailjs.send(E_SER, T_OWN, data);
             await emailjs.send(E_SER, T_CUS, data);
-            alert("Success! Adrien has been notified.");
+            alert("Booking request sent to Adrien!");
             location.reload();
         } catch (e) {
-            alert("Error sending email. Check IDs.");
+            alert("Email error. Please check your EmailJS dashboard.");
             btn.innerText = "RETRY"; btn.disabled = false;
         }
     }
@@ -260,14 +264,33 @@
         document.getElementById('db-list').innerHTML = users.map(u => `
             <tr class="border-b border-slate-800/10">
                 <td class="py-6 font-bold uppercase">${u.username}</td>
-                <td class="py-6 opacity-60">${u.email || ''}<br>${u.phone || ''}</td>
-                <td class="py-6"><span class="text-emerald-500 font-black">${u.plan || 'No Plan'}</span></td>
-                <td class="py-6 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-bold">WIPE</button></td>
+                <td class="py-6 opacity-60">${u.email || u.phone || 'N/A'}</td>
+                <td class="py-6 text-emerald-500 font-black">${u.plan || 'None'}</td>
+                <td class="py-6">
+                    <input type="datetime-local" id="sch-${u.username}" value="${u.schedule_val || ''}" class="bg-inherit border border-slate-800/20 p-2 rounded text-[10px]">
+                    <button onclick="setSchedule('${u.username}')" class="bg-emerald-500 text-white p-2 rounded ml-1 text-[10px] font-black uppercase">Set</button>
+                </td>
+                <td class="py-6 text-right"><button onclick="del('${u.username}')" class="text-red-500 font-bold uppercase text-[10px]">Wipe</button></td>
             </tr>`).join('');
     }
 
+    function setSchedule(userKey) {
+        let users = JSON.parse(localStorage.getItem('users'));
+        const idx = users.findIndex(u => u.username === userKey);
+        const input = document.getElementById('sch-' + userKey);
+        if(!input.value) return alert("Pick a time.");
+        
+        const dateObj = new Date(input.value);
+        users[idx].schedule = dateObj.toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+        users[idx].schedule_val = input.value;
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        alert("Schedule updated for " + userKey);
+        renderDB();
+    }
+
     function auth() {
-        const u = document.getElementById('a-u').value;
+        const u = document.getElementById('a-u').value.trim();
         const p = document.getElementById('a-p').value;
         let users = JSON.parse(localStorage.getItem('users'));
 
@@ -275,14 +298,28 @@
             if(u === "Adrien" && p === "favela23") login({username:"Adrien", email:"favela23@gmail.com"});
             else {
                 const f = users.find(x => x.username === u && x.password === p);
-                if(f) login(f); else alert("Invalid login.");
+                if(f) login(f); else alert("Invalid credentials.");
             }
         } else {
-            const newUser = {username:u, password:p, email:document.getElementById('a-e').value, phone:document.getElementById('a-ph').value, plan:"None", avatar: ""};
+            if(!u || !p) return alert("Fill all fields.");
+            const newUser = {username:u, password:p, email:document.getElementById('a-e').value, phone:document.getElementById('a-ph').value, plan:"None", avatar: "", schedule: "", schedule_val: ""};
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
             login(newUser);
         }
+    }
+
+    function saveProfile() {
+        let users = JSON.parse(localStorage.getItem('users'));
+        const idx = users.findIndex(u => u.username === currentUser.username);
+        currentUser.username = document.getElementById('p-u').value;
+        currentUser.email = document.getElementById('p-e').value;
+        currentUser.phone = document.getElementById('p-ph').value;
+        currentUser.avatar = document.getElementById('p-img').value;
+        users[idx] = currentUser;
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('loggedUser', JSON.stringify(currentUser));
+        location.reload();
     }
 
     function login(obj) { localStorage.setItem('loggedUser', JSON.stringify(obj)); location.reload(); }
@@ -301,18 +338,8 @@
     }
     function closeM(id) { document.getElementById(id).classList.add('hidden'); }
     function toggleDrop() { document.getElementById('drop').classList.toggle('show'); }
-    function book(plan) { 
-        if(!currentUser) return openM('auth-modal');
-        activePlan = plan;
-        if(plan === 'Single Wash') updPrc(); else activePrice = "$20/mo";
-        document.getElementById('b-summary').innerText = plan + " | " + activePrice;
-        openM('book-modal');
-    }
-    function del(n) {
-        let users = JSON.parse(localStorage.getItem('users'));
-        localStorage.setItem('users', JSON.stringify(users.filter(u => u.username !== n)));
-        renderDB();
-    }
+    function book(plan) { if(!currentUser) return openM('auth-modal'); activePlan = plan; updPrc(); if(plan !== 'Single Wash') activePrice = "$20/mo"; document.getElementById('b-summary').innerText = plan + " | " + activePrice; openM('book-modal'); }
+    function del(n) { let users = JSON.parse(localStorage.getItem('users')); localStorage.setItem('users', JSON.stringify(users.filter(u => u.username !== n))); renderDB(); }
 
     boot();
 </script>
