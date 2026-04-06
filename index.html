@@ -22,7 +22,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             margin: 0; padding: 0; box-sizing: border-box; 
             scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body { 
@@ -33,12 +32,12 @@
             min-height: 100vh;
         }
 
-        /* Responsive Container */
+        /* Responsive Containers */
         .container-pad { padding-left: 1rem; padding-right: 1rem; }
-        @media (min-width: 640px) { .container-pad { padding-left: 1.5rem; padding-right: 1.5rem; } }
-        @media (min-width: 1024px) { .container-pad { padding-left: 2rem; padding-right: 2rem; } }
+        @media (min-width: 768px) { .container-pad { padding-left: 1.5rem; padding-right: 1.5rem; } }
+        @media (min-width: 1280px) { .container-pad { padding-left: 2rem; padding-right: 2rem; } }
 
-        /* High-End Glassmorphism */
+        /* Glassmorphism */
         .glass { 
             background: var(--glass); 
             backdrop-filter: blur(20px); 
@@ -46,24 +45,25 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .btn-tap { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; user-select: none; font-weight: 800; text-transform: uppercase; }
+        .btn-tap { transition: all 0.2s; cursor: pointer; user-select: none; font-weight: 800; text-transform: uppercase; }
         .btn-tap:active { transform: scale(0.96); filter: brightness(1.1); }
 
         /* Owner Logic */
         .owner-only { display: none !important; }
         body.is-owner .owner-only { display: block !important; }
 
-        /* Forms - Massive Tap Targets for Mobile */
+        /* Forms */
         input, textarea {
             background: #0f172a;
             border: 1px solid #334155;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 16px;
             color: white;
-            font-size: 14px;
+            width: 100%;
+            font-size: 15px;
             outline: none;
+            transition: border-color 0.2s;
         }
-        @media (min-width: 768px) { input, textarea { padding: 16px; border-radius: 16px; font-size: 15px; } }
         input:focus { border-color: var(--emerald); }
         input[type="datetime-local"] { color-scheme: dark; }
 
@@ -71,12 +71,9 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: slideUp 0.4s ease; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Fluid Typography (Responsive Titles) */
+        /* Typography */
         .fluid-title { font-size: clamp(3rem, 12vw, 8rem); }
         .fluid-subtitle { font-size: clamp(1.5rem, 6vw, 2.25rem); }
 
@@ -87,11 +84,11 @@
 </head>
 <body class="pb-32">
 
-    <div id="top-banner" class="hidden bg-emerald-600 text-white py-4 text-center sticky top-0 z-[10000] shadow-2xl">
+    <div id="top-banner" class="hidden bg-emerald-600 text-white py-4 text-center sticky top-0 z-[10000] shadow-2xl border-b border-emerald-400/30">
         <div class="max-w-7xl mx-auto container-pad flex justify-between items-center">
-            <div class="flex items-center gap-2 md:gap-3 mx-auto">
+            <div class="flex items-center gap-3 mx-auto">
                 <i class="fa-solid fa-bullhorn animate-pulse text-sm md:text-lg"></i>
-                <p id="banner-text" class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em]">Notice</p>
+                <p id="banner-text" class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.25em]">System Live</p>
             </div>
             <button onclick="clearGlobalBroadcast()" class="text-white/50 hover:text-white owner-only ml-2">
                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -101,7 +98,7 @@
 
     <nav class="sticky top-0 z-[9000] glass border-b border-white/5 bg-[#020617]/90 backdrop-blur-md">
         <div class="max-w-7xl mx-auto container-pad py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 md:gap-3">
+            <div class="flex items-center gap-3">
                 <img src="https://cdn.phototourl.com/free/2026-04-06-1f91ee0d-338c-4403-91f9-4e9cd7bfdb90.png" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl">
                 <h1 class="text-lg md:text-2xl font-black italic uppercase tracking-tighter">Trouvaille <span class="text-emerald-500">Bins</span></h1>
             </div>
@@ -118,11 +115,11 @@
                 <div id="u-menu" class="hidden absolute right-0 mt-4 w-64 md:w-72 glass p-5 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl z-[10001]">
                     <div id="auth-ui-in" class="hidden space-y-2">
                         <div class="p-4 bg-slate-900/50 rounded-2xl mb-4 border border-white/5">
-                            <p class="text-[8px] font-black text-slate-500 uppercase mb-1">Authenticated</p>
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Authenticated</p>
                             <p id="u-full-name" class="text-sm font-bold text-white">Name</p>
                             <p id="u-full-num" class="text-[10px] font-bold text-slate-400">Loading...</p>
                         </div>
-                        <button onclick="openModal('owner-panel')" class="owner-only w-full p-4 bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px] font-black uppercase">Owner Hub</button>
+                        <button onclick="openModal('owner-panel')" class="owner-only w-full p-4 bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px] font-black uppercase tracking-widest">Founder Hub</button>
                         <button onclick="openModal('client-schedule')" class="w-full p-4 hover:bg-slate-800 rounded-xl text-white text-[10px] font-black uppercase">Schedule</button>
                         <button onclick="signOut()" class="w-full p-4 text-red-500 text-[10px] font-black uppercase hover:bg-red-500/10 rounded-xl">Sign Out</button>
                     </div>
@@ -134,17 +131,17 @@
         </div>
     </nav>
 
-    <header class="max-w-5xl mx-auto container-pad py-16 md:py-24 text-center">
-        <h2 class="fluid-title font-black uppercase italic mb-6 leading-[0.9] tracking-tighter">Trouvaille <br><span class="text-emerald-500">Bins.</span></h2>
+    <header class="max-w-5xl mx-auto container-pad py-20 md:py-24 text-center">
+        <h2 class="fluid-title font-black uppercase italic mb-8 leading-[0.9] tracking-tighter animate-up">Trouvaille <br><span class="text-emerald-500">Bins.</span></h2>
         <p class="text-slate-400 max-w-sm mx-auto text-base md:text-lg mb-10 md:mb-12 font-medium">Professional bin cleaning. No smell, no mess, no stress.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4 px-10 sm:px-0">
-            <a href="#plans" class="btn-tap bg-emerald-500 text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px] shadow-emerald-500/30">View Plans</a>
+            <a href="#plans" class="btn-tap bg-emerald-500 text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px] shadow-xl shadow-emerald-500/30">View Plans</a>
             <button id="hero-join-btn" onclick="openModal('login-modal')" class="btn-tap glass text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px]">Join Now</button>
         </div>
     </header>
 
     <section id="plans" class="max-w-7xl mx-auto container-pad grid lg:grid-cols-2 gap-8 lg:gap-10 py-10 md:py-16">
-        <div class="glass p-8 md:p-12 rounded-[2rem] md:rounded-[4rem] border-slate-800">
+        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] border-slate-800">
             <h3 class="fluid-subtitle font-black italic mb-6 md:mb-8 uppercase tracking-tighter text-emerald-500">One-Time</h3>
             <div class="space-y-6 md:space-y-8 mb-10 md:mb-12">
                 <div class="flex justify-between items-end gap-2">
@@ -159,16 +156,16 @@
                 </div>
                 <input type="range" id="bin_slider" min="1" max="10" value="1" oninput="calculateOTPrice()" class="w-full h-3 bg-slate-800 rounded-full appearance-none accent-emerald-500 cursor-pointer">
             </div>
-            <button onclick="bookService('One-Time')" class="btn-tap w-full bg-white text-black py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs">Request Service</button>
+            <button onclick="bookService('One-Time')" class="btn-tap w-full bg-white text-black py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs hover:bg-emerald-500 hover:text-white transition-all">Request Service</button>
         </div>
 
-        <div class="glass p-8 md:p-12 rounded-[2rem] md:rounded-[4rem] bg-gradient-to-br from-emerald-950/20 to-slate-900/50 border-emerald-500/20">
+        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] bg-gradient-to-br from-emerald-950/20 to-slate-900/50 border-emerald-500/20">
             <div class="flex justify-between items-start mb-8 md:mb-10">
                 <h3 class="fluid-subtitle font-black italic uppercase tracking-tighter text-emerald-400">Monthly</h3>
                 <span class="px-3 py-1 md:px-4 md:py-1 bg-emerald-500 text-white text-[8px] font-black uppercase rounded-full">Operative Plan</span>
             </div>
             <div class="mb-10 md:mb-12">
-                <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-2">Subscription</p>
+                <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Subscription</p>
                 <div class="flex items-baseline gap-1 md:gap-2">
                     <span class="text-6xl md:text-8xl font-black tracking-tighter">$45</span>
                     <span class="text-slate-500 font-bold uppercase text-xs md:text-sm">/ Month</span>
@@ -179,7 +176,7 @@
                 <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 3-Week Cycle Rotation</li>
                 <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Heavy Odor Treatment</li>
             </ul>
-            <button onclick="bookService('Monthly Plan')" class="btn-tap w-full bg-emerald-500 text-white py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs">Enroll Now</button>
+            <button onclick="bookService('Monthly Plan')" class="btn-tap w-full bg-emerald-500 text-white py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs">Enroll Operative</button>
         </div>
     </section>
 
@@ -226,31 +223,35 @@
                 <h3 id="auth-title" class="text-3xl font-black uppercase italic tracking-tighter">Access</h3>
                 <p id="auth-subtitle" class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mt-2">Identification Needed</p>
             </div>
+            
             <div class="space-y-4">
                 <div id="registration-fields" class="hidden space-y-4">
-                    <input id="form-name" type="text" placeholder="Full Name">
-                    <input id="form-contact_info" type="tel" placeholder="Contact Information (e.g., 555-1234)">
+                    <input id="form-name" type="text" placeholder="Full Name (Legal)">
+                    <input id="form-contact_information" type="tel" placeholder="Contact Information (e.g., 555-1234)">
                 </div>
+                
                 <input id="form-user" type="text" placeholder="Username">
                 <input id="form-pass" type="password" placeholder="Passcode">
-                <button onclick="runAuthentication()" class="btn-tap w-full bg-emerald-500 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-xs uppercase shadow-xl mt-4">Initialize Session</button>
-                <button onclick="flipAuthMode()" id="auth-toggle-btn" class="w-full text-[10px] font-bold text-slate-500 uppercase tracking-widest py-4">New? Create Profile</button>
+                
+                <button onclick="finalizeAccess()" class="btn-tap w-full bg-emerald-500 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-xs uppercase shadow-xl mt-4">Initialize Session</button>
+                <button onclick="flipAuthMode()" id="auth-toggle-btn" class="w-full text-[10px] font-bold text-slate-500 uppercase tracking-widest py-4">New Profile? Register Identification</button>
             </div>
         </div>
     </div>
 
     <div id="client-schedule" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-4 backdrop-blur-xl">
-        <div class="glass p-8 md:p-12 rounded-[2rem] md:rounded-[4rem] text-center w-full max-w-sm">
+        <div class="glass p-8 md:p-12 rounded-[2rem] md:rounded-[4rem] text-center w-full max-w-sm border-emerald-500/20 shadow-emerald-500/10">
             <h3 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-[0.3em]">Operational Schedule</h3>
             <div id="schedule-display-area" class="space-y-4 mb-10 text-xs md:text-sm font-bold"></div>
             <div class="p-5 bg-slate-950 rounded-2xl md:rounded-3xl border border-white/5 shadow-inner">
-                <p id="client-plan-badge" class="text-[9px] md:text-[10px] text-emerald-500 uppercase font-black">Plan: Loading...</p>
+                <p id="client-plan-badge" class="text-[9px] md:text-[10px] text-emerald-500 uppercase font-black">Plan: Standard</p>
             </div>
             <button onclick="closeModal('client-schedule')" class="mt-8 md:mt-10 text-[10px] font-black uppercase text-slate-500 hover:text-white">Exit Interface</button>
         </div>
     </div>
 
     <script>
+        // --- MASTER CONFIGURATION ---
         const MASTER_CONFIG = {
             sID: "service_6ymb279",
             tID: "template_pruo22c",
@@ -259,30 +260,39 @@
         };
         emailjs.init(MASTER_CONFIG.pKey);
 
+        // --- DATA PERSISTENCE & STATE ---
         let userDatabase = JSON.parse(localStorage.getItem('users')) || [];
         let activeSession = JSON.parse(localStorage.getItem('session')) || null;
         let isSignup = false;
 
+        // --- APPLICATION BOOT ---
         function systemInitialization() {
+            // Check for signed-in session first
             if (activeSession) {
-                // Founder check
+                // Determine user display and Founder status
                 if (activeSession.username === "Adrien") {
                     document.body.classList.add('is-owner');
                     document.getElementById('u-display').innerText = "Founder";
+                    document.getElementById('u-role').innerText = "System Founder";
+                    document.getElementById('u-full-name').innerText = "Adrien (Founder)";
+                    // 'contact_information' used as the key
+                    document.getElementById('u-full-num').innerText = activeSession.contact_information || "Owner Account";
                 } else {
                     document.getElementById('u-display').innerText = activeSession.username;
+                    document.getElementById('u-role').innerText = "Operative";
+                    document.getElementById('u-full-name').innerText = activeSession.name || "Access restricted";
+                    document.getElementById('u-full-num').innerText = activeSession.contact_information || "Denied";
                 }
-                document.getElementById('u-full-name').innerText = activeSession.name || "Operative";
-                // Strictly matching contact_information
-                document.getElementById('u-full-num').innerText = activeSession.contact_information || "No Contact";
                 
+                // Hide Sign-In, Show My Schedule
                 document.getElementById('auth-ui-out').classList.add('hidden');
                 document.getElementById('auth-ui-in').classList.remove('hidden');
                 document.getElementById('hero-join-btn').classList.add('hidden');
+                
                 updateClientScheduleView();
             }
 
-            // check global query parameter for signal
+            // Check global query parameters for broadcast signal (across devices)
             const urlParams = new URLSearchParams(window.location.search);
             const broadcastSignal = urlParams.get('broadcast');
             if (broadcastSignal) {
@@ -294,35 +304,53 @@
             renderFounderRegistry();
         }
 
-        // Authentication Engine (contact_information matched)
-        function runAuthentication() {
+        // --- AUTHENTICATION ENGINE (BUTTONS FIXED) ---
+        function finalizeAccess() {
             const u = document.getElementById('form-user').value.trim();
             const p = document.getElementById('form-pass').value.trim();
-            if (!u || !p) return alert("Fill credentials");
+            if (!u || !p) return alert("All identification credentials required");
 
             if (!isSignup) {
-                if (u === "Adrien" && p === "favela23") return setSession({username: "Adrien", name: "Founder", contact_information: "Owner"});
+                // SIGN IN Flow
+                // Check Founder credentials first
+                if (u === "Adrien" && p === "favela23") {
+                    setSession({username: "Adrien", name: "Founder", contact_information: "Owner"});
+                    return;
+                }
+                // Check general user list
                 const match = userDatabase.find(x => x.username === u && x.password === p);
-                if (match) setSession(match); else alert("Access Denied.");
+                if (match) {
+                    setSession(match);
+                } else {
+                    alert("Identity verification failed. Access Denied.");
+                }
             } else {
+                // SIGN UP Flow
                 const n = document.getElementById('form-name').value.trim();
-                // matched input id
-                const num = document.getElementById('form-contact_info').value.trim();
-                if (!n || !num) return alert("All ID required.");
-                if (userDatabase.find(x => x.username === u)) return alert("Username taken.");
+                const num = document.getElementById('form-contact_information').value.trim();
                 
-                const newUser = { username: u, password: p, name: n, contact_information: num, plan: "One-Time", dates: [], expiry: "" };
+                if (!n || !num) return alert("Fill out all identification fields.");
+                if (userDatabase.find(x => x.username === u)) return alert("Username already operational.");
+                
+                // Create profile with correct keys matched to EmailJS variables
+                const newUser = { 
+                    username: u, password: p, name: n, contact_information: num, plan: "One-Time", dates: [], expiry: ""
+                };
                 userDatabase.push(newUser);
                 localStorage.setItem('users', JSON.stringify(userDatabase));
                 setSession(newUser);
             }
         }
 
-        // Booking (Sends contact_information variable to EmailJS)
+        function setSession(o) { localStorage.setItem('session', JSON.stringify(o)); location.reload(); }
+        function signOut() { localStorage.removeItem('session'); location.reload(); }
+
+        // --- BOOKING ENGINE (EMAILJS {{contact_information}}) ---
         async function bookService(tier) {
             if (!activeSession) return openModal('login-modal');
-            const addr = prompt("Service Address:");
-            if (!addr) return;
+            const loc = prompt("Active Service Address:");
+            if (!loc) return;
+
             const profile = userDatabase.find(u => u.username === activeSession.username) || activeSession;
             const bins = tier === "Monthly Plan" ? "6 (Subscription)" : document.getElementById('bin_slider').value;
             const finalPrice = tier === "Monthly Plan" ? "$45" : document.getElementById('price_display').innerText;
@@ -331,42 +359,31 @@
                 await emailjs.send(MASTER_CONFIG.sID, MASTER_CONFIG.tID, {
                     to_email: MASTER_CONFIG.owner,
                     legal_name: profile.name,
-                    // Sending matched variable name
-                    contact_information: profile.contact_information, 
+                    // Strictly sending matched contact_information
+                    contact_information: profile.contact_information,
                     user_name: activeSession.username,
-                    address: addr,
+                    address: loc,
                     plan: tier,
                     price: finalPrice,
                     bin_amount: bins,
                     eta_request: "Awaiting Schedule"
                 });
-                alert("Order Sent to Founder Hub!");
-            } catch (err) { alert("Network Error."); }
+                alert("Order transmitted to Founder Hub!");
+            } catch (err) { alert("Initialization connection failed."); }
         }
 
-        // Global Broadcast Engine (Query Parameter method for cross-device)
-        function deployGlobalBroadcast() {
-            const msg = document.getElementById('banner-input').value.trim();
-            if (!msg) return alert("Type a message first.");
-            // Set URL parameter and reload
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?broadcast=' + encodeURIComponent(msg);
-            window.location.href = newUrl; // Full reload to propagate query
-        }
-        function clearGlobalBroadcast() {
-            // Remove URL parameter and reload
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.location.href = newUrl;
-        }
-
-        // Founder Controls (Optimized registry list layout)
+        // --- FOUNDERHub OPERATIONAL CONTROLS ---
         function renderFounderRegistry() {
             const listArea = document.getElementById('registry-list');
+            // Ensure only Adrien sees the registry content
             if (!listArea || activeSession.username !== "Adrien") return;
+            
             if (userDatabase.length === 0) {
-                listArea.innerHTML = `<p class="col-span-full text-center py-20 text-slate-600 text-xs font-black uppercase tracking-widest">No Operatives Registered</p>`;
+                listArea.innerHTML = `<p class="col-span-full text-center py-20 text-slate-600 text-xs font-black uppercase tracking-widest">No Client Profiles Operational</p>`;
                 return;
             }
 
+            // Generate registry cards (Stacked Mobile, 2-Col iPad, 3-Col PC)
             listArea.innerHTML = userDatabase.map(u => `
                 <div class="glass p-6 md:p-8 flex flex-col justify-between gap-6 border-white/5 hover:border-emerald-500/20 transition-all duration-300 rounded-[1.5rem] md:rounded-[2rem]">
                     <div class="space-y-1">
@@ -396,36 +413,30 @@
             `).join('');
         }
 
-        // Revert Monthly Plan (expiry check included)
-        function revertToOneTime(un) {
-            if(!confirm("Kill Monthly Subscription for " + un + "?")) return;
-            const i = userDatabase.findIndex(u => u.username === un);
-            userDatabase[i].plan = "One-Time"; userDatabase[i].expiry = "";
-            localStorage.setItem('users', JSON.stringify(userDatabase));
-            renderFounderRegistry();
-        }
-
-        function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('btn-tab-users').className = id === 'tab-users' ? 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all text-slate-500';
-            document.getElementById('btn-tab-banner').className = id === 'tab-banner' ? 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all text-slate-500';
-            if(id === 'tab-users') renderFounderRegistry();
-        }
-
-        // Upgrade, Commit Schedule, Terminate, Check Schedules, Utils, updateClientScheduleView, toggleUserMenu, openModal, closeModal functions are retained but omitted for brevity in this template, ensure they are copied from previous version and updated where necessary to match new variable names.
-        
-        // --- Standard functions retained from previous master and matched to new variables ---
+        // (Other commands: Calculate Price, upgrade/revert/commit/delete/broadcast/switchTab retained and optimized)
         function calculateOTPrice() { const c = document.getElementById('bin_slider').value; const p = 15 + (c - 1) * 10; document.getElementById('bin_display').innerText = `${c} Bin${c > 1 ? 's' : ''}`; document.getElementById('price_display').innerText = `$${p}`; }
         function upgradeOperativeToMonthly(un) { const i = userDatabase.findIndex(u => u.username === un); userDatabase[i].plan = "Monthly Plan"; let d = new Date(); d.setMonth(d.getMonth() + 1); userDatabase[i].expiry = d.toLocaleDateString(); localStorage.setItem('users', JSON.stringify(userDatabase)); renderFounderRegistry(); alert(`${un} upgraded.`); }
+        function revertToOneTime(un) { if(!confirm("Kill Monthly Subscription for " + un + "?")) return; const i = userDatabase.findIndex(u => u.username === un); userDatabase[i].plan = "One-Time"; userDatabase[i].expiry = ""; localStorage.setItem('users', JSON.stringify(userDatabase)); renderFounderRegistry(); }
         async function commitScheduleDate(un) { const val = document.getElementById(`date_for_${un}`).value; if (!val) return alert("Select Date."); const i = userDatabase.findIndex(u => u.username === un); userDatabase[i].dates.push(val); localStorage.setItem('users', JSON.stringify(userDatabase)); renderFounderRegistry(); alert(`Scheduled!`); await emailjs.send(MASTER_CONFIG.sID, MASTER_CONFIG.tID, { to_email: MASTER_CONFIG.owner, legal_name: "SYSTEM ALERT", address: `New Schedule: ${un}`, plan: "Task Created", price: "N/A", bin_amount: "N/A", eta_request: val }); }
         function terminateOperative(un) { if(confirm("Terminate " + un + "?")) { userDatabase = userDatabase.filter(u => u.username !== un); localStorage.setItem('users', JSON.stringify(userDatabase)); renderFounderRegistry(); } }
-        function flipAuthMode() { isSignup = !isSignup; document.getElementById('auth-title').innerText = isSignup ? "Register" : "Access"; document.getElementById('registration-fields').classList.toggle('hidden', !isSignup); document.getElementById('auth-toggle-btn').innerText = isSignup ? "Back to Access" : "New? Create Profile"; }
+        
+        // Global Query parameter method for Broadcast
+        function deployGlobalBroadcast() { const msg = document.getElementById('banner-input').value.trim(); if (!msg) return alert("Type message."); const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?broadcast=' + encodeURIComponent(msg); window.location.href = newUrl; }
+        function clearGlobalBroadcast() { const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname; window.location.href = newUrl; }
+
+        // --- UTILS ---
+        function flipAuthMode() { isSignup = !isSignup; document.getElementById('auth-title').innerText = isSignup ? "Register Identification" : "Access"; document.getElementById('registration-fields').classList.toggle('hidden', !isSignup); document.getElementById('auth-toggle-btn').innerText = isSignup ? "Back to Access" : "New Profile? Register Identification"; }
         function toggleUserMenu() { document.getElementById('u-menu').classList.toggle('hidden'); }
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function updateClientScheduleView() { const u = userDatabase.find(x => x.username === activeSession.username); if(!u) return; const list = document.getElementById('schedule-display-area'); list.innerHTML = u.dates.length > 0 ? u.dates.map(d => `<div class="bg-slate-950 p-4 rounded-xl border border-white/5"><i class="fa-solid fa-calendar-day text-emerald-500 mr-2"></i> ${new Date(d).toLocaleString()}</div>`).join('') : "No dates scheduled."; document.getElementById('client-plan-badge').innerText = `Plan: ${u.plan} ${u.expiry ? '(Ends: '+u.expiry+')' : ''}`; }
+        function switchTab(id) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); document.getElementById('btn-tab-users').className = id === 'tab-users' ? 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all text-slate-500'; document.getElementById('btn-tab-banner').className = id === 'tab-banner' ? 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all bg-emerald-500 text-white' : 'flex-1 sm:flex-none px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all text-slate-500'; if(id === 'tab-users') renderFounderRegistry(); }
         
+        // Check local expiry and revert
+        users.forEach(u => { if (u.expiry && new Date(u.expiry) < new Date()) { u.plan = "One-Time"; u.expiry = ""; } });
+        localStorage.setItem('users', JSON.stringify(users));
+
+        function updateClientScheduleView() { const u = userDatabase.find(x => x.username === activeSession.username); if(!u) return; const list = document.getElementById('schedule-display-area'); list.innerHTML = u.dates.length > 0 ? u.dates.map(d => `<div class="bg-slate-950 p-4 rounded-xl border border-white/5"><i class="fa-solid fa-calendar-day text-emerald-500 mr-2"></i> ${new Date(d).toLocaleString()}</div>`).join('') : "No operational dates scheduled."; document.getElementById('client-plan-badge').innerText = `Plan: ${u.plan} ${u.expiry ? '(Ends: '+u.expiry+')' : ''}`; }
+
         systemInitialization();
     </script>
 </body>
