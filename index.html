@@ -27,6 +27,7 @@
         input:focus { border-color: var(--emerald); }
         input[type="datetime-local"] { color-scheme: dark; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-up { animation: slideUp 0.5s ease-out; }
         .fluid-title { font-size: clamp(3rem, 12vw, 8rem); }
         .fluid-subtitle { font-size: clamp(1.5rem, 6vw, 2.25rem); }
         
@@ -39,17 +40,17 @@
 </head>
 <body class="pb-32">
 
-    <div id="top-banner" class="hidden bg-emerald-600 text-white py-4 text-center sticky top-0 z-[10000] shadow-2xl border-b border-emerald-400/30">
+    <div id="top-banner" class="bg-emerald-600 text-white py-4 text-center sticky top-0 z-[10000] shadow-2xl border-b border-emerald-400/30">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center gap-4">
             <div class="flex items-center gap-3 mx-auto">
                 <i class="fa-solid fa-bullhorn animate-pulse text-lg"></i>
-                <p id="banner-text" class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.25em]">System Live</p>
+                <p id="banner-text" class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.25em]">System Live: Logistics OS v1.0 Operational</p>
             </div>
-            <button class="text-white/50 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <button id="close-banner" class="text-white/50 hover:text-white btn-tap"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
     </div>
 
-    <nav class="sticky top-0 z-[9000] glass border-b border-white/5 bg-[#020617]/90 backdrop-blur-md">
+    <nav class="sticky top-12 z-[9000] glass border-b border-white/5 bg-[#020617]/90 backdrop-blur-md mt-[-48px]">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <img src="https://cdn.phototourl.com/free/2026-04-06-1f91ee0d-338c-4403-91f9-4e9cd7bfdb90.png" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl">
@@ -58,7 +59,7 @@
             
             <div class="flex gap-4 items-center">
                 <div class="relative group">
-                    <button class="btn-tap glass px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-4 border-slate-700">
+                    <button id="nav-user-btn" class="btn-tap glass px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-4 border-slate-700 hover:border-emerald-500 transition-colors">
                         <div class="text-right hidden sm:block">
                             <p class="text-[10px] font-black uppercase text-white tracking-wide">Guest Access</p>
                             <p class="text-[9px] font-bold uppercase text-slate-500">Service Portal</p>
@@ -75,23 +76,24 @@
         <p class="text-slate-400 max-w-sm mx-auto text-base md:text-lg mb-10 md:mb-12 font-medium">Professional bin cleaning. No smell, no mess, no stress.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4 px-10 sm:px-0">
             <a href="#plans" class="btn-tap bg-emerald-500 text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px] shadow-xl shadow-emerald-500/30">View Plans</a>
-            <button class="btn-tap glass text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px]">Sign Up Access</button>
+            <button id="hero-signup-btn" class="btn-tap glass text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase text-[10px] md:text-[11px] hover:bg-white/5 transition-colors">Sign Up Access</button>
         </div>
     </header>
 
     <section id="plans" class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8 lg:gap-10 py-10 md:py-16">
-        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] border-slate-800">
+        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] border-slate-800 animate-up">
             <h3 class="fluid-subtitle font-black italic mb-6 md:mb-8 uppercase tracking-tighter text-emerald-500">One-Time</h3>
             <div class="space-y-6 md:space-y-8 mb-10 md:mb-12">
                 <div class="flex justify-between items-end gap-2">
-                    <div><p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-1">Bin Qty</p><span class="text-3xl md:text-4xl font-black">1 Bin</span></div>
-                    <div class="text-right"><p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-1">Total Cost</p><span class="text-3xl md:text-4xl font-black">$15</span></div>
+                    <div><p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-1">Bin Qty</p><span id="slider-qty" class="text-3xl md:text-4xl font-black">1 Bin</span></div>
+                    <div class="text-right"><p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-1">Total Cost</p><span id="slider-cost" class="text-3xl md:text-4xl font-black">$15</span></div>
                 </div>
-                <input type="range" min="1" max="10" value="1" class="w-full h-3 bg-slate-800 rounded-full appearance-none accent-emerald-500 cursor-pointer">
+                <input type="range" id="bin-slider" min="1" max="10" value="1" class="w-full h-3 bg-slate-800 rounded-full appearance-none accent-emerald-500 cursor-pointer">
             </div>
-            <button class="btn-tap w-full bg-white text-black py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs hover:bg-emerald-500 hover:text-white transition-all">Request Service</button>
+            <button class="plan-btn btn-tap w-full bg-white text-black py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs hover:bg-emerald-500 hover:text-white transition-all">Request Service</button>
         </div>
-        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] bg-gradient-to-br from-emerald-950/20 to-slate-900/50 border-emerald-500/20 relative group overflow-hidden">
+        
+        <div class="glass p-10 md:p-12 rounded-[2rem] md:rounded-[4rem] bg-gradient-to-br from-emerald-950/20 to-slate-900/50 border-emerald-500/20 relative group overflow-hidden animate-up" style="animation-delay: 0.1s">
             <div class="flex justify-between items-start mb-8 md:mb-10">
                 <h3 class="fluid-subtitle font-black italic uppercase tracking-tighter text-emerald-400">Monthly</h3>
                 <span class="px-3 py-1 md:px-4 md:py-1 bg-emerald-500 text-white text-[8px] font-black uppercase rounded-full">Operative Tier</span>
@@ -105,60 +107,196 @@
                 <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 3-Week Cycle Rotation</li>
                 <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Heavy Odor Treatment</li>
             </ul>
-            <button class="btn-tap w-full bg-emerald-500 text-white py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs shadow-xl shadow-emerald-500/20">Enroll Now</button>
+            <button class="plan-btn btn-tap w-full bg-emerald-500 text-white py-6 md:py-7 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-xs shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all">Enroll Now</button>
         </div>
     </section>
 
-    <section id="operational-gallery" class="max-w-7xl mx-auto px-6 py-16">
+    <section id="operational-gallery" class="max-w-7xl mx-auto px-6 py-16 animate-up" style="animation-delay: 0.2s">
         <h3 class="fluid-subtitle font-black uppercase italic text-center mb-16 tracking-tighter">Operational <span class="text-emerald-500">Service Evidence</span></h3>
-        <p class="text-center text-slate-600 text-[10px] font-black uppercase tracking-widest mb-20 -mt-10">Real-time proofs • Updated SYSTEMWIDE</p>
         
-        <div id="front-gallery-display" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
-             <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden p-2 transition-transform duration-300 hover:scale-105 border-white/5">
-                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&h=400&fit=crop" class="w-full h-full object-cover rounded-xl media-border shadow-2xl">
-                    <span class="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[8px] uppercase font-black tracking-widest text-red-500">
-                        Before 🤢
-                    </span>
-                    <p class="absolute bottom-4 left-4 text-[7px] text-white/50 font-black uppercase tracking-widest">Op: Pending • Miami</p>
+        <div id="front-gallery-display" class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10">
+                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <span class="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[8px] uppercase font-black tracking-widest text-red-500">Before 🤢</span>
                 </div>
-                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden p-2 transition-transform duration-300 hover:scale-105 border-emerald-500/20 shadow-emerald-500/10">
-                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&h=400&fit=crop" class="w-full h-full object-cover rounded-xl media-border shadow-2xl shadow-emerald-500/10">
-                    <span class="absolute top-4 left-4 px-3 py-1 bg-emerald-500 rounded-full text-[8px] uppercase font-black tracking-widest text-white">
-                        Clean ✨ 🧼
-                    </span>
-                     <p class="absolute bottom-4 left-4 text-[7px] text-white/50 font-black uppercase tracking-widest">Op: Pending • Miami</p>
+                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1610813735106-96b658252277?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 media-border shadow-emerald-500/50 shadow-lg">
+                    <span class="absolute top-4 left-4 px-3 py-1 bg-emerald-500 rounded-full text-[8px] uppercase font-black tracking-widest text-white">Clean ✨ 🧼</span>
+                </div>
+                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-60">
+                    <span class="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[8px] uppercase font-black tracking-widest text-red-500">Before 🤢</span>
+                </div>
+                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1610813735106-96b658252277?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 media-border shadow-emerald-500/50 shadow-lg">
+                    <span class="absolute top-4 left-4 px-3 py-1 bg-emerald-500 rounded-full text-[8px] uppercase font-black tracking-widest text-white">Clean ✨ 🧼</span>
+                </div>
+        </div>
+    </section>
+
+    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/90 z-[12000] flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
+        <div id="auth-modal-card" class="glass w-full max-w-md p-8 md:p-12 rounded-[2.5rem] md:rounded-[4rem] relative text-center border-white/5 shadow-2xl animate-up">
+            <button id="close-modal" class="absolute top-8 right-8 text-slate-500 hover:text-white btn-tap"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
+            <div class="mb-8 md:mb-10">
+                <h3 id="auth-title" class="text-3xl font-black uppercase italic tracking-tighter">Access Portal</h3>
+                <p id="auth-subtitle" class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mt-2">Identification Needed</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div id="signup-fields" class="hidden space-y-4">
+                    <input type="text" placeholder="Full Name (Legal ID)" class="w-full">
+                    <input type="tel" placeholder="Contact Information (e.g., 555-1234)" class="w-full">
                 </div>
                 
-                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden p-2 transition-transform duration-300 hover:scale-105 border-white/5">
-                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&h=400&fit=crop" class="w-full h-full object-cover rounded-xl media-border shadow-2xl">
-                    <span class="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[8px] uppercase font-black tracking-widest text-red-500">
-                        Before 🤢
-                    </span>
-                    <p class="absolute bottom-4 left-4 text-[7px] text-white/50 font-black uppercase tracking-widest">Op: Pending • Miami</p>
-                </div>
-                <div class="relative aspect-square rounded-[1.5rem] media-border overflow-hidden p-2 transition-transform duration-300 hover:scale-105 border-emerald-500/20 shadow-emerald-500/10">
-                    <img src="https://images.unsplash.com/photo-1596751303335-9051877b07e1?q=80&w=400&h=400&fit=crop" class="w-full h-full object-cover rounded-xl media-border shadow-2xl shadow-emerald-500/10">
-                    <span class="absolute top-4 left-4 px-3 py-1 bg-emerald-500 rounded-full text-[8px] uppercase font-black tracking-widest text-white">
-                        Clean ✨ 🧼
-                    </span>
-                     <p class="absolute bottom-4 left-4 text-[7px] text-white/50 font-black uppercase tracking-widest">Op: Pending • Miami</p>
-                </div>
-
-        </div>
-    </section>
-
-    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/98 z-[12000] flex items-center justify-center p-4 backdrop-blur-xl">
-        <div class="glass w-full max-w-md p-8 md:p-12 rounded-[2.5rem] md:rounded-[4rem] relative text-center border-white/5 shadow-2xl shadow-emerald-500/10">
-            <button class="absolute top-8 right-8 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="mb-8 md:mb-10"><h3 id="auth-title" class="text-3xl font-black uppercase italic tracking-tighter">Access</h3><p id="auth-subtitle" class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mt-2">Identification Needed</p></div>
-            <div class="space-y-4">
-                <div id="registration-fields" class="hidden space-y-4"><input type="text" placeholder="Full Name (Legal ID)"><input type="tel" placeholder="Contact Information (e.g., 555-1234)"></div>
-                <input type="text" placeholder="Username (Profile Key)"><input type="password" placeholder="Passcode (Secured)">
-                <button class="btn-tap w-full bg-emerald-500 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-xs uppercase shadow-xl mt-4">Continue</button>
+                <input type="text" placeholder="Username (Profile Key)" class="w-full">
+                <input type="password" placeholder="Passcode (Secured)" class="w-full">
+                
+                <button id="auth-submit-btn" class="btn-tap w-full bg-emerald-500 py-5 md:py-6 rounded-xl md:rounded-2xl font-black text-xs uppercase shadow-xl mt-4 hover:bg-emerald-400 transition-colors">Initialize Session</button>
+                
                 <button id="auth-toggle-btn" class="w-full text-[10px] font-bold text-slate-500 uppercase tracking-widest py-4 hover:text-emerald-500 transition-colors">New Profile? Register Identification</button>
             </div>
         </div>
     </div>
-    
+
+    <script>
+        // --- UTILITIES ---
+        const doc = document;
+        const getById = (id) => doc.getElementById(id);
+        const qSel = (selector) => doc.querySelector(selector);
+        const qSelAll = (selector) => doc.querySelectorAll(selector);
+
+        // State (Mock Login status for demonstration)
+        let isLoggedIn = false;
+
+        // --- ANNOUNCEMENT BANNER ---
+        const topBanner = getById('top-banner');
+        const closeBannerBtn = getById('close-banner');
+
+        if (topBanner && closeBannerBtn) {
+            // Show banner on load (it's hidden in CSS to prevent flash)
+            topBanner.classList.remove('hidden');
+
+            closeBannerBtn.addEventListener('click', () => {
+                topBanner.style.transition = 'all 0.3s ease';
+                topBanner.style.opacity = '0';
+                topBanner.style.transform = 'translateY(-100%)';
+                setTimeout(() => topBanner.classList.add('hidden'), 300);
+            });
+        }
+
+        // --- PRICE CALCULATOR (One-Time Plan) ---
+        const binSlider = getById('bin-slider');
+        const qtyDisplay = getById('slider-qty');
+        const costDisplay = getById('slider-cost');
+
+        if (binSlider && qtyDisplay && costDisplay) {
+            binSlider.addEventListener('input', (e) => {
+                const qty = e.target.value;
+                const basePrice = 15;
+                const extraBinPrice = 10;
+                
+                // Calculate cost: $15 for first, $10 for each subsequent
+                const totalCost = basePrice + ((qty - 1) * extraBinPrice);
+
+                qtyDisplay.innerText = `${qty} Bin${qty > 1 ? 's' : ''}`;
+                costDisplay.innerText = `$${totalCost}`;
+            });
+        }
+
+        // --- AUTH MODAL LOGIC (Login/Signup) ---
+        const authModal = getById('login-modal');
+        const modalCard = getById('auth-modal-card');
+        const closeModalBtn = getById('close-modal');
+        const authToggleBtn = getById('auth-toggle-btn');
+        const signupFields = getById('signup-fields');
+        const authTitle = getById('auth-title');
+        const authSubtitle = getById('auth-subtitle');
+        const authSubmitBtn = getById('auth-submit-btn');
+
+        // Trigger buttons
+        const navUserBtn = getById('nav-user-btn');
+        const heroSignupBtn = getById('hero-signup-btn');
+        // Action buttons on plans
+        const planBtns = qSelAll('.plan-btn');
+
+        let isSignupMode = false;
+
+        const openAuthModal = (mode = 'login') => {
+            isSignupMode = mode === 'signup';
+            updateModalUI();
+            authModal.classList.remove('hidden');
+            authModal.classList.add('flex');
+            doc.body.style.overflow = 'hidden'; // Prevent scrolling bg
+        };
+
+        const closeAuthModal = () => {
+            authModal.classList.add('hidden');
+            authModal.classList.remove('flex');
+            doc.body.style.overflow = '';
+        };
+
+        const updateModalUI = () => {
+            if (isSignupMode) {
+                signupFields.classList.remove('hidden');
+                authTitle.innerText = "Register Profile";
+                authSubtitle.innerText = "Create Logistics Identity";
+                authSubmitBtn.innerText = "Create Account";
+                authToggleBtn.innerText = "Have Account? Initialize Session";
+            } else {
+                signupFields.classList.add('hidden');
+                authTitle.innerText = "Access Portal";
+                authSubtitle.innerText = "Identification Needed";
+                authSubmitBtn.innerText = "Initialize Session";
+                authToggleBtn.innerText = "New Profile? Register Identification";
+            }
+        };
+
+        // Event Listeners for Modal
+        if (navUserBtn) navUserBtn.addEventListener('click', () => openAuthModal('login'));
+        if (heroSignupBtn) heroSignupBtn.addEventListener('click', () => openAuthModal('signup'));
+        if (closeModalBtn) closeModalBtn.addEventListener('click', closeAuthModal);
+        
+        // Close on backdrop click (but not on card click)
+        if (authModal) {
+            authModal.addEventListener('click', (e) => {
+                if (e.target === authModal) closeAuthModal();
+            });
+        }
+
+        // Toggle between Login and Signup within modal
+        if (authToggleBtn) {
+            authToggleBtn.addEventListener('click', () => {
+                isSignupMode = !isSignupMode;
+                updateModalUI();
+            });
+        }
+
+        // Handle Submit (Mock action)
+        if (authSubmitBtn) {
+            authSubmitBtn.addEventListener('click', () => {
+                const action = isSignupMode ? 'Registering' : 'Logging in';
+                alert(`${action} service initiated... (Backend integration required)`);
+                // Simulate successful login
+                isLoggedIn = true;
+                qSel('#nav-user-btn p').innerText = isSignupMode ? "New User" : "Demo User";
+                closeAuthModal();
+            });
+        }
+
+        // --- SERVICE BUTTONS ---
+        planBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const planName = btn.getAttribute('data-plan') || 'One-Time';
+                if (!isLoggedIn) {
+                    alert(`Please access portal to book ${planName} service.`);
+                    openAuthModal('login');
+                } else {
+                    alert(`Initiating booking flow for ${planName} service...`);
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
