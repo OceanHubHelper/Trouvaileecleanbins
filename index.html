@@ -1,70 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trouvaille Bins</title>
+<title>Bins System</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
-body { background:#020617; color:white; font-family:Arial; }
-.card { background:#0f172a; border:1px solid #1e293b; padding:20px; margin:10px; border-radius:16px; }
-input,select { width:100%; padding:10px; margin:5px 0; background:#0f172a; border:1px solid #334155; color:white; border-radius:10px; }
-button { cursor:pointer; }
-.hidden { display:none; }
+body{background:#020617;color:white;font-family:Arial}
+.card{background:#0f172a;padding:15px;margin:10px;border-radius:12px;border:1px solid #1e293b}
+input,select{width:100%;padding:8px;margin:5px 0;background:#0f172a;color:white;border:1px solid #334155}
+.hidden{display:none}
+button{cursor:pointer}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox" class="card" style="max-width:400px;margin:50px auto;">
+<div id="loginBox" class="card" style="max-width:350px;margin:40px auto;">
 <h2>Login</h2>
-<input id="user" placeholder="username">
-<input id="pass" type="password" placeholder="password">
-<button onclick="login()" style="background:#10b981;width:100%;padding:10px;">Login</button>
+<input id="u">
+<input id="p" type="password">
+<button onclick="login()" style="background:#10b981;width:100%;padding:10px">Login</button>
 </div>
 
-<!-- APP -->
 <div id="app" class="hidden">
 
 <div class="card">
-<h2>🚛 Trouvaille Bins</h2>
-<button onclick="logout()" style="background:red;padding:8px;">Logout</button>
+<h2>System</h2>
+<button onclick="logout()" style="background:red;padding:6px">Logout</button>
 </div>
 
-<!-- BOOKING -->
 <div class="card">
-<h3>Book Service</h3>
+<h3>Book</h3>
 
 <input id="address" placeholder="Address">
 
-<label>Bins</label>
-<input id="bins" type="range" min="1" max="10" value="1" oninput="updatePrice()">
-
+<input id="bins" type="range" min="1" max="10" value="1" oninput="calc()">
 <p id="price">$15</p>
 
 <select id="plan">
 <option>One-Time</option>
-<option>Monthly Plan</option>
+<option>Monthly</option>
 </select>
 
-<button onclick="book()" style="background:#10b981;width:100%;padding:10px;">
-Book Now
+<button onclick="book()" style="background:#10b981;width:100%;padding:10px">
+Book
 </button>
+
 </div>
 
-<!-- USER SCHEDULE -->
 <div class="card">
-<h3>Your Schedule</h3>
+<h3>Schedule</h3>
 <div id="schedule"></div>
 </div>
 
-<!-- ADMIN -->
-<div id="adminPanel" class="card hidden">
-<h2>👑 Admin Panel</h2>
+<div id="admin" class="card hidden">
+<h3>Admin</h3>
 <div id="jobs"></div>
 </div>
 
@@ -72,156 +65,112 @@ Book Now
 
 <script>
 
-// ================= EMAILJS =================
-const CONFIG = {
+const CONFIG={
 service:"service_6ymb279",
 template:"template_pruo22c",
-key:"Or10zkajJK3CNcnic",
-owner:"favela23@gmail.com"
+key:"Or10zkajJK3CNcnic"
 };
+
 emailjs.init(CONFIG.key);
 
-// ================= DATA =================
-let users = JSON.parse(localStorage.getItem("users")||"[]");
-let session = JSON.parse(localStorage.getItem("session")||"null");
-let jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
+let session=null;
+let jobs=JSON.parse(localStorage.getItem("jobs")||"[]");
 
-// ================= LOGIN =================
-function login(){
-const u = user.value;
-const p = pass.value;
+// SAFE INIT (prevents white screen crash)
+function safeInit(){
+try{
+session=JSON.parse(localStorage.getItem("session"));
 
-if(u==="Adrien" && p==="favela23"){
-session = {username:u,role:"Owner"};
-} else {
-const found = users.find(x=>x.username===u && x.password===p);
-if(!found) return alert("wrong login");
-session = found;
+if(!session){
+document.getElementById("loginBox").style.display="block";
+document.getElementById("app").style.display="none";
+return;
 }
 
+document.getElementById("loginBox").style.display="none";
+document.getElementById("app").style.display="block";
+
+if(session.role==="Owner"){
+document.getElementById("admin").classList.remove("hidden");
+}
+
+render();
+}catch(e){
+console.log("init error",e);
+}
+}
+safeInit();
+
+// LOGIN
+function login(){
+if(u.value==="Adrien" && p.value==="favela23"){
+session={username:"Adrien",role:"Owner"};
+}else{
+session={username:u.value,role:"user"};
+}
 localStorage.setItem("session",JSON.stringify(session));
 location.reload();
 }
 
-// ================= LOGOUT (FIXED BUG) =================
+// LOGOUT
 function logout(){
 localStorage.removeItem("session");
-document.body.classList.remove("owner");
 location.reload();
 }
 
-// ================= INIT =================
-function init(){
-
-if(!session) return;
-
-loginBox.classList.add("hidden");
-app.classList.remove("hidden");
-
-// ADMIN CHECK (ONLY SOURCE OF TRUTH)
-if(session.role==="Owner"){
-adminPanel.classList.remove("hidden");
-document.body.classList.add("owner");
-renderJobs();
+// PRICE
+function calc(){
+price.innerText="$"+(15+(bins.value-1)*10);
 }
 
-renderSchedule();
-}
-init();
-
-// ================= PRICE =================
-function updatePrice(){
-const b = bins.value;
-price.innerText = "$"+(15+(b-1)*10);
-}
-
-// ================= BOOK =================
+// BOOK
 function book(){
-
-const job = {
+const job={
 id:Date.now(),
 user:session.username,
 bins:bins.value,
 plan:plan.value,
 address:address.value,
 status:"pending",
-start:null,
-duration:bins.value*600 // seconds
+start:null
 };
 
 jobs.push(job);
 localStorage.setItem("jobs",JSON.stringify(jobs));
 
-// EMAILJS
+try{
 emailjs.send(CONFIG.service,CONFIG.template,{
-legal_name:session.username,
-contact_information:"N/A",
 user_name:session.username,
 address:address.value,
 plan:plan.value,
 bin_amount:bins.value,
-price:price.innerText,
-eta_request:"new order"
+price:price.innerText
 });
+}catch(e){console.log(e);}
 
-alert("Booked!");
-renderSchedule();
-renderJobs();
+render();
 }
 
-// ================= USER SCHEDULE =================
-function renderSchedule(){
-if(!session) return;
+// RENDER
+function render(){
 
-let list = jobs.filter(j=>j.user===session.username);
+let userJobs=jobs.filter(j=>j.user===session.username);
 
-schedule.innerHTML = list.map(j=>`
+schedule.innerHTML=userJobs.map(j=>`
 <div class="card">
-<b>${j.plan}</b><br>
+${j.plan}<br>
 Bins: ${j.bins}<br>
 Status: ${j.status}
 </div>
 `).join("");
-}
 
-// ================= ADMIN JOBBER =================
-function renderJobs(){
-jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
-
-jobsDiv.innerHTML = jobs.map(j=>{
-
-let timer = "Not started";
-
-if(j.start){
-let end = j.start + j.duration*1000;
-timer = Math.max(0,Math.floor((end-Date.now())/1000))+"s";
-}
-
-return `
+jobsDiv.innerHTML=jobs.map(j=>`
 <div class="card">
 <b>${j.user}</b><br>
-Bins: ${j.bins}<br>
-Status: ${j.status}<br>
-Timer: ${timer}<br>
-
-<button onclick="startJob(${j.id})" style="background:#10b981;padding:5px;">
-Start Cleaning
-</button>
+${j.plan}<br>
+Bins:${j.bins}
 </div>
-`;
-}).join("");
-}
-
-// ================= TIMER =================
-function startJob(id){
-let i = jobs.findIndex(j=>j.id===id);
-jobs[i].start = Date.now();
-jobs[i].status = "in progress";
-
-localStorage.setItem("jobs",JSON.stringify(jobs));
-
-setInterval(renderJobs,1000);
-renderJobs();
+`).join("");
 }
 
 </script>
