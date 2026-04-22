@@ -1,0 +1,80 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Panel | Trouvaille Bins</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+
+<nav class="glass border-b border-white/10">
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<h1 class="text-2xl font-black italic">
+Founder <span class="text-emerald-400">Hub</span>
+</h1>
+
+<div class="flex gap-3">
+<button onclick="logout()" class="btn bg-red-500">Logout</button>
+</div>
+</div>
+</nav>
+
+<section class="max-w-7xl mx-auto px-6 py-10">
+
+<!-- STATS -->
+<div class="grid md:grid-cols-3 gap-6 mb-10">
+
+<div class="glass p-6 rounded-3xl">
+<p class="text-slate-400">Total Users</p>
+<h2 id="totalUsers" class="text-4xl font-black mt-2">0</h2>
+</div>
+
+<div class="glass p-6 rounded-3xl">
+<p class="text-slate-400">Monthly Members</p>
+<h2 id="monthlyUsers" class="text-4xl font-black mt-2">0</h2>
+</div>
+
+<div class="glass p-6 rounded-3xl">
+<p class="text-slate-400">Bookings</p>
+<h2 id="totalBookings" class="text-4xl font-black mt-2">0</h2>
+</div>
+
+</div>
+
+<!-- BROADCAST -->
+<div class="glass p-8 rounded-3xl mb-10">
+<h2 class="text-2xl font-black mb-6">Broadcast Message</h2>
+
+<input id="broadcastMsg" class="input mb-4" placeholder="Write announcement...">
+
+<button onclick="sendBroadcast()" class="btn bg-emerald-500">
+Send Broadcast
+</button>
+</div>
+
+<!-- USERS -->
+<div class="glass p-8 rounded-3xl">
+<div class="flex justify-between items-center mb-6 gap-4 flex-wrap">
+<h2 class="text-2xl font-black">All Customers</h2>
+<input id="searchUser" onkeyup="filterUsers()" class="input max-w-sm" placeholder="Search username...">
+</div>
+
+<div id="userList" class="grid md:grid-cols-2 gap-6">
+Loading...
+</div>
+</div>
+
+</section>
+
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+
+<script>
+loadAdmin();
+</script>
+
+</body>
+</html>
