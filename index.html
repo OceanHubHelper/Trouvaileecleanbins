@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trouvaille Bins | Professional Service System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trouvaille Bins</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
 body { background:#020617; color:white; font-family:Arial; }
-.glass { background:rgba(15,23,42,0.85); border:1px solid #1e293b; border-radius:20px; padding:20px; }
+.card { background:#0f172a; border:1px solid #1e293b; padding:20px; margin:10px; border-radius:16px; }
+input,select { width:100%; padding:10px; margin:5px 0; background:#0f172a; border:1px solid #334155; color:white; border-radius:10px; }
 button { cursor:pointer; }
 .hidden { display:none; }
-input, textarea {
-  width:100%; padding:12px; margin:5px 0;
-  background:#0f172a; border:1px solid #334155; color:white; border-radius:10px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
-<div id="login" class="glass" style="max-width:400px;margin:40px auto;">
+<!-- LOGIN -->
+<div id="loginBox" class="card" style="max-width:400px;margin:50px auto;">
 <h2>Login</h2>
-<input id="user" placeholder="username"/>
-<input id="pass" type="password" placeholder="password"/>
-<button onclick="login()" style="background:#10b981;padding:10px;width:100%;margin-top:10px;">Enter</button>
+<input id="user" placeholder="username">
+<input id="pass" type="password" placeholder="password">
+<button onclick="login()" style="background:#10b981;width:100%;padding:10px;">Login</button>
 </div>
 
-<!-- ================= MAIN ================= -->
+<!-- APP -->
 <div id="app" class="hidden">
 
-<!-- HEADER -->
-<div class="glass" style="margin:20px;">
-<h2>🚛 Trouvaille Bins System</h2>
+<div class="card">
+<h2>🚛 Trouvaille Bins</h2>
 <button onclick="logout()" style="background:red;padding:8px;">Logout</button>
 </div>
 
 <!-- BOOKING -->
-<div class="glass" style="margin:20px;">
+<div class="card">
 <h3>Book Service</h3>
 
+<input id="address" placeholder="Address">
+
 <label>Bins</label>
-<input id="bins" type="range" min="1" max="10" value="1" oninput="updatePrice()"/>
+<input id="bins" type="range" min="1" max="10" value="1" oninput="updatePrice()">
 
 <p id="price">$15</p>
 
@@ -53,37 +51,33 @@ input, textarea {
 <option>Monthly Plan</option>
 </select>
 
-<input id="address" placeholder="Address"/>
-
-<button onclick="book()" style="background:#10b981;padding:10px;width:100%;margin-top:10px;">
+<button onclick="book()" style="background:#10b981;width:100%;padding:10px;">
 Book Now
 </button>
 </div>
 
 <!-- USER SCHEDULE -->
-<div class="glass" style="margin:20px;">
+<div class="card">
 <h3>Your Schedule</h3>
 <div id="schedule"></div>
 </div>
 
-<!-- ================= ADMIN PANEL ================= -->
-<div id="admin" class="glass hidden" style="margin:20px;">
+<!-- ADMIN -->
+<div id="adminPanel" class="card hidden">
 <h2>👑 Admin Panel</h2>
-
-<h3>Jobs</h3>
 <div id="jobs"></div>
-
 </div>
 
 </div>
 
 <script>
+
 // ================= EMAILJS =================
 const CONFIG = {
-  service: "service_6ymb279",
-  template: "template_pruo22c",
-  key: "Or10zkajJK3CNcnic",
-  owner: "favela23@gmail.com"
+service:"service_6ymb279",
+template:"template_pruo22c",
+key:"Or10zkajJK3CNcnic",
+owner:"favela23@gmail.com"
 };
 emailjs.init(CONFIG.key);
 
@@ -94,150 +88,142 @@ let jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
 
 // ================= LOGIN =================
 function login(){
-  const u = user.value;
-  const p = pass.value;
+const u = user.value;
+const p = pass.value;
 
-  if(u==="Adrien" && p==="favela23"){
-    session = {username:u, role:"admin"};
-  } else {
-    const found = users.find(x=>x.username===u && x.password===p);
-    if(!found) return alert("wrong login");
-    session = found;
-  }
-
-  localStorage.setItem("session",JSON.stringify(session));
-  load();
+if(u==="Adrien" && p==="favela23"){
+session = {username:u,role:"Owner"};
+} else {
+const found = users.find(x=>x.username===u && x.password===p);
+if(!found) return alert("wrong login");
+session = found;
 }
 
-// ================= LOGOUT =================
+localStorage.setItem("session",JSON.stringify(session));
+location.reload();
+}
+
+// ================= LOGOUT (FIXED BUG) =================
 function logout(){
-  localStorage.removeItem("session");
-  location.reload();
+localStorage.removeItem("session");
+document.body.classList.remove("owner");
+location.reload();
 }
 
-// ================= LOAD =================
-function load(){
-  if(!session) return;
+// ================= INIT =================
+function init(){
 
-  login.style.display="none";
-  app.classList.remove("hidden");
+if(!session) return;
 
-  if(session.role==="admin"){
-    admin.classList.remove("hidden");
-    renderJobs();
-  }
+loginBox.classList.add("hidden");
+app.classList.remove("hidden");
 
-  renderSchedule();
+// ADMIN CHECK (ONLY SOURCE OF TRUTH)
+if(session.role==="Owner"){
+adminPanel.classList.remove("hidden");
+document.body.classList.add("owner");
+renderJobs();
 }
+
+renderSchedule();
+}
+init();
 
 // ================= PRICE =================
 function updatePrice(){
-  const b = bins.value;
-  price.innerText = "$" + (15 + (b-1)*10);
+const b = bins.value;
+price.innerText = "$"+(15+(b-1)*10);
 }
 
 // ================= BOOK =================
 function book(){
-  const b = bins.value;
-  const plan = document.getElementById("plan").value;
-  const addr = address.value;
 
-  const job = {
-    id: Date.now(),
-    user: session.username,
-    bins: b,
-    plan,
-    address: addr,
-    status:"pending",
-    start:null,
-    duration: b*10*60 // 10 min per bin
-  };
+const job = {
+id:Date.now(),
+user:session.username,
+bins:bins.value,
+plan:plan.value,
+address:address.value,
+status:"pending",
+start:null,
+duration:bins.value*600 // seconds
+};
 
-  jobs.push(job);
-  localStorage.setItem("jobs",JSON.stringify(jobs));
+jobs.push(job);
+localStorage.setItem("jobs",JSON.stringify(jobs));
 
-  emailjs.send(CONFIG.service,CONFIG.template,{
-    legal_name:session.username,
-    contact_information:"N/A",
-    user_name:session.username,
-    address:addr,
-    plan:plan,
-    bin_amount:b,
-    price:price.innerText,
-    eta_request:"new order"
-  });
+// EMAILJS
+emailjs.send(CONFIG.service,CONFIG.template,{
+legal_name:session.username,
+contact_information:"N/A",
+user_name:session.username,
+address:address.value,
+plan:plan.value,
+bin_amount:bins.value,
+price:price.innerText,
+eta_request:"new order"
+});
 
-  alert("Booked!");
-  renderJobs();
-  renderSchedule();
+alert("Booked!");
+renderSchedule();
+renderJobs();
 }
 
-// ================= SCHEDULE =================
+// ================= USER SCHEDULE =================
 function renderSchedule(){
-  if(!session) return;
-  const list = jobs.filter(j=>j.user===session.username);
+if(!session) return;
 
-  schedule.innerHTML = list.map(j=>{
-    return `
-    <div style="padding:10px;border:1px solid #334155;margin:5px;">
-      <b>${j.plan}</b><br/>
-      Bins: ${j.bins}<br/>
-      Status: ${j.status}
-    </div>`;
-  }).join("");
+let list = jobs.filter(j=>j.user===session.username);
+
+schedule.innerHTML = list.map(j=>`
+<div class="card">
+<b>${j.plan}</b><br>
+Bins: ${j.bins}<br>
+Status: ${j.status}
+</div>
+`).join("");
 }
 
-// ================= JOBBER ADMIN =================
+// ================= ADMIN JOBBER =================
 function renderJobs(){
-  jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
+jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
 
-  jobsContainer = document.getElementById("jobs");
+jobsDiv.innerHTML = jobs.map(j=>{
 
-  jobsContainer.innerHTML = jobs.map(j=>{
-    let remaining = "Not started";
+let timer = "Not started";
 
-    if(j.start){
-      const end = j.start + j.duration*1000;
-      const now = Date.now();
-      const diff = Math.max(0, end-now);
-      remaining = Math.floor(diff/1000) + " sec left";
-    }
-
-    return `
-    <div style="border:1px solid #334155;padding:10px;margin:5px;">
-      <b>${j.user}</b><br/>
-      Bins: ${j.bins}<br/>
-      Status: ${j.status}<br/>
-      Timer: ${remaining}<br/>
-
-      <button onclick="startJob(${j.id})" style="background:#10b981;padding:5px;margin-top:5px;">
-        Start Cleaning
-      </button>
-    </div>
-    `;
-  }).join("");
+if(j.start){
+let end = j.start + j.duration*1000;
+timer = Math.max(0,Math.floor((end-Date.now())/1000))+"s";
 }
 
-// ================= TIMER (PERSISTENT) =================
+return `
+<div class="card">
+<b>${j.user}</b><br>
+Bins: ${j.bins}<br>
+Status: ${j.status}<br>
+Timer: ${timer}<br>
+
+<button onclick="startJob(${j.id})" style="background:#10b981;padding:5px;">
+Start Cleaning
+</button>
+</div>
+`;
+}).join("");
+}
+
+// ================= TIMER =================
 function startJob(id){
-  const i = jobs.findIndex(j=>j.id===id);
-  jobs[i].start = Date.now();
-  jobs[i].status = "in progress";
+let i = jobs.findIndex(j=>j.id===id);
+jobs[i].start = Date.now();
+jobs[i].status = "in progress";
 
-  localStorage.setItem("jobs",JSON.stringify(jobs));
-  renderJobs();
+localStorage.setItem("jobs",JSON.stringify(jobs));
 
-  runTimer();
+setInterval(renderJobs,1000);
+renderJobs();
 }
 
-function runTimer(){
-  setInterval(()=>{
-    renderJobs();
-  },1000);
-}
-
-// ================= INIT =================
-load();
 </script>
 
 </body>
