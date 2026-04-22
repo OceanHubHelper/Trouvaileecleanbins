@@ -3,94 +3,95 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trouvaille Bins</title>
+<title>Trouvaille Bins System</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
-body {
-    margin:0;
-    font-family: Arial;
-    background:#020617;
-    color:white;
-}
-.glass {
-    background:rgba(15,23,42,0.9);
-    border:1px solid #1e293b;
-    border-radius:20px;
-    padding:20px;
-}
-.btn {
-    padding:15px;
-    border-radius:12px;
-    font-weight:bold;
-    cursor:pointer;
-}
+body { margin:0; font-family:Arial; background:#020617; color:white; }
+.glass { background:#0f172a; border:1px solid #1e293b; border-radius:16px; padding:16px; }
+.btn { padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; }
+input, select { width:100%; padding:10px; margin:5px 0; color:black; border-radius:8px; }
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
-<!-- EMAILJS -->
 <script>
+/* ================= EMAILJS ================= */
 const EMAIL = {
-    serviceID: "service_6ymb279",
-    templateID: "template_pruo22c",
-    publicKey: "Or10zkajJK3CNcnic"
+  serviceID: "service_6ymb279",
+  templateID: "template_pruo22c",
+  publicKey: "Or10zkajJK3CNcnic"
 };
 emailjs.init(EMAIL.publicKey);
-</script>
 
-<!-- SESSION -->
-<script>
-let user = JSON.parse(localStorage.getItem("session")) || null;
+/* ================= DATA ================= */
 let users = JSON.parse(localStorage.getItem("users")) || [];
+let session = JSON.parse(localStorage.getItem("session")) || null;
 
-function saveSession(u){
-    localStorage.setItem("session", JSON.stringify(u));
-    location.reload();
+function save(){
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("session", JSON.stringify(session));
 }
 
 function logout(){
-    localStorage.removeItem("session");
-    location.reload();
+  localStorage.removeItem("session");
+  location.reload();
 }
 </script>
 
 <!-- NAV -->
-<div class="glass flex justify-between items-center m-4">
-    <h1 class="font-bold">Trouvaille Bins</h1>
-
-    <div>
-        <button onclick="openLogin()" class="btn bg-emerald-500">Login</button>
-        <button onclick="logout()" class="btn bg-red-500">Logout</button>
-    </div>
+<div class="glass m-4 flex justify-between">
+<h2>Trouvaille Bins</h2>
+<div>
+<button class="btn bg-emerald-500" onclick="openLogin()">Login</button>
+<button class="btn bg-red-500" onclick="logout()">Logout</button>
+</div>
 </div>
 
 <!-- MAIN -->
-<div class="p-6 text-center">
+<div class="text-center p-6">
 
-<h1 class="text-3xl font-bold mb-4">Book a Bin Clean</h1>
+<h1 class="text-2xl font-bold">Book Cleaning Service</h1>
 
 <button class="btn bg-emerald-500 m-2" onclick="book('One-Time')">
-One-Time Clean ($15)
+One-Time ($15)
 </button>
 
 <button class="btn bg-blue-500 m-2" onclick="book('Monthly Plan')">
-Monthly Plan ($45)
+Monthly ($45)
 </button>
 
+</div>
+
+<!-- USER INFO -->
+<div class="glass m-4">
+<h3>User Panel</h3>
+
+<div id="userPanel">Not logged in</div>
+
+<h4 class="mt-3">Your Schedule</h4>
+<select id="scheduleBox"></select>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin" class="glass m-4 hidden">
+<h2>Founder Hub</h2>
+
+<div id="userList"></div>
 </div>
 
 <!-- LOGIN -->
 <div id="login" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
 <div class="glass w-80">
 
-<h2 class="text-xl mb-3">Login</h2>
+<h3>Login</h3>
 
-<input id="u" placeholder="username" class="w-full p-2 mb-2 text-black"/>
-<input id="p" placeholder="password" type="password" class="w-full p-2 mb-2 text-black"/>
+<input id="u" placeholder="username"/>
+<input id="p" placeholder="password" type="password"/>
 
 <button class="btn bg-emerald-500 w-full" onclick="login()">Enter</button>
 <button class="btn bg-red-500 w-full mt-2" onclick="closeLogin()">Close</button>
@@ -99,62 +100,130 @@ Monthly Plan ($45)
 </div>
 
 <script>
-function openLogin(){ document.getElementById("login").classList.remove("hidden"); }
-function closeLogin(){ document.getElementById("login").classList.add("hidden"); }
+function openLogin(){document.getElementById("login").classList.remove("hidden")}
+function closeLogin(){document.getElementById("login").classList.add("hidden")}
 
+/* ================= LOGIN ================= */
 function login(){
-    const u = document.getElementById("u").value;
-    const p = document.getElementById("p").value;
+let u=document.getElementById("u").value;
+let p=document.getElementById("p").value;
 
-    if(u === "Adrien" && p === "favela23"){
-        saveSession({
-            username:"Adrien",
-            name:"Founder",
-            contact_information:"Admin",
-            role:"Owner"
-        });
-        return;
-    }
-
-    const found = users.find(x=>x.username===u && x.password===p);
-    if(!found) return alert("bad login");
-
-    saveSession({...found, role:"User"});
+if(u==="Adrien" && p==="favela23"){
+session={username:"Adrien",role:"Owner",name:"Founder",contact_information:"Admin"};
+save(); location.reload(); return;
 }
-</script>
 
-<!-- BOOKING -->
-<script>
+let found=users.find(x=>x.username===u && x.password===p);
+if(!found) return alert("wrong login");
+
+session={...found,role:"User"};
+save(); location.reload();
+}
+
+/* ================= BOOKING ================= */
 async function book(plan){
-    if(!user) return alert("login first");
+if(!session) return alert("login first");
 
-    const addr = prompt("address?");
-    if(!addr) return;
+let addr=prompt("address?");
+if(!addr) return;
 
-    const price = plan==="Monthly Plan" ? "$45" : "$15";
-    const bins = plan==="Monthly Plan" ? "6" : "1";
+let price=plan==="Monthly Plan"?"$45":"$15";
+let bins=plan==="Monthly Plan"?"6":"1";
 
-    try {
-        await emailjs.send(
-            EMAIL.serviceID,
-            EMAIL.templateID,
-            {
-                legal_name: user.name,
-                contact_information: user.contact_information,
-                user_name: user.username,
-                address: addr,
-                plan: plan,
-                bin_amount: bins,
-                price: price,
-                eta_request: new Date().toString()
-            }
-        );
-
-        alert("Order sent!");
-    } catch(e){
-        alert("failed");
-    }
+await emailjs.send(
+EMAIL.serviceID,
+EMAIL.templateID,
+{
+legal_name:session.name,
+contact_information:session.contact_information,
+user_name:session.username,
+address:addr,
+plan:plan,
+bin_amount:bins,
+price:price,
+eta_request:new Date().toString()
 }
+);
+
+alert("Booked!");
+}
+
+/* ================= UI ================= */
+function render(){
+
+if(!session){
+document.getElementById("userPanel").innerText="Guest";
+return;
+}
+
+document.getElementById("userPanel").innerHTML=
+`<b>${session.username}</b><br>Plan: ${session.plan||"None"}`;
+
+if(session.role==="Owner"){
+document.getElementById("admin").classList.remove("hidden");
+renderAdmin();
+}
+renderSchedule();
+}
+
+/* ================= SCHEDULE ================= */
+function renderSchedule(){
+let box=document.getElementById("scheduleBox");
+box.innerHTML="";
+
+if(!session || !session.dates) return;
+
+session.dates.forEach(d=>{
+let opt=document.createElement("option");
+opt.innerText=new Date(d).toLocaleString();
+box.appendChild(opt);
+});
+}
+
+/* ================= ADMIN ================= */
+function renderAdmin(){
+let list=document.getElementById("userList");
+list.innerHTML="";
+
+users.forEach(u=>{
+list.innerHTML+=`
+<div class="glass m-2">
+<b>${u.username}</b><br>
+${u.name}<br>
+
+<button onclick="upgrade('${u.username}')">Upgrade</button>
+<button onclick="del('${u.username}')">Delete</button>
+<br><br>
+
+<input type="datetime-local" id="d_${u.username}">
+<button onclick="addDate('${u.username}')">Add Schedule</button>
+</div>`;
+});
+}
+
+function upgrade(u){
+let i=users.find(x=>x.username===u);
+i.plan="Monthly Plan";
+save(); location.reload();
+}
+
+function del(u){
+users=users.filter(x=>x.username!==u);
+save(); location.reload();
+}
+
+function addDate(u){
+let val=document.getElementById("d_"+u).value;
+if(!val) return;
+
+let i=users.find(x=>x.username===u);
+if(!i.dates) i.dates=[];
+i.dates.push(val);
+
+save(); location.reload();
+}
+
+render();
 </script>
 
 </body>
