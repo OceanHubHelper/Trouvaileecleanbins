@@ -1,20 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Trouvaille Bins</title>
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouvaille Bins | Professional Sanitation Logistics</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #020617;
+            --emerald: #10b981;
+            --slate: #1e293b;
+            --glass: rgba(15, 23, 42, 0.9);
+        }
+
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0; padding: 0; box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: #f8fafc;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #020617 80%);
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 32px;
+        }
+
+        .btn-tap { transition: 0.2s; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+        .btn-tap:active { transform: scale(0.96); }
+
+        input, textarea {
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 16px;
+            border-radius: 16px;
+            color: white;
+            width: 100%;
+        }
+    </style>
 </head>
 
-<body class="bg-slate-950 text-white">
+<body>
 
-<div class="text-center py-24">
-  <h1 class="text-6xl font-black">Trouvaille <span class="text-emerald-400">Bins</span></h1>
-  <p class="text-slate-400 mt-4">Professional bin cleaning service</p>
+<script>
+/* ================= EMAILJS CONFIG ================= */
+const EMAILJS_CONFIG = {
+    serviceID: "service_6ymb279",
+    templateID: "template_pruo22c",
+    publicKey: "Or10zkajJK3CNcnic"
+};
 
-  <a href="login.html" class="inline-block mt-10 px-6 py-3 bg-emerald-500 rounded-xl font-bold">
-    Get Started
-  </a>
+emailjs.init(EMAILJS_CONFIG.publicKey);
+/* ================================================ */
+</script>
+
+<script>
+let userDatabase = JSON.parse(localStorage.getItem('users')) || [];
+let activeSession = JSON.parse(localStorage.getItem('session')) || null;
+
+/* ================= BOOK SERVICE ================= */
+async function bookService(tier) {
+    if (!activeSession) return alert("Login required");
+
+    const addr = prompt("Enter address:");
+    if (!addr) return;
+
+    const profile = userDatabase.find(u => u.username === activeSession.username) || activeSession;
+
+    const bins = tier === "Monthly Plan" ? "6" : "1";
+    const price = tier === "Monthly Plan" ? "$45" : "$15";
+
+    try {
+        await emailjs.send(
+            EMAILJS_CONFIG.serviceID,
+            EMAILJS_CONFIG.templateID,
+            {
+                to_email: "OWNER_EMAIL",
+                legal_name: profile.name,
+                contact_information: profile.contact_information,
+                user_name: activeSession.username,
+                address: addr,
+                plan: tier,
+                price: price,
+                bin_amount: bins
+            }
+        );
+
+        alert("Request sent successfully!");
+    } catch (err) {
+        console.log(err);
+        alert("Failed to send request.");
+    }
+}
+</script>
+
+<!-- SIMPLE UI -->
+<div style="padding:40px;text-align:center">
+    <h1>Trouvaille Bins</h1>
+
+    <button class="btn-tap" onclick="bookService('One-Time')" style="padding:20px;background:#10b981;color:white;margin:10px">
+        One-Time Clean
+    </button>
+
+    <button class="btn-tap" onclick="bookService('Monthly Plan')" style="padding:20px;background:#0ea5e9;color:white;margin:10px">
+        Monthly Plan
+    </button>
 </div>
 
 </body>
