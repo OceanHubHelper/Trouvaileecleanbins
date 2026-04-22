@@ -1,136 +1,199 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Bins System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trouvaille Bins</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
-body{background:#020617;color:white;font-family:Arial}
-.card{background:#0f172a;padding:15px;margin:10px;border-radius:12px;border:1px solid #1e293b}
-input,select{width:100%;padding:8px;margin:5px 0;background:#0f172a;color:white;border:1px solid #334155}
-.hidden{display:none}
-button{cursor:pointer}
+body{
+margin:0;
+font-family:Arial;
+background:#020617;
+color:white;
+}
+
+nav{
+display:flex;
+gap:10px;
+padding:12px;
+background:#0f172a;
+position:sticky;
+top:0;
+}
+
+.section{
+display:none;
+padding:20px;
+}
+
+.active{display:block}
+
+.card{
+background:#0f172a;
+padding:15px;
+margin:10px 0;
+border-radius:14px;
+border:1px solid #1e293b;
+}
+
+/* ===== MODERN BUTTONS ===== */
+.btn{
+padding:12px 16px;
+border-radius:14px;
+border:none;
+cursor:pointer;
+font-weight:700;
+transition:0.2s;
+transform:translateY(0);
+}
+
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(0.97)}
+
+.btn-green{
+background:linear-gradient(135deg,#10b981,#059669);
+color:black;
+box-shadow:0 10px 25px rgba(16,185,129,0.25);
+}
+
+.btn-blue{
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+color:white;
+}
+
+.btn-red{
+background:linear-gradient(135deg,#ef4444,#dc2626);
+color:white;
+}
+
+.btn-dark{
+background:#1e293b;
+color:white;
+border:1px solid #334155;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:6px 0;
+border-radius:10px;
+border:1px solid #334155;
+background:#020617;
+color:white;
+}
+
+h2{color:#10b981}
+small{color:#94a3b8}
 </style>
 </head>
 
 <body>
 
-<div id="loginBox" class="card" style="max-width:350px;margin:40px auto;">
+<nav>
+<button class="btn btn-dark" onclick="show('login')">Login</button>
+<button class="btn btn-dark" onclick="show('book')">Book</button>
+<button class="btn btn-dark" onclick="show('dashboard')">Dashboard</button>
+<button id="adminBtn" class="btn btn-blue" onclick="show('admin')" style="display:none">Admin</button>
+</nav>
+
+<!-- LOGIN -->
+<div id="login" class="section active">
 <h2>Login</h2>
-<input id="u">
-<input id="p" type="password">
-<button onclick="login()" style="background:#10b981;width:100%;padding:10px">Login</button>
+
+<input id="u" placeholder="Username">
+<input id="p" type="password" placeholder="Password">
+
+<button class="btn btn-green" onclick="login()">Login</button>
+<button class="btn btn-dark" onclick="signup()">Create Account</button>
 </div>
 
-<div id="app" class="hidden">
-
-<div class="card">
-<h2>System</h2>
-<button onclick="logout()" style="background:red;padding:6px">Logout</button>
-</div>
-
-<div class="card">
-<h3>Book</h3>
-
-<input id="address" placeholder="Address">
-
-<input id="bins" type="range" min="1" max="10" value="1" oninput="calc()">
-<p id="price">$15</p>
+<!-- BOOK -->
+<div id="book" class="section">
+<h2>Book Service</h2>
 
 <select id="plan">
 <option>One-Time</option>
-<option>Monthly</option>
+<option>Monthly Plan</option>
 </select>
 
-<button onclick="book()" style="background:#10b981;width:100%;padding:10px">
-Book
-</button>
+<input id="bins" type="number" value="1">
+<input id="name" placeholder="Full Name">
+<input id="contact" placeholder="Contact">
+<input id="address" placeholder="Address">
 
+<button class="btn btn-green" onclick="book()">Book Now</button>
 </div>
 
-<div class="card">
-<h3>Schedule</h3>
-<div id="schedule"></div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="section">
+<h2>Your Schedule</h2>
+<div id="userJobs"></div>
 </div>
 
-<div id="admin" class="card hidden">
-<h3>Admin</h3>
+<!-- ADMIN -->
+<div id="admin" class="section">
+<h2>Admin Jobber Panel</h2>
 <div id="jobs"></div>
-</div>
-
 </div>
 
 <script>
 
-const CONFIG={
-service:"service_6ymb279",
-template:"template_pruo22c",
-key:"Or10zkajJK3CNcnic"
-};
+emailjs.init("Or10zkajJK3CNcnic");
 
-emailjs.init(CONFIG.key);
+let users = JSON.parse(localStorage.getItem("users")||"[]");
+let jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
+let session = JSON.parse(localStorage.getItem("session")||"null");
 
-let session=null;
-let jobs=JSON.parse(localStorage.getItem("jobs")||"[]");
-
-// SAFE INIT (prevents white screen crash)
-function safeInit(){
-try{
-session=JSON.parse(localStorage.getItem("session"));
-
-if(!session){
-document.getElementById("loginBox").style.display="block";
-document.getElementById("app").style.display="none";
-return;
+// NAV
+function show(id){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
-
-document.getElementById("loginBox").style.display="none";
-document.getElementById("app").style.display="block";
-
-if(session.role==="Owner"){
-document.getElementById("admin").classList.remove("hidden");
-}
-
-render();
-}catch(e){
-console.log("init error",e);
-}
-}
-safeInit();
 
 // LOGIN
 function login(){
-if(u.value==="Adrien" && p.value==="favela23"){
-session={username:"Adrien",role:"Owner"};
+let u=document.getElementById("u").value;
+let p=document.getElementById("p").value;
+
+let found = users.find(x=>x.u===u && x.p===p);
+
+if(!found && u==="Adrien" && p==="favela23"){
+session={u:"Adrien",admin:true};
+}else if(found){
+session=found;
 }else{
-session={username:u.value,role:"user"};
+alert("Invalid login");
+return;
 }
+
 localStorage.setItem("session",JSON.stringify(session));
-location.reload();
+setup();
 }
 
-// LOGOUT
-function logout(){
-localStorage.removeItem("session");
-location.reload();
-}
+// SIGNUP
+function signup(){
+let u=document.getElementById("u").value;
+let p=document.getElementById("p").value;
 
-// PRICE
-function calc(){
-price.innerText="$"+(15+(bins.value-1)*10);
+users.push({u,p});
+localStorage.setItem("users",JSON.stringify(users));
+alert("Account created");
 }
 
 // BOOK
 function book(){
-const job={
+if(!session) return alert("Login first");
+
+let job={
 id:Date.now(),
-user:session.username,
-bins:bins.value,
-plan:plan.value,
-address:address.value,
+name:document.getElementById("name").value,
+contact:document.getElementById("contact").value,
+address:document.getElementById("address").value,
+plan:document.getElementById("plan").value,
+bins:document.getElementById("bins").value,
 status:"pending",
 start:null
 };
@@ -138,41 +201,97 @@ start:null
 jobs.push(job);
 localStorage.setItem("jobs",JSON.stringify(jobs));
 
-try{
-emailjs.send(CONFIG.service,CONFIG.template,{
-user_name:session.username,
-address:address.value,
-plan:plan.value,
-bin_amount:bins.value,
-price:price.innerText
+// EMAIL
+emailjs.send("service_6ymb279","template_pruo22c",{
+legal_name:job.name,
+contact_information:job.contact,
+user_name:session.u,
+address:job.address,
+plan:job.plan,
+bin_amount:job.bins,
+price:job.plan==="Monthly Plan"?"$45":"$15+",
+eta_request:"New Booking"
 });
-}catch(e){console.log(e);}
 
+alert("Booked!");
 render();
+}
+
+// START CLEANING
+function start(id){
+let j=jobs.find(x=>x.id===id);
+j.status="cleaning";
+j.start=Date.now();
+save();
+render();
+}
+
+// FINISH
+function finish(id){
+jobs=jobs.filter(x=>x.id!==id);
+save();
+render();
+}
+
+function save(){
+localStorage.setItem("jobs",JSON.stringify(jobs));
+}
+
+// TIMER
+function timer(j){
+if(!j.start) return "0m 0s";
+let s=Math.floor((Date.now()-j.start)/1000);
+return Math.floor(s/60)+"m "+(s%60)+"s";
 }
 
 // RENDER
 function render(){
 
-let userJobs=jobs.filter(j=>j.user===session.username);
-
-schedule.innerHTML=userJobs.map(j=>`
-<div class="card">
-${j.plan}<br>
-Bins: ${j.bins}<br>
-Status: ${j.status}
-</div>
-`).join("");
-
-jobsDiv.innerHTML=jobs.map(j=>`
-<div class="card">
-<b>${j.user}</b><br>
-${j.plan}<br>
-Bins:${j.bins}
-</div>
-`).join("");
+if(session?.admin){
+document.getElementById("adminBtn").style.display="inline-block";
 }
 
+let admin=document.getElementById("jobs");
+let user=document.getElementById("userJobs");
+
+admin.innerHTML="";
+user.innerHTML="";
+
+jobs.forEach(j=>{
+
+// ADMIN
+admin.innerHTML+=`
+<div class="card">
+<b>${j.name}</b><br>
+${j.address}<br>
+${j.plan} | ${j.bins} bins<br>
+Status: ${j.status}<br>
+Timer: ${j.status==="cleaning"?timer(j):"-"}<br><br>
+
+${j.status==="pending"
+? `<button class="btn btn-blue" onclick="start(${j.id})">Start Cleaning</button>`
+: `<button class="btn btn-red" onclick="finish(${j.id})">Finish</button>`}
+</div>`;
+
+// USER
+if(session && j.name===session.u || session?.u==="Adrien"){
+user.innerHTML+=`
+<div class="card">
+${j.plan} - ${j.status}<br>
+${j.address}
+</div>`;
+}
+});
+}
+
+function setup(){
+if(session?.admin){
+document.getElementById("adminBtn").style.display="inline-block";
+}
+render();
+}
+
+setup();
 </script>
 
 </body>
